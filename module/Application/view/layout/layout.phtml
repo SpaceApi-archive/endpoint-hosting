@@ -1,0 +1,30 @@
+<?php
+    /* @var $this Zend\View\Renderer\PhpRenderer */
+    echo $this->doctype();
+?>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <script src="/js/jquery-1.9.0.min.js"></script>
+
+    <?php
+        echo $this->headLink(
+            array(
+                'rel' => 'shortcut icon',
+                'type' => 'img/vnd.microsoft.icon',
+                'href' => $this->basePath() . '/img/favicon.ico')
+        );
+    ?>
+
+    <?php echo $this->headScript(); ?>
+</head>
+<body>
+
+    <div class="container">
+        <?php echo $this->content; ?>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+    "name": "spaceapi/endpoint",
+    "description": "Endpoint Hosting",
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zendframework": "2.2.1",
+        "zendframework/zend-developer-tools": "dev-master",
+        "twbs/bootstrap": "v3.0.3",
+        "zf-commons/zfc-twig": "1.1.5"
+    }
+}
