@@ -6,6 +6,8 @@
         "zendframework/zendframework": "2.2.1",
         "zendframework/zend-developer-tools": "dev-master",
         "twbs/bootstrap": "v3.0.3",
-        "zf-commons/zfc-twig": "1.1.5"
+        "zf-commons/zfc-twig": "1.1.5",
+        "doctrine/common": "2.3.0",
+        "jms/serializer": "0.15.0"
     }
 }

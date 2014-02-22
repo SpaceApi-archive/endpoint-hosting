@@ -1,5 +1,5 @@
 <?php
-    /* @var $this Zend\View\Renderer\PhpRenderer */
+    /* @var Zend\View\Renderer\PhpRenderer $this */
     echo $this->doctype();
 ?>
 
@@ -16,6 +16,7 @@
         );
     ?>
 
+    <script src="/lib/jquery/jquery.min.js"></script>
     <?php echo $this->headScript(); ?>
 </head>
 <body>

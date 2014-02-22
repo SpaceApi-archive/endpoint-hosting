@@ -6,6 +6,8 @@ $module_config = array(
         'factories' => array(
             'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
             'EndpointMail' => 'Application\Service\EndpointMailFactory',
+            'Serializer' => 'Application\Service\SerializerFactory',
+            'SpaceMapList' => 'Application\Service\SpaceMapListFactory',
         ),
     ),
     'translator' => array(
