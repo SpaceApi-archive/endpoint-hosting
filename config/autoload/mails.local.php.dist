@@ -1,9 +1,0 @@
-<?php
-
-// copy this file, remove the .dist extension and add emails
-return array(
-    'emails' => array(
-        'you@example.com',
-        'me@example.com',
-    ),
-);

@@ -1,0 +1,15 @@
+<?php
+
+return array(
+
+    'enabled_logger' => array(
+        'error_log'  => true,
+    ),
+
+    'emails' => array(
+        'you@example.com',
+        'me@example.com',
+    ),
+
+    'gist_token' => 'put your token here'
+);

@@ -1,8 +1,0 @@
-<?php
-
-// to enable the logger, copy this file and remove the .dist extension
-return array(
-    'enabled_logger' => array(
-        'error_log'  => true,
-    ),
-);
