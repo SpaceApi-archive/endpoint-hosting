@@ -13,8 +13,8 @@
 
 return array(
 
-    // what loggers should write to a log file?
+    // To enable the logger, use logger.local.php
     'enabled_logger' => array(
-        'error_log'     => true,
+        'error_log'  => false,
     ),
 );

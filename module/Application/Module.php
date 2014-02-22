@@ -9,6 +9,7 @@
 
 namespace Application;
 
+use Application\Mail\EndpointMail;
 use Zend\Di\ServiceLocator;
 use Zend\Log\Logger;
 use Zend\Log\Writer\Stream;
@@ -17,7 +18,7 @@ use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\ServiceManager\ServiceManager;
 
-class Module implements ViewHelperProviderInterface
+class Module
 {
     public function onBootstrap(MvcEvent $e)
     {
@@ -41,23 +42,6 @@ class Module implements ViewHelperProviderInterface
         // to an error log file?
         if($config['enabled_logger']['error_log'])
             Logger::registerErrorHandler($error_log);
-
-        // TODO: use a factory to create the registry logger on demand
-        //       add a factory to module.config.php
-        $registry_log = new Logger;
-        $writer = new Stream('data/logs/registry.log');
-        $registry_log->addWriter($writer);
-        $service_manager->setService('registry_log', $registry_log);
-
-        $apps_log = new Logger;
-        $writer = new Stream('data/logs/apps.log');
-        $apps_log->addWriter($writer);
-        $service_manager->setService('apps_log', $apps_log);
-
-        $drivers_log = new Logger;
-        $writer = new Stream('data/logs/drivers.log');
-        $drivers_log->addWriter($writer);
-        $service_manager->setService('drivers_log', $drivers_log);
     }
 
     public function getConfig()
@@ -73,13 +57,6 @@ class Module implements ViewHelperProviderInterface
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
                 ),
             ),
-        );
-    }
-
-    public function getViewHelperConfig()
-    {
-        return array(
-            //'test' => 'Application\View\Helper\Test'
         );
     }
 }

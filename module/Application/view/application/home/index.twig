@@ -1,1 +1,4 @@
-<a href="/repo/clone?name=test">clone</a>
+<form action="{{ url('endpoint/action', {'action': 'create'}) }}" method="post">
+    <input type="text" name="name">
+    <input type="submit">
+</form>

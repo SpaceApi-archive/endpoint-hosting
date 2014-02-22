@@ -2,8 +2,10 @@
 
 $module_config = array(
     'service_manager' => array(
+        // alternatively we could implement getServiceConfig() in Module.php
         'factories' => array(
             'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
+            'EndpointMail' => 'Application\Service\EndpointMailFactory',
         ),
     ),
     'translator' => array(
@@ -48,13 +50,13 @@ $module_config = array(
                     )
                 ),
             ),
-            'repo' => array(
+            'endpoint' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
-                    'route' => '/repo',
+                    'route' => '/endpoint',
                     'defaults' => array(
-                        'controller' => 'Application\Controller\Repo',
-                        'action'     => 'clone'
+                        'controller' => 'Application\Controller\Endpoint',
+                        'action'     => 'create'
                     ),
                 ),
                 'may_terminate' => true,
@@ -76,7 +78,7 @@ $module_config = array(
 
             // Controllers invokable through the web server
             'Application\Controller\Home'       => 'Application\Controller\HomeController',
-            'Application\Controller\Repo'       => 'Application\Controller\RepoController',
+            'Application\Controller\Endpoint'       => 'Application\Controller\EndpointController',
         ),
     ),
     'view_manager' => array(
