@@ -4,7 +4,6 @@ namespace Application\Controller;
 
 use Application\Exception\EndpointExistsException;
 use Application\Mail\EndpointMailInterface;
-use Application\Mail\NewEndpointMail;
 use Application\Utils\Utils;
 use Zend\Mvc\Controller\AbstractActionController;
 
@@ -34,12 +33,11 @@ class EndpointController extends AbstractActionController
                 $this->addSpaceMap($space_normalized, $api_key);
                 $json = $this->getSpaceapiJson($space_normalized);
 
+                // we need to start a session here
                 return array(
-                    'error' => false,
+                    'error'   => false,
                     'api_key' => $api_key,
-                    'spaceapi_json' => $json,
-                    'gist_html_url' => $gist_urls['html_url'],
-                    'gist_raw_url' => $gist_urls['raw_url'],
+                    'space'   => $space_normalized,
                 );
 
             } catch (EndpointExistsException $e) {
@@ -53,6 +51,19 @@ class EndpointController extends AbstractActionController
                 );
             }
         }
+    }
+
+    public function editAction()
+    {
+        $json = '';
+        $gist_urls = array();
+
+        return array(
+            'api_key' => $api_key,
+            'spaceapi_json' => $json,
+            'gist_html_url' => $gist_urls['html_url'],
+            'gist_raw_url' => $gist_urls['raw_url'],
+        );
     }
 
     public function validateAction()
