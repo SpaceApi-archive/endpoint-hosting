@@ -2,68 +2,96 @@
 
 namespace Application\Controller;
 
+use Application\Exception\EmptyGistIdException;
 use Application\Exception\EndpointExistsException;
+use Application\Gist\Result;
 use Application\Mail\EndpointMailInterface;
+use Application\Map\SpaceMapList;
 use Application\Utils\Utils;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Model\ViewModel;
 
 class EndpointController extends AbstractActionController
 {
+    const SPACENAME_INVALID_TYPE    = 'InvalidHackerspaceName';
+    const SPACENAME_INVALID_MESSAGE = 'The hackerspace name you provided is invalid. It must contain at one alpha-numeric character at least.';
+    const ENDPOINT_EXISTS_TYPE      = 'EndpointExists';
+    const ENDPOINT_EXISTS_MESSAGE   = 'The endpoint already exists.';
+
     public function createAction()
     {
-        $space = $this->params()->fromPost('name');
+        $submit = $this->params()->fromPost('submit');
+
+        // we render the template immediately on the first visit
+        if (is_null($submit)) {
+            return array();
+        }
+
+        // TODO: validate the captcha here
+
+        $space = $this->params()->fromPost('hackerspace');
         $space_normalized = Utils::normalize($space);
 
-        // generate a new api key
-        $api_key = Utils::generateSecret();
+        // exit if the normalized hackerspace name is empty
+        if (empty($space_normalized)) {
+            return array(
+                'error' => array(
+                    'type'    => static::SPACENAME_INVALID_TYPE,
+                    'message' => static::SPACENAME_INVALID_MESSAGE,
+                ),
+            );
+        }
 
-        if(! empty($space_normalized)) {
+        /** @var EndpointMailInterface $email */
+        $email = $this->getServiceLocator()->get('EndpointMail');
 
-            /** @var EndpointMailInterface $email */
-            $email = $this->getServiceLocator()->get('EndpointMail');
+        try {
+            // generate a new token
+            $token = Utils::generateSecret();
 
-            try {
-                $this->createEndpoint($space_normalized, $api_key);
-                $email->send(
-                    "New endpoint created for $space",
-                    'New space created.'
-                );
+            // this throws an EndpointExistsException if the endoint exists
+            $this->createEndpoint($space_normalized, $token);
+            $this->addSpaceMap($space_normalized, $token);
 
-                $gist_urls = $this->createGist($space_normalized);
-                $this->addSpaceMap($space_normalized, $api_key);
-                $json = $this->getSpaceapiJson($space_normalized);
-
-                // we need to start a session here
-                return array(
-                    'error'   => false,
-                    'api_key' => $api_key,
-                    'space'   => $space_normalized,
-                );
-
-            } catch (EndpointExistsException $e) {
-                $email->send(
-                    "Endpoint creation failed for $space",
-                    'The endpoint already exists.'
-                );
-
-                return array(
-                    'error' => true,
-                );
+            // create a new gist and save its ID in the spaceapi json
+            /** @var Result $gist_result */
+            $gist_result = $this->createGist($space_normalized);
+            if ($gist_result->status === 201) {
+                $this->saveGistId($gist_result->id, $space_normalized);
             }
+
+            $email->send(
+                "New endpoint created for $space",
+                'New space created.'
+            );
+
+            $view = new ViewModel(array(
+                'token' => $token,
+                'gist'  => $gist_result
+            ));
+
+            $view->setTemplate('application/endpoint/create-ok.twig');
+
+            return $view;
+
+        } catch (EndpointExistsException $e) {
+
+            $email->send(
+                "Endpoint creation failed for $space",
+                static::ENDPOINT_EXISTS_MESSAGE
+            );
+
+            return array(
+                'error' => array(
+                    'type'    => static::ENDPOINT_EXISTS_TYPE,
+                    "message" => static::ENDPOINT_EXISTS_MESSAGE,
+                ),
+            );
         }
     }
 
     public function editAction()
     {
-        $json = '';
-        $gist_urls = array();
-
-        return array(
-            'api_key' => $api_key,
-            'spaceapi_json' => $json,
-            'gist_html_url' => $gist_urls['html_url'],
-            'gist_raw_url' => $gist_urls['raw_url'],
-        );
     }
 
     public function validateAction()
@@ -76,11 +104,11 @@ class EndpointController extends AbstractActionController
     /**
      * Creates a new endpoint and adds a new entry to the space map.
      *
-     * @param $space The normalized space name
-     * @param $api_key A secret key
+     * @param string $space The normalized space name
+     * @param string $token A secret key
      * @throws \Application\Exception\EndpointExistsException
      */
-    protected function createEndpoint($space, $api_key)
+    protected function createEndpoint($space, $token)
     {
         // create the new endpoint
         $file_path = "public/space/$space";
@@ -104,7 +132,7 @@ class EndpointController extends AbstractActionController
         $config_file = "$file_path/config.json";
         $config_file_content = file_get_contents($config_file);
         $config = json_decode($config_file_content);
-        $config->api_key = $api_key;
+        $config->api_key = $token;
         $config_file_content = json_encode($config, JSON_PRETTY_PRINT);
         file_put_contents($config_file, $config_file_content);
     }
@@ -112,42 +140,47 @@ class EndpointController extends AbstractActionController
     /**
      * Creates a new gist and saves the ID to the json.
      *
-     * @param $space_normalized
+     * @param string $space_normalized
+     * @return Result Empty array if posting to github failed
      */
     protected function createGist($space_normalized)
     {
         $spaceapi_file = "public/space/$space_normalized/spaceapi.json";
         $spaceapi_file_content = file_get_contents($spaceapi_file);
-
         $config = $this->getServiceLocator()->get('config');
-
         $gist_file = "$space_normalized.json";
 
-        $response = Utils::postGist(
+        return Utils::postGist(
             $config['gist_token'],
             $gist_file,
             $spaceapi_file_content
         );
+    }
 
-        // save the gist id in the spaceapi json
+    /**
+     * Writes the gist ID to the spaceapi JSON.
+     *
+     * @param int|string $gist_id
+     * @param string $space_normalized
+     */
+    protected function saveGistId($gist_id, $space_normalized)
+    {
+        if (empty($gist_id)) {
+            throw new EmptyGistIdException('Empty gist ID provided.');
+        }
+
+        $spaceapi_file = "public/space/$space_normalized/spaceapi.json";
+        $spaceapi_file_content = file_get_contents($spaceapi_file);
         $spaceapi = json_decode($spaceapi_file_content);
-        $spaceapi->gist = $response['id'];
+        $spaceapi->ext_gist = $gist_id;
         $spaceapi_file_content_new = json_encode($spaceapi, JSON_PRETTY_PRINT);
         file_put_contents($spaceapi_file, $spaceapi_file_content_new);
-
-        // the raw url has a trailing } which we strip later
-        $gist_raw_url = $response['files'][$gist_file]['raw_url'];
-
-        return array(
-            'html_url' => $response['html_url'],
-            'raw_url' => str_replace('}', '', $gist_raw_url),
-        );
     }
 
     /**
      * Loads the json and removes the gist ID.
      *
-     * @param $space_normalized
+     * @param string $space_normalized
      * @return string
      */
     protected function getSpaceapiJson($space_normalized)
@@ -160,14 +193,30 @@ class EndpointController extends AbstractActionController
         return json_encode($spaceapi, JSON_PRETTY_PRINT);
     }
 
-    protected function addSpaceMap($space_name, $api_key)
+    /**
+     * Adds a new space/token pair to the space map. This map is used
+     * to reduce the amount of access of every space's config file.
+     *
+     * @param string $space_name
+     * @param string $token
+     */
+    protected function addSpaceMap($space_name, $token)
     {
         $map = $this->getServiceLocator()->get('SpaceMapList');
-        $map->addMap($space_name, $api_key);
+        $map->addMap($space_name, $token);
+        $this->saveSpaceMap($map);
+    }
 
-        // To save the map we need to do this outside SpaceMapList
-        // for some reason. Read the comment in that class.
-
+    /**
+     * Saves the space map. Actually this method method belongs to
+     * the SpaceMapList class but for some reason we must do this outside
+     * that class.
+     *
+     * @see Comment in Application\Map\SpaceMapList
+     * @param SpaceMapList $map
+     */
+    protected function saveSpaceMap(SpaceMapList $map)
+    {
         // serialize the map
         $serializer = $this->getServiceLocator()->get('Serializer');
         $map = $serializer->serialize($map, 'json');

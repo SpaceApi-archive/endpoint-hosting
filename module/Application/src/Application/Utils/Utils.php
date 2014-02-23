@@ -3,6 +3,8 @@
 namespace Application\Utils;
 
 
+use Application\Gist\Result;
+
 class Utils
 {
     /**
@@ -21,8 +23,9 @@ class Utils
                     static::rcopy("$source/$file", "$destination/$file");
                 }
             }
-        } elseif (file_exists($source))
+        } elseif (file_exists($source)) {
             copy($source, $destination);
+        }
     }
 
     /**
@@ -62,49 +65,16 @@ class Utils
     }
 
     /**
-     * Posts a gist using the github API.
+     * Posts a gist using the github API. If an ID is profided the existing
+     * gist will be updated.
      *
-     * @param $token OAUTH token
-     * @param $file File name
-     * @param $content Gist content
-     * @return array
+     * @param string $token OAUTH token
+     * @param string $file File name
+     * @param string $content Gist content
+     * @param int|string $id Gist ID
+     * @return Result The gist result
      */
-    public static function postGist($token, $file, $content)
-    {
-        $data = array(
-            'description' => 'Example showing how to post a gist.',
-            'public' => 1,
-            'files' => array(
-                $file => array('content' => $content),
-            ),
-        );
-
-        // we must set a user agent and a valid token
-        // http://developer.github.com/v3/#user-agent-required
-        $headers = array(
-            'User-Agent: SpaceApi/endpoint-scripts (issue prefered over email)',
-            'Authorization: token ' . $token,
-        );
-
-        $ch = curl_init('https://api.github.com/gists');
-
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POST, 1);
-
-        $response = curl_exec($ch);
-        curl_close($ch);
-
-        return json_decode($response, TRUE);
-    }
-
-    /**
-     * Updates a gist using the github API.
-     *
-     * @param $token OAUTH token
-     */
-    public static function updateGist($token, $file, $content, $id)
+    public static function postGist($token, $file, $content, $id = '')
     {
         $data = array(
             'description' => 'Example showing how to post a gist.',
@@ -121,17 +91,28 @@ class Utils
             'Authorization: token ' . $token,
         );
 
-        # Sending the data using cURL
-        $ch = curl_init('https://api.github.com/gists/' . $id);
+        $url = 'https://api.github.com/gists';
+
+        if (!empty($id)) {
+            $url .= "/$id";
+        }
+
+        $ch = curl_init($url);
 
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
+
+        if (empty($id)) {
+            curl_setopt($ch, CURLOPT_POST, 1);
+        } else {
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
+        }
 
         $response = curl_exec($ch);
+        $http_status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
-        return json_decode($response, TRUE);
+        return new Result($http_status, $file, $response);
     }
 }
