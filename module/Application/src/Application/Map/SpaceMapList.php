@@ -2,6 +2,7 @@
 
 namespace Application\Map;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation as JMS;
 use Zend\Di\ServiceLocator;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
@@ -24,6 +25,21 @@ class SpaceMapList extends AbstractList //implements ServiceLocatorAwareInterfac
      */
     protected $spacemap;
     protected $serviceLocator;
+
+    public function __construct(ArrayCollection $elements)
+    {
+        $wrong_type = array_filter($elements, function($element) {
+            if (! $element instanceof SpaceMap)
+                return true;
+            else
+                return false;
+        });
+
+        if(count($wrong_type) > 0)
+            throw new \Exception("Some elements are no instance of Application\Map\SpaceMap");
+
+        $this->spacemap = $elements;
+    }
 
     public function addMap($space, $key)
     {
