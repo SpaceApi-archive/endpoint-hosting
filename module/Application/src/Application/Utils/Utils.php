@@ -33,12 +33,12 @@ class Utils
      *
      * @param string $input Any string input
      * @return string Normalized string
-     * @throws Exception If the input is not a string
+     * @throws \Exception If the input is not a string
      */
     public static function normalize($input)
     {
         if (! is_string($input))
-            throw new Exception('Input is not a string!');
+            throw new \Exception('Input is not a string!');
 
         // remove illegal characters
         $input = preg_replace("/[^a-zA-Z0-9]/i", "_", $input);
@@ -113,6 +113,39 @@ class Utils
         $http_status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
-        return new Result($http_status, $file, $response);
+        return new Result($http_status, $response);
+    }
+
+    /**
+     * Gets a gist using the github API.
+     *
+     * @param string $token OAUTH token
+     * @param int|string $id Gist ID
+     * @return Result|null The gist result
+     */
+    public static function getGist($token, $id)
+    {
+        if (empty($id))
+            return null;
+
+        // we must set a user agent and a valid token
+        // http://developer.github.com/v3/#user-agent-required
+        $headers = array(
+            'User-Agent: SpaceApi/endpoint-scripts (issue prefered of email)',
+            'Authorization: token ' . $token,
+        );
+
+        $url = 'https://api.github.com/gists/$id';
+        $ch = curl_init($url);
+
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+
+        $response = curl_exec($ch);
+        $http_status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        return new Result($http_status, $response);
     }
 }

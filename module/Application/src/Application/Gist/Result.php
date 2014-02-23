@@ -32,15 +32,28 @@ class Result
     {
         if (property_exists($this, $property))
             return $this->$property;
+
+        return false;
     }
 
-    public function __construct($status, $gist_file, $content)
+    public function __construct($status, $content)
     {
         $this->status = (int) $status;
-        $this->gistFile = $gist_file;
         $this->content = json_decode($content, TRUE);
         $this->id = (int) $this->content['id'];
-        $this->initUrls();
+        $this->initGistFile();
+        $this->initUrls(); // requires initGistFile() executed before
+    }
+
+    /**
+     * Initializes the gist filename.
+     */
+    protected function initGistFile()
+    {
+        $files = @$this->content['files'];
+        if (is_array($files)) {
+            $this->gistFile = @$files['filename'];
+        }
     }
 
     /**
@@ -66,7 +79,7 @@ class Result
      * must be implemented in to access the properties from within the
      * template.
      *
-     * @param $member Property
+     * @param mixed $member Property
      * @return bool
      */
     public function __isset($member)
