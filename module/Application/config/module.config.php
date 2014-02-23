@@ -128,7 +128,8 @@ $module_config = array(
          * is required for this module to function!
          */
         'extensions' => array(
-            'zfctwig' => 'ZfcTwigExtension'
+            'zfctwig' => 'ZfcTwigExtension',
+            'spaceapitwig' => 'Application\Twig\Extension\SpaceApiExtension',
         ),
 
         /**
