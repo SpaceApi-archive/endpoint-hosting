@@ -20,22 +20,22 @@ $module_config = array(
             ),
         ),
     ),
-    'console' => array(
-        'router' => array(
-            'routes' => array(
-                'clone-repo' => array(
-                    'type' => 'Zend\Mvc\Router\Console\Simple',
-                    'options' => array(
-                        'route'    => 'repo clone <space_name>',
-                        'defaults' => array(
-                            'controller' => 'Application\Controller\Console\Registry',
-                            'action'     => 'register',
-                        ),
-                    ),
-                ),
-            ),
-        ),
-    ),
+//    'console' => array(
+//        'router' => array(
+//            'routes' => array(
+//                'clone-repo' => array(
+//                    'type' => 'Zend\Mvc\Router\Console\Simple',
+//                    'options' => array(
+//                        'route'    => 'repo clone <space_name>',
+//                        'defaults' => array(
+//                            'controller' => 'Application\Controller\Console\Registry',
+//                            'action'     => 'register',
+//                        ),
+//                    ),
+//                ),
+//            ),
+//        ),
+//    ),
     'router' => array(
         'routes' => array(
             'home' => array(
