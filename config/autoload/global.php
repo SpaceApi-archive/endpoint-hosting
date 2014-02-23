@@ -9,5 +9,10 @@ return array(
 
     'emails' => array(),
 
-    'gist_token' => ''
+    'gist_token' => '',
+
+    'recaptcha' => array(
+        'public'  => '',
+        'private' => '',
+    )
 );

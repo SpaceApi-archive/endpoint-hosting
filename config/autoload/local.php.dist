@@ -11,5 +11,11 @@ return array(
         'me@example.com',
     ),
 
-    'gist_token' => 'put your token here'
+    'gist_token' => 'put your token here',
+
+    // get your key pair on http://recaptcha.net
+    'recaptcha' => array(
+        'public'  => '',
+        'private' => '',
+    )
 );
