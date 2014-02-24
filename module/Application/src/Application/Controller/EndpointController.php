@@ -121,9 +121,12 @@ class EndpointController extends AbstractActionController
 
             case 'Save':
 
-                // TODO: update the gist
-                // we don't want to break here since we still need to
-                // write the json to the file
+                $spaceapi
+                    ->update($this->params()->fromPost('json'))
+                    ->save();
+                $this->updateGist($spaceapi);
+
+                break;
 
             case 'Validate':
 
@@ -199,6 +202,25 @@ class EndpointController extends AbstractActionController
             $config['gist_token'],
             $gist_file,
             SpaceApiObject::fromName($slug)->json
+        );
+    }
+
+    /**
+     * Updates a gist.
+     *
+     * @param SpaceApiObject $spaceapi
+     * @return Result Empty array if posting to github failed
+     */
+    protected function updateGist(SpaceApiObject $spaceapi)
+    {
+        $config = $this->getServiceLocator()->get('config');
+        $gist_file = $spaceapi->slug . ".json";
+
+        return Utils::postGist(
+            $config['gist_token'],
+            $gist_file,
+            $spaceapi->json,
+            $spaceapi->gist
         );
     }
 
