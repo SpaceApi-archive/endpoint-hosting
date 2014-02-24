@@ -5,8 +5,8 @@ namespace Application\Map;
 use JMS\Serializer\Annotation as JMS;
 
 /**
- * @property string space_normalized
- * @property string api_key
+ * @property string slug
+ * @property string token
  *
  * @package Application\Map
  */
@@ -15,19 +15,23 @@ class SpaceMap
     /**
      * @JMS\Type("string")
      */
-    protected $space_normalized;
+    protected $slug;
 
     /**
      * @JMS\Type("string")
      */
-    protected $api_key;
+    protected $token;
 
-    public function __construct($space_normalized, $api_key)
+    public function __construct($slug, $token)
     {
-        $this->space_normalized = $space_normalized;
-        $this->api_key = $api_key;
+        $this->slug = $slug;
+        $this->token = $token;
     }
 
+    /**
+     * @param $property
+     * @return mixed
+     */
     public function __get($property)
     {
         if (property_exists($this, $property))

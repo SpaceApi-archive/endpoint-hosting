@@ -256,13 +256,13 @@ class EndpointController extends AbstractActionController
         $map = $this->serviceLocator->get('SpaceMapList');
 
         $criteria = Criteria::create()->where(
-            Criteria::expr()->eq('api_key', $token)
+            Criteria::expr()->eq('token', $token)
         );
 
         $found = $map->matching($criteria);
 
         if($found->count() > 0) {
-            return $found->first()->space_normalized;
+            return $found->first()->slug;
         }
 
         return null;
