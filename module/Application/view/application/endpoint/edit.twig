@@ -13,22 +13,24 @@
         });
     </script>
 
-    <a href="https://gist.github.com/{{ spaceapi.ext_gist }}" target="_blank" rel="nofollow">Gist</a>
+    <a href="https://gist.github.com/{{ spaceapi.gist }}" target="_blank" rel="nofollow">Gist</a>
 
-    <form action="" method="post">
-        <input type="hidden" value="{{ token }}" >
-        <textarea style="width: 100%; height: 100px;">{{ spaceapi | jsonWithoutGist | forwardSlash }}</textarea>
+    <form action="{{ url('endpoint/action', {'action': 'edit'}) }}" method="post">
+        <input type="hidden" name="token" value="{{ token }}" >
+        <textarea style="width: 100%; height: 100px;">{{ spaceapi.json | jsonWithoutGist }}</textarea>
     </form>
 
-    <a id="validate" href="http://endpoint.spaceapi.net/space/{{ space_normalized }}/status/json">Save</a>
+    <a id="validate" href="http://endpoint.spaceapi.net/space/{{ spaceapi.slug}}/status/json">Validate</a>
+    <a id="validate" href="http://endpoint.spaceapi.net/space/{{ spaceapi.slug }}/status/json">Save</a>
+
     <div id="validate_result"></div>
 
 {% else %}
 
     Enter your private token to edit your endpoint.
 
-    <form action="" method="post">
-        <input type="text" value="{{ token }}" >
+    <form action="{{ url('endpoint/action', {'action': 'edit'}) }}" method="post">
+        <input type="text" name="token" value="" >
         <input type="submit" name="submit" value="Go">
     </form>
 

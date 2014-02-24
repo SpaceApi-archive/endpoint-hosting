@@ -8,6 +8,7 @@ use Application\Gist\Result;
 use Application\Mail\EndpointMailInterface;
 use Application\Map\SpaceMap;
 use Application\Map\SpaceMapList;
+use Application\SpaceApi\SpaceApiObject;
 use Application\Utils\Utils;
 use Doctrine\Common\Collections\Criteria;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -32,10 +33,10 @@ class EndpointController extends AbstractActionController
         // TODO: validate the captcha here
 
         $space = $this->params()->fromPost('hackerspace');
-        $space_normalized = Utils::normalize($space);
+        $slug = Utils::normalize($space);
 
         // exit if the normalized hackerspace name is empty
-        if (empty($space_normalized)) {
+        if (empty($slug)) {
             return array(
                 'error' => array(
                     'type'    => static::SPACENAME_INVALID_TYPE,
@@ -52,14 +53,14 @@ class EndpointController extends AbstractActionController
             $token = Utils::generateSecret();
 
             // this throws an EndpointExistsException if the endoint exists
-            $this->createEndpoint($space_normalized, $token);
-            $this->addSpaceMap($space_normalized, $token);
+            $this->createEndpoint($slug, $token);
+            $this->addSpaceMap($slug, $token);
 
             // create a new gist and save its ID in the spaceapi json
             /** @var Result $gist_result */
-            $gist_result = $this->createGist($space_normalized);
+            $gist_result = $this->createGist($slug);
             if ($gist_result->status === 201) {
-                $this->saveGistId($gist_result->id, $space_normalized);
+                $this->saveGistId($gist_result->id, $slug);
             }
 
             $email->send(
@@ -101,27 +102,15 @@ class EndpointController extends AbstractActionController
             return array();
         }
 
-        // original normalized hackerspace name
-        $space_normalized = $this->getSpaceFromToken($token);
+        $slug = $this->getSlugFromToken($token);
 
-        $spaceapi_file = "public/space/$space_normalized/spaceapi.json";
-        $spaceapi_file_content = file_get_contents($spaceapi_file);
-        $spaceapi = json_decode($spaceapi_file_content);
+        /** @var SpaceApiObject $spaceapi */
+        $spaceapi = SpaceApiObject::fromName($slug);
 
         return array(
             'token'    => $token,
             'spaceapi' => $spaceapi,
-
-            // we need to pass the original normalized space name as
-            // the hackerspace name may change anytime which leads to
-            // a different normalized space name.
-            'space_normalized' => $space_normalized,
         );
-    }
-
-    public function validateAction()
-    {
-
     }
 
     //****************************************************************
@@ -166,20 +155,18 @@ class EndpointController extends AbstractActionController
     /**
      * Creates a new gist and saves the ID to the json.
      *
-     * @param string $space_normalized
+     * @param string $slug
      * @return Result Empty array if posting to github failed
      */
-    protected function createGist($space_normalized)
+    protected function createGist($slug)
     {
-        $spaceapi_file = "public/space/$space_normalized/spaceapi.json";
-        $spaceapi_file_content = file_get_contents($spaceapi_file);
         $config = $this->getServiceLocator()->get('config');
-        $gist_file = "$space_normalized.json";
+        $gist_file = "$slug.json";
 
         return Utils::postGist(
             $config['gist_token'],
             $gist_file,
-            $spaceapi_file_content
+            SpaceApiObject::fromName($slug)->json
         );
     }
 
@@ -187,34 +174,35 @@ class EndpointController extends AbstractActionController
      * Writes the gist ID to the spaceapi JSON.
      *
      * @param int|string $gist_id
-     * @param string $space_normalized
+     * @param string $slug
      */
-    protected function saveGistId($gist_id, $space_normalized)
+    protected function saveGistId($gist_id, $slug)
     {
         if (empty($gist_id)) {
             throw new EmptyGistIdException('Empty gist ID provided.');
         }
 
-        $spaceapi_file = "public/space/$space_normalized/spaceapi.json";
-        $spaceapi_file_content = file_get_contents($spaceapi_file);
-        $spaceapi = json_decode($spaceapi_file_content);
-        $spaceapi->ext_gist = $gist_id;
-        $spaceapi_file_content_new = json_encode($spaceapi, JSON_PRETTY_PRINT);
-        file_put_contents($spaceapi_file, $spaceapi_file_content_new);
+        /** @var SpaceApiObject $spaceapi */
+        $spaceapi = SpaceApiObject::fromName($slug);
+        $object = $spaceapi->object;
+        $object->ext_gist = $gist_id;
+
+        // we can only update from a full spaceapi json, there's some
+        // internal logic doing more than just setting a property
+        $spaceapi->update(json_encode($object));
+        $spaceapi->save();
     }
 
     /**
      * Loads the json and removes the gist ID.
      *
-     * @param string $space_normalized
+     * @param string $slug
      * @return string
      */
-    protected function getSpaceApiJson($space_normalized)
+    protected function getSpaceApiJsonWithoutGist($slug)
     {
-        $spaceapi_file = "public/space/$space_normalized/spaceapi.json";
-        $spaceapi_file_content = file_get_contents($spaceapi_file);
-        $spaceapi = json_decode($spaceapi_file_content);
-        unset($spaceapi->gist);
+        $spaceapi = SpaceApiObject::fromName($slug)->object;
+        unset($spaceapi->ext_gist);
 
         return json_encode($spaceapi,
             JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE);
@@ -257,12 +245,12 @@ class EndpointController extends AbstractActionController
     }
 
     /**
-     * Returns the original normalized space name.
+     * Returns the slug or null for a given token.
      *
      * @param string $token
      * @return string|null Normalized space name or null if there's no match
      */
-    protected function getSpaceFromToken($token)
+    protected function getSlugFromToken($token)
     {
         /** @var SpaceMapList $map */
         $map = $this->serviceLocator->get('SpaceMapList');
