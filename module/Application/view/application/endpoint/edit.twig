@@ -6,7 +6,7 @@
         <input type="hidden" name="token" value="{{ token }}" >
 
         <label for="json">Edit your JSON</label>
-        <textarea name="json" style="width: 100%; height: 100px;">{{ spaceapi.json | jsonWithoutGist }}</textarea>
+        <textarea name="json" style="width: 100%; height: 100px;">{{ spaceapi.json | json_without_gist }}</textarea>
 
         <input type="submit" name="edit_action" value="Validate">
         <input type="submit" name="edit_action" value="Save">
@@ -15,12 +15,14 @@
     {% if spaceapi.validation.ok %}
         <div class="validation ok">Your JSON is fine!</div>
     {% else %}
-        <div class="validation error">{{ spaceapi.validation.errors | json_encode }}</div>
+        <div class="validation error">{{ spaceapi.validation.result | json_encode }}</div>
     {% endif %}
 
 {% else %}
 
     <label for="token">Enter your private token to edit your endpoint.</label>
+
+    <div class="error">{{ error }}</div>
 
     <form action="{{ url('endpoint/action', {'action': 'edit'}) }}" method="post">
         <input type="text" name="token" value="" >

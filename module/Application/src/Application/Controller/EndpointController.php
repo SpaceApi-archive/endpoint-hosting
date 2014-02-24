@@ -104,6 +104,12 @@ class EndpointController extends AbstractActionController
 
         $slug = $this->getSlugFromToken($token);
 
+        if (is_null($slug)) {
+            return array(
+                'error' => 'Invalid token!'
+            );
+        }
+
         /** @var SpaceApiObject $spaceapi */
         $spaceapi = SpaceApiObject::fromName($slug);
 
