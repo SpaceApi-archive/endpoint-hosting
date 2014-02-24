@@ -1,24 +1,35 @@
-<script>
-    // proof of concept, the code will be made maintainable
-    $(document).ready(function(){
-        $('#validate').click(function(){
-            var url = $(this).attr('href');
-            $.get('http://spaceapi.net/validate?url=' + url, function(data){
-                $("#validate_result").text(JSON.stringify(data));
+{% if token is defined %}
+
+    <script>
+        // proof of concept, the code will be made maintainable
+        $(document).ready(function(){
+            $('#validate').click(function(){
+                var _url = $(this).attr('href');
+                $.get('http://spaceapi.net/validate', {url: _url}, function(data){
+                    $("#validate_result").text(JSON.stringify(data));
+                });
+                return false;
             });
-            return false;
         });
-    });
-</script>
+    </script>
 
-<a href="{{ gist_html_url }}" target="_blank" rel="nofollow">Gist</a>
+    <a href="https://gist.github.com/{{ spaceapi.ext_gist }}" target="_blank" rel="nofollow">Gist</a>
 
-<form action="" method="post">
-    <input type="hidden" value="{{ token }}" >
-    <textarea style="width: 100%; height: 100px;">
-        {{ spaceapi_json }}
-    </textarea>
-</form>
+    <form action="" method="post">
+        <input type="hidden" value="{{ token }}" >
+        <textarea style="width: 100%; height: 100px;">{{ spaceapi | jsonWithoutGist | forwardSlash }}</textarea>
+    </form>
 
-<a id="validate" href="{{ gist_raw_url }}}" target="_blank">Save</a>
-<div id="validate_result"></div>
+    <a id="validate" href="http://endpoint.spaceapi.net/space/{{ space_normalized }}/status/json">Save</a>
+    <div id="validate_result"></div>
+
+{% else %}
+
+    Enter your private token to edit your endpoint.
+
+    <form action="" method="post">
+        <input type="text" value="{{ token }}" >
+        <input type="submit" name="submit" value="Go">
+    </form>
+
+{% endif %}

@@ -6,8 +6,10 @@ use Application\Exception\EmptyGistIdException;
 use Application\Exception\EndpointExistsException;
 use Application\Gist\Result;
 use Application\Mail\EndpointMailInterface;
+use Application\Map\SpaceMap;
 use Application\Map\SpaceMapList;
 use Application\Utils\Utils;
+use Doctrine\Common\Collections\Criteria;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -92,10 +94,34 @@ class EndpointController extends AbstractActionController
 
     public function editAction()
     {
+        $token = $this->params()->fromPost('token');
+
+        // no edit if no token is provided
+        if (is_null($token)) {
+            return array();
+        }
+
+        // original normalized hackerspace name
+        $space_normalized = $this->getSpaceFromToken($token);
+
+        $spaceapi_file = "public/space/$space_normalized/spaceapi.json";
+        $spaceapi_file_content = file_get_contents($spaceapi_file);
+        $spaceapi = json_decode($spaceapi_file_content);
+
+        return array(
+            'token'    => $token,
+            'spaceapi' => $spaceapi,
+
+            // we need to pass the original normalized space name as
+            // the hackerspace name may change anytime which leads to
+            // a different normalized space name.
+            'space_normalized' => $space_normalized,
+        );
     }
 
     public function validateAction()
     {
+
     }
 
     //****************************************************************
@@ -183,14 +209,15 @@ class EndpointController extends AbstractActionController
      * @param string $space_normalized
      * @return string
      */
-    protected function getSpaceapiJson($space_normalized)
+    protected function getSpaceApiJson($space_normalized)
     {
         $spaceapi_file = "public/space/$space_normalized/spaceapi.json";
         $spaceapi_file_content = file_get_contents($spaceapi_file);
         $spaceapi = json_decode($spaceapi_file_content);
         unset($spaceapi->gist);
 
-        return json_encode($spaceapi, JSON_PRETTY_PRINT);
+        return json_encode($spaceapi,
+            JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE);
     }
 
     /**
@@ -222,9 +249,34 @@ class EndpointController extends AbstractActionController
         $map = $serializer->serialize($map, 'json');
 
         // pretty print
-        $map = json_encode(json_decode($map), JSON_PRETTY_PRINT);
+        $map = json_encode(json_decode($map),
+            JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE);
 
         // write back to the map file
         file_put_contents('data/map.json', $map);
+    }
+
+    /**
+     * Returns the original normalized space name.
+     *
+     * @param string $token
+     * @return string|null Normalized space name or null if there's no match
+     */
+    protected function getSpaceFromToken($token)
+    {
+        /** @var SpaceMapList $map */
+        $map = $this->serviceLocator->get('SpaceMapList');
+
+        $criteria = Criteria::create()->where(
+            Criteria::expr()->eq('api_key', $token)
+        );
+
+        $found = $map->matching($criteria);
+
+        if($found->count() > 0) {
+            return $found->first()->space_normalized;
+        }
+
+        return null;
     }
 }

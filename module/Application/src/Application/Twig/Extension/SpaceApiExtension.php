@@ -2,6 +2,8 @@
 
 namespace Application\Twig\Extension;
 
+use Application\Utils\Utils;
+
 class SpaceApiExtension extends \Twig_Extension
 {
     /**
@@ -46,7 +48,8 @@ class SpaceApiExtension extends \Twig_Extension
             }
         }
 
-        return json_encode($value, JSON_PRETTY_PRINT);
+        return json_encode($value,
+            JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE);
     }
 
     /**
@@ -63,6 +66,22 @@ class SpaceApiExtension extends \Twig_Extension
             return str_replace('\/', '/', $value);
         }
 
+        return $value;
+    }
+
+    /**
+     * Replaces characters that are not alpha-numeric or underscores.
+     *
+     * @param mixed   $value
+     * @param integer $options Not used on PHP 5.2.x
+     *
+     * @return mixed The normalized string.
+     */
+    function normalize($value, $options = 0)
+    {
+        if (is_string($value)) {
+            return Utils::normalize($value);
+        }
         return $value;
     }
 }
