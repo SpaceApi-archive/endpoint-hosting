@@ -175,6 +175,7 @@ class EndpointController extends AbstractActionController
      *
      * @param int|string $gist_id
      * @param string $slug
+     * @throws EmptyGistIdException
      */
     protected function saveGistId($gist_id, $slug)
     {
@@ -217,6 +218,7 @@ class EndpointController extends AbstractActionController
      */
     protected function addSpaceMap($space_name, $token)
     {
+        /** @var SpaceMapList $map */
         $map = $this->getServiceLocator()->get('SpaceMapList');
         $map->addMap($space_name, $token);
         $this->saveSpaceMap($map);
