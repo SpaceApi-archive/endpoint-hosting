@@ -13,6 +13,7 @@ use Application\Utils\Utils;
  * @property-read string json
  * @property-read object object
  * @property-read string slug
+ * @property-read Validation validation
  */
 class SpaceApiObject
 {
@@ -22,6 +23,7 @@ class SpaceApiObject
     protected $json;
     protected $object = null;
     protected $slug;
+    protected $validation;
 
     // this should not be exposed to the code assistant, as it's not
     // accessible outside this class or a subclass.
@@ -30,6 +32,9 @@ class SpaceApiObject
     // Don't make this public, this class has factory methods to
     // instantiate itself. As long as fromJson() is the only caller
     // it's guaranteed that a valid json is provided.
+    /**
+     * @param string $json
+     */
     protected function __construct($json)
     {
         $this->update($json);
@@ -37,7 +42,7 @@ class SpaceApiObject
 
     /**
      * @param $property
-     * @return mixed
+     * @return mixed|void
      */
     public function __get($property)
     {
@@ -60,8 +65,8 @@ class SpaceApiObject
 
     /**
      * Updates
-     * @param $json
-     * @return SpaceApiObject
+     * @param string $json
+     * @return $this
      * @throws \Exception
      */
     public function update($json)
@@ -93,6 +98,8 @@ class SpaceApiObject
             JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
         );
 
+        $this->validate();
+
         return $this;
     }
 
@@ -112,8 +119,20 @@ class SpaceApiObject
      */
     public function validate()
     {
-        // TODO: make a request to the spaceapi validator
-        return true;
+        // TODO: make a request to the validator
+        // some fake data
+        $json = <<<JSON
+{
+    "valid": ["0.13"],
+    "invalid": [],
+    "errors": [],
+    "warnings": []
+}
+JSON;
+
+        $this->validation = new Validation($json);
+
+        return $this->validation->getOk();
     }
 
     /****************************************************************/

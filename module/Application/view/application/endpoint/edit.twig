@@ -1,33 +1,26 @@
 {% if token is defined %}
 
-    <script>
-        // proof of concept, the code will be made maintainable
-        $(document).ready(function(){
-            $('#validate').click(function(){
-                var _url = $(this).attr('href');
-                $.get('http://spaceapi.net/validate', {url: _url}, function(data){
-                    $("#validate_result").text(JSON.stringify(data));
-                });
-                return false;
-            });
-        });
-    </script>
-
     <a href="https://gist.github.com/{{ spaceapi.gist }}" target="_blank" rel="nofollow">Gist</a>
 
     <form action="{{ url('endpoint/action', {'action': 'edit'}) }}" method="post">
         <input type="hidden" name="token" value="{{ token }}" >
-        <textarea style="width: 100%; height: 100px;">{{ spaceapi.json | jsonWithoutGist }}</textarea>
+
+        <label for="json">Edit your JSON</label>
+        <textarea name="json" style="width: 100%; height: 100px;">{{ spaceapi.json | jsonWithoutGist }}</textarea>
+
+        <input type="submit" name="edit_action" value="Validate">
+        <input type="submit" name="edit_action" value="Save">
     </form>
 
-    <a id="validate" href="http://endpoint.spaceapi.net/space/{{ spaceapi.slug}}/status/json">Validate</a>
-    <a id="validate" href="http://endpoint.spaceapi.net/space/{{ spaceapi.slug }}/status/json">Save</a>
-
-    <div id="validate_result"></div>
+    {% if spaceapi.validation.ok %}
+        <div class="validation ok">Your JSON is fine!</div>
+    {% else %}
+        <div class="validation error">{{ spaceapi.validation.errors | json_encode }}</div>
+    {% endif %}
 
 {% else %}
 
-    Enter your private token to edit your endpoint.
+    <label for="token">Enter your private token to edit your endpoint.</label>
 
     <form action="{{ url('endpoint/action', {'action': 'edit'}) }}" method="post">
         <input type="text" name="token" value="" >
