@@ -35,6 +35,10 @@ class SpaceApiObject
         $this->update($json);
     }
 
+    /**
+     * @param $property
+     * @return mixed
+     */
     public function __get($property)
     {
         if (property_exists($this, $property) && $property !== 'file')
@@ -57,6 +61,7 @@ class SpaceApiObject
     /**
      * Updates
      * @param $json
+     * @return SpaceApiObject
      * @throws \Exception
      */
     public function update($json)
@@ -87,6 +92,8 @@ class SpaceApiObject
             $object,
             JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
         );
+
+        return $this;
     }
 
     /**
