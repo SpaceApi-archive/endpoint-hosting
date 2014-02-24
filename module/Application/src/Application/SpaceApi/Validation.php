@@ -33,4 +33,9 @@ class Validation
     {
         return $this->ok;
     }
+
+    public function getResult()
+    {
+        return $this->result;
+    }
 }
