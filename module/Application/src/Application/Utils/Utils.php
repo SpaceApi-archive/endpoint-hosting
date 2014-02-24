@@ -37,8 +37,9 @@ class Utils
      */
     public static function normalize($input)
     {
-        if (! is_string($input))
-            throw new \Exception('Input is not a string!');
+        if (! is_string($input)) {
+            throw new \Exception(get_class($input) . ' give but a string expected!');
+        }
 
         // remove illegal characters
         $input = preg_replace("/[^a-zA-Z0-9]/i", "_", $input);
