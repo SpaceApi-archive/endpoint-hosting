@@ -23,8 +23,10 @@ class SpaceApiExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('jsonWithoutGist', array($this, "jsonWithoutGist")),
-            new \Twig_SimpleFilter('forwardSlash', array($this, "forwardSlash")),
+            new \Twig_SimpleFilter('json_without_gist', array($this, "jsonWithoutGist")),
+            new \Twig_SimpleFilter('forward_slash', array($this, "forwardSlash")),
+            new \Twig_SimpleFilter('normalize', array($this, "normalize")),
+            new \Twig_SimpleFilter('var_dump', array($this, "varDump")),
         );
     }
 
@@ -83,5 +85,18 @@ class SpaceApiExtension extends \Twig_Extension
             return Utils::normalize($value);
         }
         return $value;
+    }
+
+    /**
+     * Vardumps.
+     *
+     * @param mixed   $value
+     * @param integer $options Not used on PHP 5.2.x
+     *
+     * @return void
+     */
+    function varDump($value, $options = 0)
+    {
+        var_dump($value);
     }
 }
