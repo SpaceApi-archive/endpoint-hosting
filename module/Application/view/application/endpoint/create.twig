@@ -4,11 +4,23 @@
     {% if error.type == "EndpointExists" %}
         {{ error.message }}
         <a href="{{ url('endpoint/action', {'action': 'edit'}) }}">Edit your endpoint.</a>
+    {% else %}
+        {{ error.message }}
     {% endif %}
 
 {% endif %}
 
 <form action="{{ url('endpoint/action', {'action': 'create'}) }}" method="post">
     <input name="hackerspace" type="text" name="name">
+    {{ recaptcha.html | raw }}
+
+    {% if recaptcha_errors is defined %}
+        <div class="error">
+            {% for message in recaptcha_errors %}
+                <div>{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <input name="submit" type="submit">
 </form>

@@ -13,11 +13,12 @@ use Application\Utils\Utils;
 use Doctrine\Common\Collections\Criteria;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use ZendService\ReCaptcha\ReCaptcha;
 
 class EndpointController extends AbstractActionController
 {
     const SPACENAME_INVALID_TYPE    = 'InvalidHackerspaceName';
-    const SPACENAME_INVALID_MESSAGE = 'The hackerspace name you provided is invalid. It must contain at one alpha-numeric character at least.';
+    const SPACENAME_INVALID_MESSAGE = 'The hackerspace name you provided is invalid. It must contain one alpha-numeric character at least.';
     const ENDPOINT_EXISTS_TYPE      = 'EndpointExists';
     const ENDPOINT_EXISTS_MESSAGE   = 'The endpoint already exists.';
 
@@ -25,12 +26,50 @@ class EndpointController extends AbstractActionController
     {
         $submit = $this->params()->fromPost('submit');
 
-        // we render the template immediately on the first visit
-        if (is_null($submit)) {
-            return array();
+        $config = $this->getServiceLocator()->get('config');
+
+        $recaptcha = new ReCaptcha(
+            $config['recaptcha']['public'],
+            $config['recaptcha']['private']
+        );
+
+        // we render the template immediately on the first visit or
+        // if the challenge/response field is missing
+        if (is_null($submit) ||
+            !isset($_POST['recaptcha_challenge_field']) ||
+            !isset($_POST['recaptcha_response_field'])
+        ) {
+            return array(
+                'recaptcha' => $recaptcha,
+            );
         }
 
-        // TODO: validate the captcha here
+        // collect all recaptcha errors
+        $recaptcha_errors = array();
+        $result = null;
+
+        /** @var \ZendService\ReCaptcha\Response $result */
+        try {
+            $result = $recaptcha->verify(
+                $_POST['recaptcha_challenge_field'],
+                $_POST['recaptcha_response_field']
+            );
+        } catch (\ZendService\ReCaptcha\Exception $e) {
+
+            // $result will be null and thus an error message will be
+            // defined already
+            //$recaptcha_errors[] = $e->getMessage();
+        }
+
+        if (is_null($result) || !$result->isValid()) {
+
+            $recaptcha_errors[] = 'Wrong input. Please try again!';
+
+            return array(
+                'recaptcha'        => $recaptcha,
+                'recaptcha_errors' => $recaptcha_errors,
+            );
+        }
 
         $space = $this->params()->fromPost('hackerspace');
         $slug = Utils::normalize($space);
@@ -38,6 +77,7 @@ class EndpointController extends AbstractActionController
         // exit if the normalized hackerspace name is empty
         if (empty($slug)) {
             return array(
+                'recaptcha' => $recaptcha,
                 'error' => array(
                     'type'    => static::SPACENAME_INVALID_TYPE,
                     'message' => static::SPACENAME_INVALID_MESSAGE,
@@ -85,6 +125,7 @@ class EndpointController extends AbstractActionController
             );
 
             return array(
+                'recaptcha' => $recaptcha,
                 'error' => array(
                     'type'    => static::ENDPOINT_EXISTS_TYPE,
                     "message" => static::ENDPOINT_EXISTS_MESSAGE,
