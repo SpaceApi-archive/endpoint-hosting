@@ -113,33 +113,34 @@ class EndpointController extends AbstractActionController
         /** @var SpaceApiObject $spaceapi */
         $spaceapi = SpaceApiObject::fromName($slug);
 
-        /*
-         * validate = write json to file
-         * save = write json to file and update gist
-         */
-        switch ($this->params()->fromPost('edit_action')) {
+        try {
+            switch ($this->params()->fromPost('edit_action')) {
 
-            case 'Save':
+                case 'Save':
 
-                $spaceapi
-                    ->update($this->params()->fromPost('json'))
-                    ->save();
-                $this->updateGist($spaceapi);
+                    $spaceapi
+                        ->update($this->params()->fromPost('json'))
+                        ->save();
+                    $this->updateGist($spaceapi);
 
-                break;
+                    break;
 
-            case 'Validate':
+                case 'Validate':
 
-                $spaceapi
-                    ->update($this->params()->fromPost('json'))
-                    ->save();
+                    $spaceapi
+                        ->update($this->params()->fromPost('json'))
+                        ->save();
 
-                break;
+                    break;
 
-            default:
+                default:
 
-                // this should never happen
-                // TODO: output a warning or send an email
+                    // this should never happen
+                    // TODO: output a warning or send an email
+            }
+        } catch (\Exception $e) {
+            // no extra care needed here, the template knows how to
+            // deal with this
         }
 
         return array(

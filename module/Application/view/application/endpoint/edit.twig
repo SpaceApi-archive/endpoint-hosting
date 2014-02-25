@@ -12,10 +12,14 @@
         <input type="submit" name="edit_action" value="Save">
     </form>
 
-    {% if spaceapi.validation.ok %}
-        <div class="validation ok">Your JSON is fine!</div>
+    {% if spaceapi.validJson %}
+        {% if spaceapi.validation.ok %}
+            <div class="validation ok">Your JSON is compliant to the specs.</div>
+        {% else %}
+            <div class="validation error">{{ spaceapi.validation.result | json_encode }}</div>
+        {% endif %}
     {% else %}
-        <div class="validation error">{{ spaceapi.validation.result | json_encode }}</div>
+        <div class="validation error">Invalid JSON!</div>
     {% endif %}
 
 {% else %}

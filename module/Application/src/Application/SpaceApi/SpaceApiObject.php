@@ -14,24 +14,26 @@ use Application\Utils\Utils;
  * @property-read object object
  * @property-read string slug
  * @property-read Validation validation
+ * @property-read boolean validJson
  */
 class SpaceApiObject
 {
-    protected $name;
-    protected $version;
+    protected $name = '';
+    protected $version = 0;
     protected $gist = 0;
-    protected $json;
+    protected $json = '';
     protected $object = null;
-    protected $slug;
-    protected $validation;
+    protected $slug = '';
+    protected $validation = null;
+    protected $validJson = true;
 
     // this should not be exposed to the code assistant, as it's not
     // accessible outside this class or a subclass.
     protected $file;
 
     // Don't make this public, this class has factory methods to
-    // instantiate itself. As long as fromJson() is the only caller
-    // it's guaranteed that a valid json is provided.
+    // instantiate itself. The passed json might be invalid, this will
+    // be handled in update()
     /**
      * @param string $json
      */
@@ -67,7 +69,7 @@ class SpaceApiObject
      * Updates
      * @param string $json
      * @return $this
-     * @throws \Exception
+     * @throws \Exception if invalid json provided
      */
     public function update($json)
     {
@@ -78,6 +80,8 @@ class SpaceApiObject
         $object = json_decode($json);
 
         if (is_null($object)) {
+            $this->json = $json;
+            $this->validJson = false;
             throw new \Exception('Invalid JSON');
         }
 
@@ -148,7 +152,7 @@ JSON;
     protected function setVersion($object)
     {
         if (property_exists($object, 'version')) {
-            $this->version = $object->version;
+            $this->version = (int) $object->version;
         }
     }
 
@@ -212,10 +216,6 @@ JSON;
      */
     public static function fromJson($json)
     {
-        if (is_null(json_decode($json))) {
-            throw new \Exception('Invalid JSON');
-        }
-
         return new static($json);
     }
 }
