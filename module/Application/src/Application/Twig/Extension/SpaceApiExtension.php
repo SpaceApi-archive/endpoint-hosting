@@ -44,10 +44,12 @@ class SpaceApiExtension extends \Twig_Extension
             unset($value->ext_gist);
         } elseif (is_string($value)) {
             $obj = json_decode($value);
-            if (!is_null($obj)) {
-                $value = $obj;
-                unset($value->ext_gist);
+            if (is_null($obj)) {
+                return $value;
             }
+
+            $value = $obj;
+            unset($value->ext_gist);
         }
 
         return json_encode($value,
