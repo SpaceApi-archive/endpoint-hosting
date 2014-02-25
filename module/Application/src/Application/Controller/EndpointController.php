@@ -229,7 +229,8 @@ class EndpointController extends AbstractActionController
         $config_file_content = file_get_contents($config_file);
         $config = json_decode($config_file_content);
         $config->api_key = $token;
-        $config_file_content = json_encode($config, JSON_PRETTY_PRINT);
+        $config_file_content = json_encode($config,
+            JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         file_put_contents($config_file, $config_file_content);
     }
 
