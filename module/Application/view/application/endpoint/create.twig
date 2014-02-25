@@ -11,7 +11,7 @@
 {% endif %}
 
 <form action="{{ url('endpoint/action', {'action': 'create'}) }}" method="post">
-    <input name="hackerspace" type="text" name="name">
+    <input name="hackerspace" type="text" name="name" value="{{ space }}">
     {{ recaptcha.html | raw }}
 
     {% if recaptcha_errors is defined %}

@@ -25,6 +25,7 @@ class EndpointController extends AbstractActionController
     public function createAction()
     {
         $submit = $this->params()->fromPost('submit');
+        $space = $this->params()->fromPost('hackerspace');
 
         $config = $this->getServiceLocator()->get('config');
 
@@ -40,6 +41,7 @@ class EndpointController extends AbstractActionController
             !isset($_POST['recaptcha_response_field'])
         ) {
             return array(
+                'space'     => $space,
                 'recaptcha' => $recaptcha,
             );
         }
@@ -66,18 +68,19 @@ class EndpointController extends AbstractActionController
             $recaptcha_errors[] = 'Wrong input. Please try again!';
 
             return array(
+                'space' => $space,
                 'recaptcha'        => $recaptcha,
                 'recaptcha_errors' => $recaptcha_errors,
             );
         }
 
-        $space = $this->params()->fromPost('hackerspace');
         $slug = Utils::normalize($space);
 
         // exit if the normalized hackerspace name is empty
         if (empty($slug)) {
             return array(
                 'recaptcha' => $recaptcha,
+                'space' => $space,
                 'error' => array(
                     'type'    => static::SPACENAME_INVALID_TYPE,
                     'message' => static::SPACENAME_INVALID_MESSAGE,
@@ -126,6 +129,7 @@ class EndpointController extends AbstractActionController
 
             return array(
                 'recaptcha' => $recaptcha,
+                'space' => $space,
                 'error' => array(
                     'type'    => static::ENDPOINT_EXISTS_TYPE,
                     "message" => static::ENDPOINT_EXISTS_MESSAGE,
