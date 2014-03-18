@@ -1,4 +1,19 @@
 
+<noscript>
+
+    <p class="alert-info">
+        In order to create a new endpoint you need to enable JavaScript.
+    </p>
+
+    <style>
+        {# Hide the form if javascript is disabled #}
+        .noscript {
+            display: none;
+        }
+    </style>
+
+</noscript>
+
 {% if error is defined %}
 
     {% if error.type == "EndpointExists" %}
@@ -10,7 +25,7 @@
 
 {% endif %}
 
-<form action="{{ url('endpoint/action', {'action': 'create'}) }}" method="post">
+<form class="noscript" action="{{ url('endpoint/action', {'action': 'create'}) }}" method="post">
     <input name="hackerspace" type="text" name="name" value="{{ space }}">
     {{ recaptcha.html | raw }}
 

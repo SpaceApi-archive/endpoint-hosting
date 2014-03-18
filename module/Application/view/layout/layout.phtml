@@ -1,29 +1,72 @@
-<?php
-    /* @var Zend\View\Renderer\PhpRenderer $this */
-    echo $this->doctype();
-?>
+<!DOCTYPE html>
 
-<html lang="en">
+<!--[if lt IE 7]>
+<html lang="en" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html lang="en" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html lang="en" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="en" class="no-js"> <!--<![endif]-->
+
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>SpaceAPI Hosting</title>
+    <meta name="description" content="Create a new endpoint in the SpaceAPI cloud.">
+    <meta name="viewport" content="width=device-width">
 
     <?php
-        echo $this->headLink(
-            array(
-                'rel' => 'shortcut icon',
-                'type' => 'img/vnd.microsoft.icon',
-                'href' => $this->basePath() . '/img/favicon.ico')
+        // add stylesheets to this array
+        $styles = array(
+            "lib/bootstrap/dist/css/bootstrap.css",
+            "styles/main.css",
         );
+
+        foreach ($styles as $style) {
+            $this->headLink()->appendStylesheet($this->basePath() . "/$style");
+        }
     ?>
 
-    <script src="/lib/jquery/jquery.min.js"></script>
+    <?php echo $this->headLink() ?>
     <?php echo $this->headScript(); ?>
+
 </head>
 <body>
 
     <div class="container">
+
+        <div class="header">
+            <ul class="nav nav-pills pull-right" >
+                <li><a href="<?php echo $this->basePath(''); ?>">Home</a></li>
+                <li><a href="<?php echo $this->basePath('endpoint/create'); ?>">Create and endpoint</a></li>
+            </ul>
+            <h3 class="text-muted">SpaceAPI Hosting</h3>
+        </div>
+
+        <!--[if lt IE 7]>
+        <p class="browsehappy">
+            You are using an <strong>outdated</strong> browser.
+            Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.
+        </p>
+        <![endif]-->
+
         <?php echo $this->content; ?>
+
+        <div class="footer">
+            <p></p>
+        </div>
+
     </div>
+
+    <!--[if lt IE 9]>
+    <script src="lib/es5-shim/es5-shim.js"></script>
+    <script src="lib/json3/lib/json3.min.js"></script>
+    <![endif]-->
+
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 
 </body>
 </html>
