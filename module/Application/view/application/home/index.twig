@@ -1,5 +1,28 @@
-<ul>
-    <li>What is this website about?</li>
-    <li>Slider which shows with 3 images how to create a new endpoint</li>
-    <li>donation</li>
-</ul>
+
+{# Include some stylesheets that are required for this page #}
+{%  do headLink({
+        'href': '/styles/home/parallax.css',
+        'rel': 'stylesheet',
+        'type': 'text/css'
+    })
+%}
+
+{# Include some scripts that are required for this page #}
+{# Can we define an array with script paths and include within a loop? #}
+{# # set scripts = ['test.js', 'test2.js']; #}
+{%
+    do headScript()
+        .appendFile('lib/angular-parallax/scripts/angular-parallax.js')
+        .appendFile('scripts/home/parallax.js')
+%}
+
+<div>
+    <div class="parallax-image" parallax-background parallax-ratio="1.6"></div>
+    <div parallax-ratio="1">
+        <ul>
+            <li>What is this website about?</li>
+            <li>Slider which shows with 3 images how to create a new endpoint</li>
+            <li>donation</li>
+        </ul>
+    </div>
+</div>

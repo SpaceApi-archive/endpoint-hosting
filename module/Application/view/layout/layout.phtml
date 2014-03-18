@@ -10,7 +10,7 @@
 <!--[if IE 8]>
 <html lang="en" class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->
-<html lang="en" class="no-js"> <!--<![endif]-->
+<html lang="en" class="no-js" ng-app="saHosting"> <!--<![endif]-->
 
 <head>
     <meta charset="utf-8">
@@ -26,7 +26,6 @@
         // add stylesheets to this array
         $styles = array(
             "lib/bootstrap/dist/css/bootstrap.css",
-            "styles/main.css",
         );
 
         foreach ($styles as $style) {
@@ -35,7 +34,6 @@
     ?>
 
     <?php echo $this->headLink() ?>
-    <?php echo $this->headScript(); ?>
 
 </head>
 <body>
@@ -64,7 +62,6 @@
         <div class="footer">
             <p></p>
         </div>
-
     </div>
 
     <!--[if lt IE 9]>
@@ -73,8 +70,8 @@
     <![endif]-->
 
     <script src="lib/angular/angular.min.js"></script>
-    <script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
 
+    <?php echo $this->headScript(); ?>
 </body>
 </html>
