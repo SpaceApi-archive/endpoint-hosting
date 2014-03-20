@@ -1,11 +1,6 @@
 
 {# Include some stylesheets that are required for this page #}
-{%  do headLink({
-        'href': '/styles/home/parallax.css',
-        'rel': 'stylesheet',
-        'type': 'text/css'
-    })
-%}
+{%  do headLink().appendStylesheet('/styles/home/parallax.css') %}
 
 {# Include some scripts that are required for this page #}
 {# Can we define an array with script paths and include within a loop? #}
@@ -17,8 +12,19 @@
 %}
 
 <div>
-    <div class="parallax-image" parallax-background parallax-ratio="1.6"></div>
-    <div parallax-ratio="1">
+    <div class="parallax-header" parallax-background parallax-ratio="1.6">
+
+        <div class="header">
+            <ul class="nav nav-pills pull-right" >
+                <li><a href="/endpoint/create">Create an<br>endpoint</a></li>
+            </ul>
+            <h1>
+                <img class="logo" alt="SpaceAPI" src="/img/spaceapi-logo.png">
+            </h1>
+        </div>
+
+    </div>
+    <div class="parallax-body" parallax-ratio="1">
         <ul>
             <li>What is this website about?</li>
             <li>Slider which shows with 3 images how to create a new endpoint</li>

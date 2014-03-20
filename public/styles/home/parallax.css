@@ -1,8 +1,97 @@
 
-.parallax-image {
+/* hide the menu bar from the main layout */
+.container > .header {
+    display: none;
+}
+
+.parallax-header {
     background-image: url(../../img/parallax-image.jpg);
     background-attachment: fixed;
     background-repeat: no-repeat;
-    height: 420px;
+    height: 375px;
     position: relative;
 }
+
+.parallax-header .header {
+    top: 50px;
+    left: 0px;
+    padding: 40px;
+    position: relative;
+}
+
+.parallax-header .header .logo {
+    width: 300px;
+    opacity: 0.6;
+
+    -webkit-transition: all 200ms linear;
+    -moz-transition: all 200ms linear;
+    -ms-transition: all 200ms linear;
+    -o-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+
+.parallax-header .header a {
+    background: black;
+    color: white;
+    opacity: 0.6;
+    text-align: center;
+    font-size: 1.6em;
+    margin: 20% auto auto auto;
+
+    -webkit-transition: all 200ms linear;
+    -moz-transition: all 200ms linear;
+    -ms-transition: all 200ms linear;
+    -o-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+
+.parallax-header .header a:hover {
+    background-color: white;
+    color: #666;
+    opacity: 0.85;
+}
+
+.parallax-body {
+    min-height: 800px;
+}
+
+@media (max-width: 1024px) {
+    .parallax-header .header .logo {
+        opacity: 0.7;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .parallax-header {
+        height: 196px;
+        background-size: 700px;
+    }
+
+    .parallax-header .header {
+        top: 25px;
+        left: 0px;
+        padding: 20px;
+        position: relative;
+    }
+
+    .parallax-header .header .logo {
+        width: 200px;
+    }
+
+    .parallax-header .header a {
+        background: black;
+        color: white;
+        opacity: 0.6;
+        text-align: center;
+        font-size: 1.2em;
+        margin: 20% auto auto auto;
+
+        -webkit-transition: all 200ms linear;
+        -moz-transition: all 200ms linear;
+        -ms-transition: all 200ms linear;
+        -o-transition: all 200ms linear;
+        transition: all 200ms linear;
+    }
+}
+
