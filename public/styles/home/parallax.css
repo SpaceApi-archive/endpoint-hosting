@@ -44,7 +44,7 @@
     color: white;
     opacity: 0.6;
     text-align: center;
-    font-size: 0.9em;
+    font-size: 0.8em;
 
     -webkit-transition: all 200ms linear;
     -moz-transition: all 200ms linear;
@@ -61,6 +61,7 @@
 
 .parallax-body {
     min-height: 800px;
+    margin-top: -20px;
 }
 
 @media (max-width: 640px) {
