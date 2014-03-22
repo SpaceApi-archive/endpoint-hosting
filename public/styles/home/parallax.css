@@ -5,38 +5,46 @@
 }
 
 .parallax-header {
-    background-image: url(../../img/parallax-image.jpg);
+    background-image: url(../../img/parallax-image2.jpg);
     background-attachment: fixed;
     background-repeat: no-repeat;
     height: 375px;
-    position: relative;
+
+    font-family: 'Yanone Kaffeesatz';
+    font-size: 2.2em;
+    text-align: center !important;
+
+    border: solid 0px black;
+
+    /* we need a top padding of one pixel here, the layout will break otherwise */
+    padding: 1px 5px 0 5px;
 }
 
-.parallax-header .header {
-    top: 50px;
-    left: 0px;
-    padding: 40px;
-    position: relative;
+.parallax-header a {
+    text-decoration: none !important;
 }
 
-.parallax-header .header .logo {
-    width: 300px;
-    opacity: 0.6;
+.parallax-header h1 {
+    font-size: 3em;
+    font-family: inherit;
+    opacity: 0.95;
+    letter-spacing: 0.1em;
+    color: #698;
+    text-shadow: -2px 0 white, 0 2px white, 2px 0 white, 0 -2px white;
 
-    -webkit-transition: all 200ms linear;
-    -moz-transition: all 200ms linear;
-    -ms-transition: all 200ms linear;
-    -o-transition: all 200ms linear;
-    transition: all 200ms linear;
+    margin: 45px auto 80px auto;
 }
 
-.parallax-header .header a {
+.parallax-header h1 a {
+    color: inherit;
+}
+
+.parallax-header .btn.create-endpoint {
     background: black;
     color: white;
     opacity: 0.6;
     text-align: center;
-    font-size: 1.6em;
-    margin: 20% auto auto auto;
+    font-size: 0.9em;
 
     -webkit-transition: all 200ms linear;
     -moz-transition: all 200ms linear;
@@ -45,53 +53,19 @@
     transition: all 200ms linear;
 }
 
-.parallax-header .header a:hover {
-    background-color: white;
-    color: #666;
-    opacity: 0.85;
+.parallax-header .btn.create-endpoint:hover {
+    background: white;
+    color: #888;
+    opacity: 1;
 }
 
 .parallax-body {
     min-height: 800px;
 }
 
-@media (max-width: 1024px) {
-    .parallax-header .header .logo {
-        opacity: 0.7;
+@media (max-width: 640px) {
+    .parallax-header h1 {
+        font-size: 2em;
+        margin: 60px auto 60px auto;
     }
 }
-
-@media (max-width: 600px) {
-
-    .parallax-header {
-        height: 196px;
-        background-size: 700px;
-    }
-
-    .parallax-header .header {
-        top: 25px;
-        left: 0px;
-        padding: 20px;
-        position: relative;
-    }
-
-    .parallax-header .header .logo {
-        width: 200px;
-    }
-
-    .parallax-header .header a {
-        background: black;
-        color: white;
-        opacity: 0.6;
-        text-align: center;
-        font-size: 1.2em;
-        margin: 20% auto auto auto;
-
-        -webkit-transition: all 200ms linear;
-        -moz-transition: all 200ms linear;
-        -ms-transition: all 200ms linear;
-        -o-transition: all 200ms linear;
-        transition: all 200ms linear;
-    }
-}
-

@@ -40,7 +40,6 @@
 <body>
 
     <div class="container">
-
         <div class="header">
             <ul class="nav nav-pills pull-right" >
                 <li><a href="<?php echo $this->basePath(''); ?>">Home</a></li>
@@ -50,20 +49,17 @@
                 <img class="logo" alt="SpaceAPI" src="<?php echo $this->basePath('img/spaceapi-logo.png'); ?>">
             </h1>
         </div>
-
-        <!--[if lt IE 7]>
-        <p class="browsehappy">
-            You are using an <strong>outdated</strong> browser.
-            Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.
-        </p>
-        <![endif]-->
-
-        <?php echo $this->content; ?>
-
-        <div class="footer">
-            <p></p>
-        </div>
     </div>
+
+    <!--[if lt IE 7]>
+    <section class="browsehappy">
+        You are using an <strong>outdated</strong> browser.
+        Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.
+    </section>
+    <![endif]-->
+
+    <?php echo $this->content; ?>
+    <footer></footer>
 
     <!--[if lt IE 9]>
     <script src="lib/es5-shim/es5-shim.js"></script>
