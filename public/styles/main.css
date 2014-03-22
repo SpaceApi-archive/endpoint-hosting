@@ -27,8 +27,31 @@
     src: url("../fonts/yanonekaffeesatz/YanoneKaffeesatz-ExtraLight.ttf") format("truetype");
 }
 
+@font-face {
+    font-family: "Gafata";
+    font-style: normal;
+    font-weight: 200;
+    src: url("../fonts/Gafata/Gafata-Regular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Lato";
+    font-style: normal;
+    font-weight: 200;
+    src: url("../fonts/Lato/Lato-Regular.ttf") format("truetype");
+}
+
 .header .logo {
     width: 100px;
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: 'Gafata', sans-serif;
+}
+
+body {
+    font-family: 'Lato', sans-serif;
+    font-size: 16px;
 }
 
 /*.container {*/
