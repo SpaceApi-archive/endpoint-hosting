@@ -1,6 +1,9 @@
 
 {# Include some stylesheets that are required for this page #}
-{%  do headLink().appendStylesheet('/styles/home/parallax.css') %}
+{%  do headLink()
+        .appendStylesheet('/styles/home/home.css')
+        .appendStylesheet('/styles/home/parallax.css')
+%}
 
 {# Include some scripts that are required for this page #}
 {# Can we define an array with script paths and include within a loop? #}
@@ -15,7 +18,7 @@
     <div class="parallax-header table" parallax-background parallax-ratio="1.6">
 
         <h1>
-            <a " href="http://endpoint.spaceapi.net">
+            <a href="http://endpoint.spaceapi.net">
                 SpaceAPI Hosting
             </a>
         </h1>
@@ -29,14 +32,17 @@
     </div>
 
     <div class="parallax-body" parallax-ratio="1">
-        <div class="container">
-            <div class="row">
-                <ul>
-                    <li>What is this website about?</li>
-                    <li>Slider which shows with 3 images how to create a new endpoint</li>
-                    <li>donation</li>
-                </ul>
-            </div>
-        </div>
+
+        {% include('application/home/partial-project-links.twig') %}
+
+        {#<div class="container">#}
+            {#<div class="row">#}
+                {#<ul>#}
+                    {#<li>What is this website about?</li>#}
+                    {#<li>Slider which shows with 3 images how to create a new endpoint</li>#}
+                    {#<li>donation</li>#}
+                {#</ul>#}
+            {#</div>#}
+        {#</div>#}
     </div>
 </div>
