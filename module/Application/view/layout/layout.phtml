@@ -23,14 +23,16 @@
     <link href="<?php echo $this->basePath('img/favicon.gif'); ?>" type="image/x-icon" rel="shortcut icon">
 
     <?php
-        // add stylesheets to this array
+        // add stylesheets to this array, this is a LIFO, the last element
+        // gets first rendered, all the stylesheets from the views are
+        // loaded after them
         $styles = array(
-            "lib/bootstrap/dist/css/bootstrap.css",
             "styles/main.css",
+            "lib/bootstrap/dist/css/bootstrap.css",
         );
 
         foreach ($styles as $style) {
-            $this->headLink()->appendStylesheet($this->basePath() . "/$style");
+            $this->headLink()->prependStylesheet($this->basePath() . "/$style");
         }
     ?>
 
