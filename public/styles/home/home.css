@@ -27,6 +27,18 @@ section {
     margin-bottom: 30px;
 }
 
+.media .btn {
+    background: none;
+    border-color: white;
+    -webkit-transition-duration: 500ms;
+    -moz-transition-duration: 500ms;
+    -o-transition-duration: 500ms;
+}
+
+.media .btn:hover {
+    background: #888;
+}
+
 .media a {
     overflow: hidden;
 }
