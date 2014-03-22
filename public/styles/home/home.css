@@ -1,4 +1,15 @@
 
+.teaser h2 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+.teaser {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 50px;
+}
+
 .project-links {
     background: #eee;
 }
@@ -115,4 +126,10 @@
     transition-duration: 1500ms;
     position: relative;
     z-index: 3;
+}
+
+@media (max-width: 320px) {
+    .teaser {
+        margin-top: -15px;
+    }
 }
