@@ -1,0 +1,40 @@
+{# Include some stylesheets that are required for this page #}
+{%  do headLink()
+        .appendStylesheet('/lib/jsoneditor/jsoneditor-min.css')
+        .appendStylesheet('/styles/home/parallax.css')
+        .appendStylesheet('/lib/bg-splitter/css/style.css')
+%}
+
+{# Include some scripts that are required for this page #}
+{# Can we define an array with script paths and include within a loop? #}
+{# # set scripts = ['test.js', 'test2.js']; #}
+{%
+do headScript()
+        .appendFile('/lib/jsoneditor/jsoneditor-min.js')
+        .appendFile('/lib/jsoneditor/lib/jsonlint/jsonlint.js')
+        .appendFile('/lib/jsoneditor/lib/ace/ace.js')
+        .appendFile('/scripts/home/jsoneditor.js')
+%}
+
+<section>
+
+    <h2>Edit</h2>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6" style="height: 300px;"><div id="jsoneditor-code"></div></div>
+            <div class="col-sm-6" style="height: 300px;"><div id="jsoneditor-tree"></div></div>
+        </div>
+    </div>
+
+    {#<bg-splitter orientation="horizontal">#}
+        {#<bg-pane class="split-pane" min-size="100">#}
+            {#&#123;&#35;<div id="jsoneditor-code"></div>&#35;&#125;#}
+            {#{% include('application/home/partial-lorem-ipsum.twig') %}#}
+        {#</bg-pane>#}
+        {#<bg-pane class="split-pane" min-size="150">#}
+            {#&#123;&#35;<div id="jsoneditor-tree"></div>&#35;&#125;#}
+            {#{% include('application/home/partial-lorem-ipsum.twig') %}#}
+        {#</bg-pane>#}
+    {#</bg-splitter>#}
+</section>

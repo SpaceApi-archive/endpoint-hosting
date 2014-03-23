@@ -4,6 +4,9 @@ section {
     -webkit-box-shadow: 0px -4px 5px 0px rgba(50, 50, 50, 0.75);
     -moz-box-shadow:    0px -4px 5px 0px rgba(50, 50, 50, 0.75);
     box-shadow:         0px -4px 5px 0px rgba(50, 50, 50, 0.75);
+
+    margin-top: -20px;
+    text-align: center;
 }
 
 .teaser h2 {
@@ -151,4 +154,17 @@ section {
     .teaser {
         margin-top: -15px;
     }
+}
+
+/*.split-pane, .split-panes {*/
+    /*position: relative !important;*/
+/*}*/
+
+/*.split-pane {*/
+    /*padding: 5px;*/
+    /*width: 40% !important;*/
+/*}*/
+
+.jsoneditor .outer {
+    min-height: 300px !important;
 }
