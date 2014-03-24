@@ -1,40 +1,64 @@
-{# Include some stylesheets that are required for this page #}
+
 {%  do headLink()
         .appendStylesheet('/lib/jsoneditor/jsoneditor-min.css')
-        .appendStylesheet('/styles/home/parallax.css')
-        .appendStylesheet('/lib/bg-splitter/css/style.css')
+        .appendStylesheet('/jsoneditor/jsoneditor-app.css')
 %}
 
-{# Include some scripts that are required for this page #}
-{# Can we define an array with script paths and include within a loop? #}
-{# # set scripts = ['test.js', 'test2.js']; #}
+{# headScript is put to the bottom, they're not output in the header! #}
 {%
-do headScript()
-        .appendFile('/lib/jsoneditor/jsoneditor-min.js')
-        .appendFile('/lib/jsoneditor/lib/jsonlint/jsonlint.js')
-        .appendFile('/lib/jsoneditor/lib/ace/ace.js')
-        .appendFile('/scripts/home/jsoneditor.js')
+    do headScript()
+        .appendFile('lib/jsoneditor/jsoneditor-min.js')
+        .appendFile('jsoneditor/jsoneditor-app.js')
+        .appendFile('jsoneditor/jsoneditor-deps.js')
 %}
 
-<section>
+{# TODO: We shouldn't use inline styles #}
+<style type="text/css">
+
+    div.convert-right {
+        background: url('jsoneditor/img/jsoneditor-icons.png') -0 -48px;
+    }
+
+    div.convert-left {
+        background: url('jsoneditor/img/jsoneditor-icons.png') -24px -48px;
+    }
+</style>
+
+<section style="background: #fff;">
 
     <h2>Edit</h2>
 
     <div class="container">
         <div class="row">
-            <div class="col-sm-6" style="height: 300px;"><div id="jsoneditor-code"></div></div>
-            <div class="col-sm-6" style="height: 300px;"><div id="jsoneditor-tree"></div></div>
+            <div class="col-md-12">
+                <div id="auto">
+                    <div id="contents">
+
+                        <div id="codeEditor"></div>
+
+                        <div id="splitter">
+                            <div id="buttons">
+                                <div>
+                                    <button id="toTree" class="convert"
+                                            title="Copy code to tree editor">
+                                        <div class="convert-right"></div>
+                                    </button>
+                                </div>
+                                <div>
+                                    <button id="toCode" class="convert"
+                                            title="Copy tree to code editor">
+                                        <div class="convert-left"></div>
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="drag"></div>
+                        </div>
+
+                        <div id="treeEditor"></div>
+
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
-    {#<bg-splitter orientation="horizontal">#}
-        {#<bg-pane class="split-pane" min-size="100">#}
-            {#&#123;&#35;<div id="jsoneditor-code"></div>&#35;&#125;#}
-            {#{% include('application/home/partial-lorem-ipsum.twig') %}#}
-        {#</bg-pane>#}
-        {#<bg-pane class="split-pane" min-size="150">#}
-            {#&#123;&#35;<div id="jsoneditor-tree"></div>&#35;&#125;#}
-            {#{% include('application/home/partial-lorem-ipsum.twig') %}#}
-        {#</bg-pane>#}
-    {#</bg-splitter>#}
 </section>
