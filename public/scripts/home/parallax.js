@@ -1,1 +1,1 @@
-var app = angular.module('saHosting', ['angular-parallax']);
+angular.module('saHosting', ['angular-parallax']);
