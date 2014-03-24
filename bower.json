@@ -7,8 +7,7 @@
     "bootstrap": "~3.0.3",
     "angular-bootstrap": "0.10.0",
     "angular-parallax": "https://github.com/slopjong/angular-parallax.git",
-    "jsoneditor": "~2.3.6",
-    "bg-splitter": ""
+    "jsoneditor": "~2.3.6"
   },
   "devDependencies": {
   }
