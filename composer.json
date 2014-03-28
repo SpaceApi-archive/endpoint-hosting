@@ -9,6 +9,7 @@
         "zf-commons/zfc-twig": "1.1.5",
         "doctrine/common": "2.3.0",
         "jms/serializer": "0.15.0",
-        "zendframework/zendservice-recaptcha": "2.0.1"
+        "zendframework/zendservice-recaptcha": "2.0.1",
+        "phploc/phploc": "*"
     }
 }

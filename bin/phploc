@@ -1,0 +1,12 @@
+#!/bin/bash
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+echo $SCRIPT_DIR
+if [ ! -f "$SCRIPT_DIR"/../vendor/bin/phploc ];
+then
+    echo "You need to run 'php composer.phar install' first!"
+    exit
+fi
+
+"$SCRIPT_DIR"/../vendor/bin/phploc "$SCRIPT_DIR"/../module/Application/src
