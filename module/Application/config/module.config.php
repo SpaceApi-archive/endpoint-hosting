@@ -47,7 +47,7 @@ $module_config = array(
                         'controller' => '[0-9a-fA-F-]+',
                     ),
                     'defaults' => array(
-                        'controller' => 'Application\Controller\Home',
+                        'controller' => 'Application\Controller\Endpoint',
                         'action'     => 'index',
                     )
                 ),
@@ -58,7 +58,7 @@ $module_config = array(
                     'route' => '/endpoint',
                     'defaults' => array(
                         'controller' => 'Application\Controller\Endpoint',
-                        'action'     => 'create'
+                        'action'     => 'index'
                     ),
                 ),
                 'may_terminate' => true,
@@ -76,10 +76,9 @@ $module_config = array(
     'controllers' => array(
         'invokables' => array(
             // Console controllers (not accessible through the web server)
-            'Application\Controller\Console\Repo'       => 'Application\Controller\Console\RepoController',
+//            'Application\Controller\Console\Repo'       => 'Application\Controller\Console\RepoController',
 
             // Controllers invokable through the web server
-            'Application\Controller\Home'       => 'Application\Controller\HomeController',
             'Application\Controller\Endpoint'       => 'Application\Controller\EndpointController',
         ),
     ),

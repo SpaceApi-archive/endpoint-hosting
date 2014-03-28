@@ -22,6 +22,10 @@ class EndpointController extends AbstractActionController
     const ENDPOINT_EXISTS_TYPE      = 'EndpointExists';
     const ENDPOINT_EXISTS_MESSAGE   = 'The endpoint already exists.';
 
+    public function indexAction()
+    {
+    }
+
     public function createAction()
     {
         $submit = $this->params()->fromPost('submit');
