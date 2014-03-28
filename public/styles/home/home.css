@@ -1,14 +1,15 @@
 
-section, footer {
+section {
     /* http://css3gen.com/box-shadow/ */
     -webkit-box-shadow: 0px -4px 5px 0px rgba(50, 50, 50, 0.75);
     -moz-box-shadow:    0px -4px 5px 0px rgba(50, 50, 50, 0.75);
     box-shadow:         0px -4px 5px 0px rgba(50, 50, 50, 0.75);
+}
 
+section, footer {
     /* margin fix to avoid an odd border */
     margin-top: -20px;
     text-align: center;
-
     padding-bottom: 30px !important;
 }
 
