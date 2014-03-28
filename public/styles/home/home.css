@@ -1,21 +1,23 @@
 
-section {
+section, footer {
     /* http://css3gen.com/box-shadow/ */
     -webkit-box-shadow: 0px -4px 5px 0px rgba(50, 50, 50, 0.75);
     -moz-box-shadow:    0px -4px 5px 0px rgba(50, 50, 50, 0.75);
     box-shadow:         0px -4px 5px 0px rgba(50, 50, 50, 0.75);
 
+    /* margin fix to avoid an odd border */
     margin-top: -20px;
     text-align: center;
 
     padding-bottom: 30px !important;
 }
 
-section.jsoneditor {
+/* if we use section.jsoneditor this will conflict with the jsoneditor's stylesheet */
+section.jeditor {
     background: white;
 }
 
-section.jsoneditor .btn {
+section.jeditor .btn {
     margin: 0 1em 0 1em;
     letter-spacing: 0.05em;
 }
