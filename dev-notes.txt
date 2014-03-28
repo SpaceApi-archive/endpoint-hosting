@@ -1,0 +1,14 @@
+Developer Notes
+===============
+
+If you add a note, append them instead of putting them between others in order to keep the references in the code right.
+
+# There's nothing wrong about having a header per section [0]. The hgroup tag, however, isn't used because of the removal [2] of the standard. For subtitles we follow a common idiom [1].
+
+
+References
+----------
+
+[0] http://stackoverflow.com/questions/4837269/html5-using-header-or-footer-tag-twice
+[1] http://www.w3.org/html/wg/drafts/html/master/common-idioms.html#sub-head
+[2] http://html5doctor.com/the-hgroup-element/
