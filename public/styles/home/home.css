@@ -9,15 +9,20 @@ section {
     text-align: center;
 }
 
-.teaser h2 {
-    font-size: 2.5em;
-    margin-bottom: 20px;
+section:first-of-type header {
+    padding-top: 0px;
 }
 
-.teaser {
+header {
     text-align: center;
     margin-top: 20px;
+    padding-top: 20px;
     margin-bottom: 50px;
+}
+
+header h2 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
 }
 
 .project-links {
