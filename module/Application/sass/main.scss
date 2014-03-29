@@ -1,34 +1,9 @@
 
+@import "mixins";
 @import "fonts";
 @import "parallax";
-
-@mixin transition($duration, $transition, $timing_function) {
-  -webkit-transition: $transition $duration $timing_function; // Chrome 1-25, Safari 3.2+
-  -moz-transition:    $transition $duration $timing_function; // Firefox 4-15
-  -o-transition:      $transition $duration $timing_function; // Opera 10.50–12.00
-  transition:         $transition $duration $timing_function; // Chrome 26, Firefox 16+, IE 10+, Opera 12.10+
-}
-
-@mixin scale_transition($scale_x, $scale_y, $duration, $timing_function) {
-  -webkit-transform: scale($scale_x, $scale_y);
-  -webkit-transition-timing-function: $timing_function;
-  -webkit-transition-duration: $duration;
-
-  -moz-transform: scale($scale_x, $scale_y);
-  -moz-transition-timing-function: $timing_function;
-  -moz-transition-duration: $duration;
-
-  transform: scale($scale_x, $scale_y);
-  transition-timing-function: $timing_function;
-  transition-duration: $duration;
-}
-
-@mixin box-shadow {
-  /* http://css3gen.com/box-shadow/ */
-  -webkit-box-shadow: 0px -5px 5px 0px rgba(50, 50, 50, 0.55);
-  -moz-box-shadow:    0px -5px 5px 0px rgba(50, 50, 50, 0.55);
-  box-shadow:         0px -5px 5px 0px rgba(50, 50, 50, 0.55);
-}
+@import "project-links";
+@import "jsoneditor";
 
 body {
   font-family: 'Lato', sans-serif;
@@ -58,14 +33,14 @@ header {
 }
 
 section, footer {
-  /* margin fix to avoid an odd border */
+  // margin fix to avoid an odd border
   margin-top: -20px;
   text-align: center;
   padding-bottom: 30px !important;
 }
 
 footer {
-  /*background: #5854B5;*/
+//  background: #5854B5;
   background: #222;
   color: white;
 
@@ -115,142 +90,7 @@ footer {
 
 section {
   @include box-shadow;
-
-  /* if we use section.jsoneditor this will conflict with the jsoneditor's stylesheet */
-  .jeditor {
-
-    background: white;
-
-    .jsoneditor {
-      .outer {
-        min-height: 300px !important;
-      }
-    }
-
-    .btn {
-      margin: 0 1em 0 1em;
-      letter-spacing: 0.05em;
-    }
-  }
-
   &:first-of-type header {
     padding-top: 0px;
-  }
-}
-
-// these are the links with the zooming images
-.project-links {
-
-  background: #eee;
-
-  .media {
-    background: #fff;
-    border-bottom: solid 1px #c7c9c8;
-    margin-bottom: 30px;
-
-    .btn {
-      background: none;
-      border-color: white;
-      -webkit-transition-duration: 500ms;
-      -moz-transition-duration: 500ms;
-      -o-transition-duration: 500ms;
-
-      &:hover {
-        background: #888;
-      }
-    }
-
-    a {
-      overflow: hidden;
-
-      &:hover {
-        text-decoration: none;
-      }
-    }
-
-    p {
-      font-size: 14px;
-      line-height: 19px;
-    }
-
-    .pull-left {
-      overflow: hidden;
-      margin-right: -15px;
-      margin-left: 14px;
-    }
-
-    .media-img {
-
-      overflow: hidden;
-      position: relative;
-      padding: 0;
-
-      img {
-        @include scale_transition(1, 1, 2s, ease-out);
-        width: 100%;
-        height: auto;
-      }
-
-      .img-overlay {
-
-        @include transition(0.3s, opacity, ease-out);
-
-        background: #363635;
-        background: rgba(0, 0, 0, 0.4);
-        width: 100%;
-        height: 100%;
-        opacity: 0;
-        padding-top: 50%;
-        position: absolute;
-        text-align: center;
-        visibility: hidden;
-        z-index: 4;
-
-        a {
-          display: none;
-          position: relative;
-          margin-top: -24px;
-        }
-
-        h3 {
-          color: #fff;
-          padding-left: 10px;
-          padding-right: 10px;
-          margin-bottom: 25px;
-          font-size: 18px;
-          margin-top: -40px;
-        }
-      }
-
-      .lt-ie9 & .img-overlay {
-        filter: alpha(opacity=70);
-      }
-    }
-
-    .media-body {
-      padding: 10px 20px 5px 25px;
-    }
-
-    &:hover {
-
-      .media-img {
-        img {
-          @include scale_transition(1.15, 1.15, 1.5s, ease-out);
-          position: relative;
-          z-index: 3;
-        }
-      }
-
-      .img-overlay {
-        @include transition(0.3s, opacity, ease-out);
-
-        visibility: visible;
-        opacity: 1;
-
-        a {
-          display: inline-block;
-        }
-      }
-    }
   }
 }

@@ -1,0 +1,20 @@
+// if we use section.jsoneditor this will conflict with the jsoneditor's stylesheet
+.jeditor {
+
+  a.poweredBy {
+    display: none;
+  }
+
+  background: white;
+
+  .jsoneditor {
+    .outer {
+      min-height: 300px !important;
+    }
+  }
+
+  .btn {
+    margin: 0 1em 0 1em;
+    letter-spacing: 0.05em;
+  }
+}

@@ -26,7 +26,7 @@ module.exports = function (grunt) {
     sass: {
       dist: {
         files: {
-          'public/styles/spaceapi-hosting.css' : 'module/Application/sass/main.scss'
+          'public/styles/main.css' : 'module/Application/sass/main.scss'
         }
       }
     },
