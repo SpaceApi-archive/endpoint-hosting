@@ -1,5 +1,6 @@
 
 @import "fonts";
+@import "parallax";
 
 @mixin transition($duration, $transition, $timing_function) {
   -webkit-transition: $transition $duration $timing_function; // Chrome 1-25, Safari 3.2+

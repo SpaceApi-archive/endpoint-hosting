@@ -1,0 +1,78 @@
+
+/* hide the menu bar from the main layout */
+.container > .header {
+  display: none;
+}
+
+.parallax-header {
+  background-image: url(../img/parallax-image2.jpg);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  height: 375px;
+
+  font-family: 'Yanone Kaffeesatz';
+  font-size: 2.2em;
+  text-align: center !important;
+
+  border: solid 0px black;
+
+  /* we need a top padding of one pixel here, the layout will break otherwise */
+  padding: 1px 5px 0 5px;
+
+  a {
+    text-decoration: none !important;
+  }
+
+  h1 {
+    font-size: 2.5em;
+    font-family: inherit;
+    opacity: 0.95;
+    letter-spacing: 0.1em;
+    color: #698;
+    text-shadow: -2px 0 white, 0 2px white, 2px 0 white, 0 -2px white;
+
+    margin: 55px auto 80px auto;
+
+    -webkit-transition: all 200ms linear;
+    -moz-transition: all 200ms linear;
+    -ms-transition: all 200ms linear;
+    -o-transition: all 200ms linear;
+    transition: all 200ms linear;
+
+    a {
+      color: inherit;
+    }
+  }
+
+  .btn.create-endpoint {
+      background: black;
+      color: white;
+      opacity: 0.6;
+      text-align: center;
+      font-size: 0.8em;
+
+      -webkit-transition: all 200ms linear;
+      -moz-transition: all 200ms linear;
+      -ms-transition: all 200ms linear;
+      -o-transition: all 200ms linear;
+      transition: all 200ms linear;
+
+      &:hover {
+        background: white;
+        color: #888;
+        opacity: 1;
+      }
+  }
+}
+
+.parallax-body {
+  min-height: 800px;
+  margin-top: -20px;
+}
+
+@media (max-width: 640px) {
+  .parallax-header h1 {
+    font-size: 2em;
+    margin: 60px auto 60px auto;
+  }
+}
