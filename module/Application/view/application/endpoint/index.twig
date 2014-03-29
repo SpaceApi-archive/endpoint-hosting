@@ -1,7 +1,6 @@
 
 {# Include some stylesheets that are required for this page #}
 {%  do headLink()
-        .appendStylesheet('/styles/home/home.css')
         .appendStylesheet('/styles/home/parallax.css')
 %}
 
@@ -36,6 +35,7 @@
         {% include('partials/header.twig') %}
         {% include('partials/project-links.twig') %}
         {% include('partials/jsoneditor.twig') %}
+
         {% include('partials/footer.twig') %}
 
     </div>
