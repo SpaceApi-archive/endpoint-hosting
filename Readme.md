@@ -17,7 +17,7 @@ Now all the dependencies are installed. In the last stsep you need to compile th
 Run either
 
 ```
-grunt sass
+grunt build
 ```
 
 for just compiling it or

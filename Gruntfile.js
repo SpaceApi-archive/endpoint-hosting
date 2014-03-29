@@ -23,6 +23,16 @@ module.exports = function (grunt) {
 
     pkg: grunt.file.readJSON('package.json'),
 
+    cssmin: {
+      minify: {
+        expand: true,
+        cwd: 'public/styles/',
+        src: ['*.css', '!*.min.css'],
+        dest: 'public/styles/',
+        ext: '.min.css'
+      }
+    },
+
     sass: {
       dist: {
         files: {
@@ -41,4 +51,5 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('default',['watch']);
+  grunt.registerTask('build',['sass', 'cssmin']);
 };
