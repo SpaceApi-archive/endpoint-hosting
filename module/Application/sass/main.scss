@@ -1,0 +1,75 @@
+
+@import "fonts";
+
+body {
+  font-family: 'Lato', sans-serif;
+  font-size: 16px;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Gafata', sans-serif;
+}
+
+.header {
+  .logo {
+    width: 100px;
+  }
+}
+
+/*.container {*/
+/*width: 100%;*/
+/*padding: 0;*/
+/*}*/
+
+footer {
+  /*background: #5854B5;*/
+  background: #222;
+  color: white;
+
+  /* http://css3gen.com/box-shadow/ */
+  -webkit-box-shadow: 0px -4px 5px 0px rgba(100, 50, 50, 0.55);
+  -moz-box-shadow:    0px -4px 5px 0px rgba(100, 100, 100, 0.55);
+  box-shadow:         0px -4px 5px 0px rgba(100, 100, 100, 0.55);
+
+  .credits-container {
+
+    position: relative;
+    padding-bottom: 10px;
+
+    a {
+      text-decoration: none;
+    }
+
+    .credits {
+
+      background: #888;
+
+      display: table-cell;
+      vertical-align: middle;
+
+      height: 50px;
+      background-position: right;
+      background-repeat: no-repeat;
+      border: solid 1px white;
+      padding: 2px 203px 2px 3px;
+      line-height: 1em !important;
+
+      &.phpstorm {
+        background-image: url('/img/credits/phpstorm_logo.gif');
+        background-size: 200px 50px;
+      }
+
+      &.josdejong {
+        background-image: url('/img/credits/jsoneditor_online.png');
+        background-size: 200px 30px;
+      }
+
+      span {
+        color: white;
+        font-size: 0.9em;
+        line-height: 0.1em;
+      }
+    }
+  }
+}
+
