@@ -32,7 +32,12 @@
             {% endif %}
 
             <form class="noscript" action="{{ url('endpoint/action', {'action': 'create'}) }}" method="post">
-                <input name="hackerspace" type="text" name="name" value="{{ space }}">
+                <input
+                    name="hackerspace"
+                    type="text" name="name"
+                    value="{{ space }}"
+                    placeholder="Space name"
+                    >
                 {{ recaptcha.html | raw }}
 
                 {% if recaptcha_errors is defined %}
@@ -43,7 +48,7 @@
                     </div>
                 {% endif %}
 
-                <input name="submit" type="submit">
+                <input name="submit" type="submit" value="Create">
             </form>
 
         </div>
