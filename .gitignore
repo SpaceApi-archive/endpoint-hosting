@@ -12,3 +12,4 @@ vendor
 public/lib
 .sass-cache
 node_modules
+.vagrant
