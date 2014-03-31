@@ -1,7 +1,7 @@
 @mixin transition($duration, $transition, $timing_function) {
   -webkit-transition: $transition $duration $timing_function; // Chrome 1-25, Safari 3.2+
   -moz-transition:    $transition $duration $timing_function; // Firefox 4-15
-  -o-transition:      $transition $duration $timing_function; // Opera 10.50–12.00
+  -o-transition:      $transition $duration $timing_function; // Opera 10.50-12.00
   transition:         $transition $duration $timing_function; // Chrome 26, Firefox 16+, IE 10+, Opera 12.10+
 }
 
