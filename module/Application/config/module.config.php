@@ -52,6 +52,44 @@ $module_config = array(
                     )
                 ),
             ),
+            'contribution' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route' => '/contribute',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Contribution',
+                        'action'     => 'contribute'
+                    ),
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'action' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/:action',
+                        ),
+                    ),
+                ),
+            ),
+            'documentation' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route' => '/docs',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Documentation',
+                        'action'     => 'gettingStarted'
+                    ),
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'action' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/:action',
+                        ),
+                    ),
+                ),
+            ),
             'endpoint' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -79,6 +117,8 @@ $module_config = array(
 //            'Application\Controller\Console\Repo'       => 'Application\Controller\Console\RepoController',
 
             // Controllers invokable through the web server
+            'Application\Controller\Contribution'       => 'Application\Controller\ContributionController',
+            'Application\Controller\Documentation'       => 'Application\Controller\DocumentationController',
             'Application\Controller\Endpoint'       => 'Application\Controller\EndpointController',
         ),
     ),
