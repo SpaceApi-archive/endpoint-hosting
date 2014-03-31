@@ -1,0 +1,314 @@
+
+@import "mixins";
+@import "fonts";
+
+body {
+  font-family: 'Lato', sans-serif;
+  font-size: 16px;
+  padding-top: 120px;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Gafata', sans-serif;
+}
+
+.navbar-brand img {
+  max-width: 150px;
+}
+
+nav {
+  background: #333 !important;
+  /*display: flex;*/
+}
+
+.navbar-nav > li > a {
+  line-height: 52px;
+  font-size: 1.2em;
+  color: white !important;
+  border-left: 1px solid white !important;
+}
+
+
+.endpoint-actions li,
+.navbar-left > li:last-of-type > a {
+  border-right: 1px solid white !important;
+}
+
+/*.endpoint-actions li*/
+.navbar-right > li:last-of-type > a {
+  padding-right: 30px;
+}
+
+/* the enumeration is reset for each ul block so we cannot use .navbar li:nth-of-type(i) to iterate over all list items in order to give everyone a different background color so we need a nested loop */
+/* color scheme taken from http://colorschemedesigner.com */
+
+/*nav > .nav:nth-of-type(1) > li:nth-of-type(1) {*/
+.mainmenu-getting-started {
+  background-color: #5f3636;
+}
+
+/*nav > .nav:nth-of-type(1) > li:nth-of-type(2) {*/
+.mainmenu-documentation {
+  background-color: #7a6651;
+}
+
+.mainmenu-contribute {
+  background-color: #887d5f;
+}
+
+.navbar-nav.vertical.small li {
+  clear: both;
+}
+
+.navbar-nav.vertical.small li a {
+  line-height: 19px;
+  padding-top: 11px;
+  padding-bottom: 11px;
+}
+
+.endpoint-actions.vertical li a:last-of-type {
+  border-right: none !important;
+}
+
+/* we need !important as nth-of-type seems to be priorized */
+.mainmenu-edit {
+  background-color: #0063ac !important;
+}
+
+.mainmenu-create {
+  background-color: #559955 !important;
+}
+
+/*.nav:nth-of-type(1) li:nth-of-type(1) a {*/
+/*border-bottom: 5px green solid;*/
+
+/*-moz-box-sizing:    border-box;*/
+/*-webkit-box-sizing: border-box;*/
+/*box-sizing:         border-box;*/
+/*}*/
+
+/**********************************/
+
+/* we must use !important otherwise bootstrap will override these rules */
+
+@media (max-width: 340px) {
+
+  .hidden-340 {
+    display: none !important;
+  }
+
+  .visible-340 {
+    display: inline-block !important;
+  }
+
+  /**********************************************/
+
+  /* Remove the float of the branding and align in the center */
+
+  body {
+    padding-top: 330px;
+  }
+
+  .navbar-header {
+    text-align: center !important;
+    width: 100%;
+    padding: 20px;
+  }
+
+  .navbar-brand {
+    float: none;
+  }
+
+  .navbar-header, .navbar-nav, .navbar-nav > li {
+    width: 100%;
+    float: none;
+    line-height: 26px;
+  }
+
+  .navbar li, .navbar li a {
+    border: none !important;
+  }
+
+  .navbar li span {
+    margin-right: 10px;
+  }
+}
+
+@media (min-width: 341px) {
+  .hidden-340 {
+    display: inline-block !important;
+  }
+
+  .visible-340 {
+    display: none !important;
+  }
+}
+
+/**********************************/
+
+/* we must use !important otherwise bootstrap will override these rules */
+@media (max-width: 445px) {
+  .hidden-445 {
+    display: none !important;
+  }
+
+  .visible-445 {
+    display: inline-block !important;
+  }
+}
+
+@media (min-width: 446px) {
+  .hidden-445 {
+    display: inline-block !important;
+  }
+
+  .visible-445 {
+    display: none !important;
+  }
+}
+
+/**********************************/
+
+/* we must use !important otherwise bootstrap will override these rules */
+@media (max-width: 500px) {
+  .hidden-500 {
+    display: none !important;
+  }
+
+  .visible-500 {
+    display: inline-block !important;
+  }
+}
+
+@media (min-width: 501px) {
+  .hidden-500 {
+    display: inline-block !important;
+  }
+
+  .visible-500 {
+    display: none !important;
+  }
+}
+
+/**********************************/
+
+/* we must use !important otherwise bootstrap will override these rules */
+@media (max-width: 570px) {
+  .hidden-570 {
+    display: none !important;
+  }
+
+  .visible-570 {
+    display: inline-block !important;
+  }
+}
+
+@media (min-width: 571px) {
+  .hidden-570 {
+    display: inline-block !important;
+  }
+
+  .visible-570 {
+    display: none !important;
+  }
+}
+
+/**********************************/
+
+/* we must use !important otherwise bootstrap will override these rules */
+@media (max-width: 620px) {
+  .hidden-620 {
+    display: none !important;
+  }
+
+  .visible-620 {
+    display: inline-block !important;
+  }
+}
+
+@media (min-width: 621px) {
+  .hidden-620 {
+    display: inline-block !important;
+  }
+
+  .visible-620 {
+    display: none !important;
+  }
+}
+
+/**********************************/
+
+@media (max-width: 700px) {
+  .hidden-700 {
+    display: none !important;
+  }
+
+  .visible-700 {
+    display: inline-block !important;
+  }
+}
+
+@media (min-width: 701px) {
+  .hidden-700 {
+    display: inline-block !important;
+  }
+
+  .visible-700 {
+    display: none !important;
+  }
+}
+
+/**********************************/
+
+@media (max-width: 840px) {
+  .hidden-840 {
+    display: none !important;
+  }
+
+  .visible-840 {
+    display: inline-block !important;
+  }
+}
+
+@media (min-width: 841px) {
+  .hidden-840 {
+    display: inline-block !important;
+  }
+
+  .visible-840 {
+    display: none !important;
+  }
+}
+
+/**********************************/
+
+@media (max-width: 768px) {
+
+  .navbar-right {
+    right: 0 !important;
+    left: auto !important;
+  }
+
+  .navbar-nav {
+    margin: 0;
+    padding: 0;
+  }
+
+  .navbar-nav li a {
+    line-height: 62px;
+  }
+
+  .navbar-header, .navbar-nav, .navbar-nav > li {
+    float: left;
+  }
+
+}
+
+@media (width: 768px) {
+  .navbar-nav > li > a {
+    line-height: 52px !important;
+  }
+  .endpoint-actions.vertical li a {
+    line-height: 19px !important;
+  }
+}

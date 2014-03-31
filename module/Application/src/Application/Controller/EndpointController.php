@@ -24,6 +24,7 @@ class EndpointController extends AbstractActionController
 
     public function indexAction()
     {
+        $this->layout('layout/landing');
     }
 
     public function createAction()

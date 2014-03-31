@@ -1,0 +1,106 @@
+<?php
+/* @var Zend\View\Renderer\PhpRenderer $this */
+echo $this->doctype();
+?>
+
+<!--[if lt IE 7]>
+<html lang="en" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html lang="en" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html lang="en" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="en" class="no-js"> <!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>SpaceAPI Hosting</title>
+    <meta name="description" content="Create a new endpoint in the SpaceAPI cloud.">
+    <meta name="viewport" content="width=device-width">
+
+    <link rel="author" href="humans.txt" />
+
+    <link href="/img/favicon.ico" type="image/x-icon" rel="shortcut icon">
+    <link href="/img/favicon.gif" type="image/x-icon" rel="shortcut icon">
+
+    <?php
+        // add stylesheets to this array, this is a LIFO, the last element
+        // gets first rendered, all the stylesheets from the views are
+        // loaded after them
+        $styles = array(
+            "styles/page-default.min.css",
+            "lib/bootstrap/dist/css/bootstrap.min.css",
+        );
+
+        foreach ($styles as $style) {
+            $this->headLink()->prependStylesheet($this->basePath() . "/$style");
+        }
+    ?>
+
+    <?php echo $this->headLink() ?>
+
+</head>
+<body>
+
+    <!--[if lt IE 7]>
+    <section class="browsehappy">
+        You are using an <strong>outdated</strong> browser.
+        Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.
+    </section>
+    <![endif]-->
+
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/"><img src="/img/spaceapi-logo-white.png"></a>
+        </div>
+
+        <ul class="nav navbar-nav vertical small visible-340">
+            <li class="mainmenu-getting-started"><a href="#"><span class="glyphicon glyphicon-play"></span> Getting started</a></li>
+            <li class="mainmenu-documentation"><a href="http://spaceapi.net/documentation"><span class="glyphicon glyphicon-info-sign"></span> Documentation</a></li>
+            <li class="mainmenu-contribute"><a href="#"><span class="glyphicon glyphicon-road"></span> Contribute</a></li>
+            <li class="mainmenu-edit"><a href="/endpoint/edit"><span class="glyphicon glyphicon-pencil"></span> Edit</a></li>
+            <li class="mainmenu-create"><a href="/endpoint/create"><span class="glyphicon glyphicon-plus"></span> Create</a></li>
+        </ul>
+
+        <ul class="nav navbar-nav navbar-left hidden-340">
+
+            <li class="hidden-340 mainmenu-getting-started"><a href="#"><span class="glyphicon glyphicon-play visible-445"></span> <span class="hidden-445">Getting started</span></a></li>
+            <li class="hidden-500 mainmenu-documentation"><a href="http://spaceapi.net/documentation"><span class="glyphicon glyphicon-info-sign visible-620"></span> <span class="hidden-620">Documentation</span></a></li>
+            <li class="hidden-500 mainmenu-contribute"><a href="#"><span class="glyphicon glyphicon-road visible-700"></span> <span class="hidden-700">Contribute</span></a></li>
+            <li>
+                <ul class="nav navbar-nav vertical small visible-500">
+                    <li class="mainmenu-getting-started visible-340"><a href=""><span class="glyphicon glyphicon-play visible-445"></span></a></li>
+                    <li class="mainmenu-documentation"><a href="http://spaceapi.net/documentation"><span class="glyphicon glyphicon-info-sign"></span></a></li>
+                    <li class="mainmenu-contribute"><a href="#"><span class="glyphicon glyphicon-road"></span></a></li>
+                </ul>
+            </li>
+            <li>
+                <ul class="nav navbar-nav endpoint-actions vertical small visible-840">
+                    <li class="mainmenu-edit"><a href="/endpoint/edit"><span class="glyphicon glyphicon-pencil"></span></a></li>
+                    <li class="mainmenu-create"><a href="/endpoint/create"><span class="glyphicon glyphicon-plus"></span></a></li>
+                </ul>
+            </li>
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right endpoint-actions big hidden-840">
+            <li class="mainmenu-edit"><a href="/endpoint/edit"><span class="glyphicon glyphicon-pencil"></span> <span class="hidden-840">Edit</span></a></li>
+            <li class="mainmenu-create"><a href="/endpoint/create"><span class="glyphicon glyphicon-plus"></span> <span class="hidden-840">Create</span></a></li>
+        </ul>
+
+    </nav>
+
+    <?php echo $this->content; ?>
+
+    <!--[if lt IE 9]>
+    <script src="lib/es5-shim/es5-shim.js"></script>
+    <script src="lib/json3/lib/json3.min.js"></script>
+    <![endif]-->
+
+    <script src="lib/angular/angular.min.js"></script>
+    <script src="lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+
+    <?php echo $this->headScript(); ?>
+</body>
+</html>
