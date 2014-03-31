@@ -105,8 +105,9 @@ nav {
 
   /* Remove the float of the branding and align in the center */
 
-  body {
-    padding-top: 330px;
+  .navbar-default {
+    position: relative;
+    margin-top: -120px;
   }
 
   .navbar-header {
