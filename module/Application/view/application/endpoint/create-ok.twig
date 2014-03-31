@@ -1,14 +1,22 @@
-Make sure to copy your new personal access token now. You won't be able to see it again!
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
 
-<form action="{{ url('endpoint/action', {'action': 'edit'}) }}" method="post">
-    Private token:
-    <input type="text"   name="token"  value="{{ token }}" style="width: 100%;">
-    <input type="submit" name="submit" value="I understood">
-</form>
+            Make sure to copy your new personal access token now. You won't be able to see it again!
 
-A gist has been created for you here:
+            <form action="{{ url('endpoint/action', {'action': 'edit'}) }}" method="post">
+                Private token:
+                <input type="text"   name="token"  value="{{ token }}" style="width: 100%;">
+                <input type="submit" name="submit" value="I understood">
+            </form>
 
-<a href="{{ gist.url.html }}"
-    target="_blank"
-    rel="nofollow"
-    >{{ gist.url.html }}</a>.
+            A gist has been created for you here:
+
+            <a href="{{ gist.url.html }}"
+                target="_blank"
+                rel="nofollow"
+                >{{ gist.url.html }}</a>.
+
+        </div>
+    </div>
+</div>

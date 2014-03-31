@@ -1,41 +1,49 @@
 
-<noscript>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
 
-    <p class="alert-info">
-        In order to create a new endpoint you need to enable JavaScript.
-    </p>
+            <noscript>
 
-    <style>
-        {# Hide the form if javascript is disabled #}
-        .noscript {
-            display: none;
-        }
-    </style>
+                <p class="alert-info">
+                    In order to create a new endpoint you need to enable JavaScript.
+                </p>
 
-</noscript>
+                <style>
+                    {# Hide the form if javascript is disabled #}
+                    .noscript {
+                        display: none;
+                    }
+                </style>
 
-{% if error is defined %}
+            </noscript>
 
-    {% if error.type == "EndpointExists" %}
-        {{ error.message }}
-        <a href="{{ url('endpoint/action', {'action': 'edit'}) }}">Edit your endpoint.</a>
-    {% else %}
-        {{ error.message }}
-    {% endif %}
+            {% if error is defined %}
 
-{% endif %}
+                {% if error.type == "EndpointExists" %}
+                    {{ error.message }}
+                    <a href="{{ url('endpoint/action', {'action': 'edit'}) }}">Edit your endpoint.</a>
+                {% else %}
+                    {{ error.message }}
+                {% endif %}
 
-<form class="noscript" action="{{ url('endpoint/action', {'action': 'create'}) }}" method="post">
-    <input name="hackerspace" type="text" name="name" value="{{ space }}">
-    {{ recaptcha.html | raw }}
+            {% endif %}
 
-    {% if recaptcha_errors is defined %}
-        <div class="error">
-            {% for message in recaptcha_errors %}
-                <div>{{ message }}</div>
-            {% endfor %}
+            <form class="noscript" action="{{ url('endpoint/action', {'action': 'create'}) }}" method="post">
+                <input name="hackerspace" type="text" name="name" value="{{ space }}">
+                {{ recaptcha.html | raw }}
+
+                {% if recaptcha_errors is defined %}
+                    <div class="error">
+                        {% for message in recaptcha_errors %}
+                            <div>{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <input name="submit" type="submit">
+            </form>
+
         </div>
-    {% endif %}
-
-    <input name="submit" type="submit">
-</form>
+    </div>
+</div>

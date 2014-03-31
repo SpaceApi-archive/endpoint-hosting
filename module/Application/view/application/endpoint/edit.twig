@@ -1,38 +1,46 @@
-{% if token is defined %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
 
-    <a href="https://gist.github.com/{{ spaceapi.gist }}" target="_blank" rel="nofollow">Gist</a>
-    <a href="http://endpoint.spaceapi.net/space/{{ spaceapi.slug }}/status" target="_blank" rel="nofollow">Your endpoint</a>
-    <a href="http://endpoint.spaceapi.net/space/{{ spaceapi.slug }}/status/json" target="_blank" rel="nofollow">Your JSON</a>
+            {% if token is defined %}
 
-    <form action="{{ url('endpoint/action', {'action': 'edit'}) }}" method="post">
-        <input type="hidden" name="token" value="{{ token }}" >
+                <a href="https://gist.github.com/{{ spaceapi.gist }}" target="_blank" rel="nofollow">Gist</a>
+                <a href="http://endpoint.spaceapi.net/space/{{ spaceapi.slug }}/status" target="_blank" rel="nofollow">Your endpoint</a>
+                <a href="http://endpoint.spaceapi.net/space/{{ spaceapi.slug }}/status/json" target="_blank" rel="nofollow">Your JSON</a>
 
-        <label for="json">Edit your JSON</label>
-        <textarea name="json" style="width: 100%; height: 100px;">{{ spaceapi.json | json_without_gist }}</textarea>
+                <form action="{{ url('endpoint/action', {'action': 'edit'}) }}" method="post">
+                    <input type="hidden" name="token" value="{{ token }}" >
 
-        <input type="submit" name="edit_action" value="Validate">
-        <input type="submit" name="edit_action" value="Save">
-    </form>
+                    <label for="json">Edit your JSON</label>
+                    <textarea name="json" style="width: 100%; height: 100px;">{{ spaceapi.json | json_without_gist }}</textarea>
 
-    {% if spaceapi.validJson %}
-        {% if spaceapi.validation.ok %}
-            <div class="validation ok">Your JSON is compliant to the specs.</div>
-        {% else %}
-            <div class="validation error">{{ spaceapi.validation.result | json_encode }}</div>
-        {% endif %}
-    {% else %}
-        <div class="validation error">Invalid JSON!</div>
-    {% endif %}
+                    <input type="submit" name="edit_action" value="Validate">
+                    <input type="submit" name="edit_action" value="Save">
+                </form>
 
-{% else %}
+                {% if spaceapi.validJson %}
+                    {% if spaceapi.validation.ok %}
+                        <div class="validation ok">Your JSON is compliant to the specs.</div>
+                    {% else %}
+                        <div class="validation error">{{ spaceapi.validation.result | json_encode }}</div>
+                    {% endif %}
+                {% else %}
+                    <div class="validation error">Invalid JSON!</div>
+                {% endif %}
 
-    <label for="token">Enter your private token to edit your endpoint.</label>
+            {% else %}
 
-    <div class="error">{{ error }}</div>
+                <label for="token">Enter your private token to edit your endpoint.</label>
 
-    <form action="{{ url('endpoint/action', {'action': 'edit'}) }}" method="post">
-        <input type="text" name="token" value="" >
-        <input type="submit" name="submit" value="Go">
-    </form>
+                <div class="error">{{ error }}</div>
 
-{% endif %}
+                <form action="{{ url('endpoint/action', {'action': 'edit'}) }}" method="post">
+                    <input type="text" name="token" value="" >
+                    <input type="submit" name="submit" value="Go">
+                </form>
+
+            {% endif %}
+
+        </div>
+    </div>
+</div>
