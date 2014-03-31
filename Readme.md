@@ -3,7 +3,7 @@ SpaceAPI Endpoint Hosting
 
 This repository contains all the files of the website of [http://endpoint.spaceapi.net](http://endpoint.spaceapi.net).
 
-After cloning the repo execute the following commands
+After cloning the repo **recursively** execute the following commands
 
 ```
 php composer.phar self-update
