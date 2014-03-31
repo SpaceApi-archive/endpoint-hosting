@@ -1,6 +1,11 @@
 
 @import "mixins";
 @import "fonts";
+@import "flex";
+
+html, body {
+  height: 100%;
+}
 
 body {
   font-family: 'Lato', sans-serif;
@@ -89,21 +94,7 @@ nav {
 
 /**********************************/
 
-/* we must use !important otherwise bootstrap will override these rules */
-
 @media (max-width: 340px) {
-
-  .hidden-340 {
-    display: none !important;
-  }
-
-  .visible-340 {
-    display: inline-block !important;
-  }
-
-  /**********************************************/
-
-  /* Remove the float of the branding and align in the center */
 
   .navbar-default {
     position: relative;
@@ -132,6 +123,29 @@ nav {
 
   .navbar li span {
     margin-right: 10px;
+  }
+
+  .flex-parent-default {
+
+    display: block;
+
+    .content {
+      overflow: hidden;
+    }
+  }
+
+}
+
+/* we must use !important otherwise bootstrap will override these rules */
+
+@media (max-width: 340px) {
+
+  .hidden-340 {
+    display: none !important;
+  }
+
+  .visible-340 {
+    display: inline-block !important;
   }
 }
 
