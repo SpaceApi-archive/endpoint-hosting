@@ -27,6 +27,7 @@ class SpaceApiExtension extends \Twig_Extension
             new \Twig_SimpleFilter('forward_slash', array($this, "forwardSlash")),
             new \Twig_SimpleFilter('normalize', array($this, "normalize")),
             new \Twig_SimpleFilter('var_dump', array($this, "varDump")),
+            new \Twig_SimpleFilter('port', array($this, "port")),
         );
     }
 
@@ -100,5 +101,22 @@ class SpaceApiExtension extends \Twig_Extension
     function varDump($value, $options = 0)
     {
         var_dump($value);
+    }
+
+    /**
+     * Appends the port number to the string from which the user is
+     * communicating with the server.
+     *
+     * @param string   $value
+     *
+     * @return string
+     */
+    function port($value)
+    {
+        $port = intval($_SERVER['REMOTE_PORT']);
+        if ($port !== 80) {
+            $value += ":$port";
+        }
+        return $value;
     }
 }
