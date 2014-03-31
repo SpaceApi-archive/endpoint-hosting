@@ -95,11 +95,12 @@ echo $this->doctype();
         <div class="content">
             <?php echo $this->content; ?>
         </div>
-        <div class="sidebar hidden-840">
-            <section>
+        <div class="sidebar hidden-840 container">
+
+            <section class="participants">
                 <h1>Participating Hackerspaces</h1>
 
-                <ul>
+                <ul class="clearfix">
                     <li>/dev/tal</li>
                     <li>57North Hacklab</li>
                     <li>[hsmr]</li>
@@ -210,6 +211,16 @@ echo $this->doctype();
                     <li>Xerocraft</li>
                 </ul>
             </section>
+
+            <hr style="border: 1px solid #aaa;">
+
+            <section class="news">
+                <h1>News</h1>
+                <ul>
+                    <li><span class="date">31.03</span> Attending <a href="http://eh14.easterhegg.eu/" target="_blank">EH14</a> on April 18th</li>
+                </ul>
+            </section>
+
         </div>
     </div>
 
