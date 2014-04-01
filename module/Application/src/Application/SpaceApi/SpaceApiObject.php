@@ -44,12 +44,16 @@ class SpaceApiObject
 
     /**
      * @param $property
-     * @return mixed|void
+     * @return mixed
+     * @throws \Exception
      */
     public function __get($property)
     {
-        if (property_exists($this, $property) && $property !== 'file')
+        if (property_exists($this, $property) && $property !== 'file') {
             return $this->$property;
+        } else {
+            throw new \Exception('Bad method call or attribute access!');
+        }
     }
 
     /**
@@ -175,7 +179,11 @@ JSON;
      */
     public static function fromName($name)
     {
-        $name = Utils::normalize($name);
+        // normalize the name for all other endpoint than the test endpoint
+        if ($name !== '.test-endpoint') {
+            $name = Utils::normalize($name);
+        }
+
         $file_path = "public/space/$name/spaceapi.json";
 
         // we must guarantee that the
