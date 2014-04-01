@@ -13,3 +13,4 @@ public/lib
 .sass-cache
 node_modules
 .vagrant
+public/space/*

@@ -1,4 +1,8 @@
 {
     "spacemap": [
+        {
+            "slug": ".test-endpoint",
+            "token": "1234"
+        }
     ]
 }
