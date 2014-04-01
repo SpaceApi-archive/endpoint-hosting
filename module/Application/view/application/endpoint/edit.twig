@@ -6,11 +6,9 @@
 
             {% if token is defined %}
 
-                {% set website = '//endpoint.spaceapi.net' %}
-
                 <a href="https://gist.github.com/{{ spaceapi.gist }}" target="_blank" rel="nofollow">Gist</a>
-                <a href="{{ website | port }}/space/{{ spaceapi.slug }}/status" target="_blank" rel="nofollow">Your endpoint</a>
-                <a href="{{ website | port }}/space/{{ spaceapi.slug }}/status/json" target="_blank" rel="nofollow">Your JSON</a>
+                <a href="/space/{{ spaceapi.slug }}/status" target="_blank" rel="nofollow">Your endpoint</a>
+                <a href="/space/{{ spaceapi.slug }}/status/json" target="_blank" rel="nofollow">Your JSON</a>
 
                 <form action="{{ url('endpoint/action', {'action': 'edit'}) }}" method="post">
                     <input type="hidden" name="token" value="{{ token }}" >
