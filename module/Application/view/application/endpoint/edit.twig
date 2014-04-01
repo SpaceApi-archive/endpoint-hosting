@@ -6,7 +6,10 @@
 
             {% if token is defined %}
 
+                {% if spaceapi.gist != 0 %}
                 <a href="https://gist.github.com/{{ spaceapi.gist }}" target="_blank" rel="nofollow">Gist</a>
+                {% endif %}
+
                 <a href="/space/{{ spaceapi.slug }}/status" target="_blank" rel="nofollow">Your endpoint</a>
                 <a href="/space/{{ spaceapi.slug }}/status/json" target="_blank" rel="nofollow">Your JSON</a>
 
