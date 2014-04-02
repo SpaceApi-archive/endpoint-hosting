@@ -1,3 +1,15 @@
-For handy snippets have a look at
+CSS Howtos & Tutorials
+======================
 
-* http://snipplr.com/popular/language/css
+Flexbox
+-------
+
+* [Holy Grail Layout](http://philipwalton.github.io/solved-by-flexbox/demos/holy-grail/)
+* [Quick hits with the Flexible Box Model](http://www.html5rocks.com/en/tutorials/flexbox/quick/) (slightly out-dated, the specification about the box model has changed)
+* [HTML5 Please](http://html5please.com/#flexbox)
+
+Snippets
+--------
+
+* [CSS-Tricks](http://css-tricks.com/snippets/)
+* [snipplr](http://snipplr.com/popular/language/css)
