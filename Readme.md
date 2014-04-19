@@ -9,7 +9,7 @@ After cloning the repo **recursively** execute the following commands
 php composer.phar self-update
 php composer.phar install
 npm install
-bower install
+grunt bower
 ```
 
 Now all the dependencies are installed. In the last stsep you need to compile the sass code.
