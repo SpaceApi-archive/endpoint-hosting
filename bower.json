@@ -6,6 +6,7 @@
     "es5-shim": "~2.1.0",
     "bootstrap": "~3.0.3",
     "angular-bootstrap": "0.10.0",
+    "angular-jsoneditor": "https://github.com/slopjong/angular-jsoneditor.git",
     "angular-parallax": "https://github.com/slopjong/angular-parallax.git",
     "jsoneditor": "~2.3.6",
     "jsoneditor-app": "https://github.com/slopjong/angular-parallax.git"

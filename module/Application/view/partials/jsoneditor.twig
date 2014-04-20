@@ -1,29 +1,55 @@
 
+{#{%  do headLink()#}
+        {#.appendStylesheet('/lib/jsoneditor/jsoneditor-min.css')#}
+        {#.appendStylesheet('/jsoneditor/jsoneditor-app.css')#}
+        {#.appendStylesheet('/jsoneditor/jsoneditor-fixes.css')#}
+{#%}#}
+
+{#&#123;&#35; headScript is put to the bottom, they're not output in the header! &#35;&#125;#}
+{#{%#}
+    {#do headScript()#}
+        {#.appendFile('lib/jsoneditor/jsoneditor-min.js')#}
+        {#.appendFile('jsoneditor/jsoneditor-app.js')#}
+        {#.appendFile('jsoneditor/jsoneditor-deps.js')#}
+{#%}#}
+
+
+{# TREE EDITOR, the following files should be compressed as soon as angular-jsoneditor is stable #}
 {%  do headLink()
-        .appendStylesheet('/lib/jsoneditor/jsoneditor-min.css')
-        .appendStylesheet('/jsoneditor/jsoneditor-app.css')
-        .appendStylesheet('/jsoneditor/jsoneditor-fixes.css')
+        .appendStylesheet('lib/font-awesome/css/font-awesome.min.css')
+        .appendStylesheet('lib/angular-jsoneditor/app/styles/angular-jsoneditor.css')
 %}
 
-{# headScript is put to the bottom, they're not output in the header! #}
 {%
     do headScript()
-        .appendFile('lib/jsoneditor/jsoneditor-min.js')
-        .appendFile('jsoneditor/jsoneditor-app.js')
-        .appendFile('jsoneditor/jsoneditor-deps.js')
+        .appendFile('lib/slopjong-ui-ace/src/ui-ace.js')
+        .appendFile('lib/ace-builds/src-min-noconflict/ace.js')
+        .appendFile('lib/angular-sj-input/sj-input.js')
+        .appendFile('lib/angular-jsoneditor/app/scripts/filters/je-filters.js')
+        .appendFile('lib/angular-jsoneditor/app/scripts/services/je-services.js')
+        .appendFile('lib/angular-jsoneditor/app/scripts/directives/je-ace.js')
+        .appendFile('lib/angular-jsoneditor/app/scripts/directives/je-text.js')
+        .appendFile('lib/angular-jsoneditor/app/scripts/directives/je-tree.js')
+        .appendFile('lib/angular-jsoneditor/app/scripts/directives/angular-jsoneditor.js')
+        .appendFile('scripts/home/jsoneditor.js')
 %}
 
+{#{%#}
+    {#do headScript()#}
+        {#.appendFile('lib/angular-sj-input/sj-input.js')#}
+{#%}#}
+
 {# TODO: We shouldn't use inline styles #}
-<style type="text/css">
+{#<style type="text/css">#}
 
-    div.convert-right {
-        background: url('jsoneditor/img/jsoneditor-icons.png') -0 -48px;
-    }
+    {#div.convert-right {#}
+        {#background: url('jsoneditor/img/jsoneditor-icons.png') -0 -48px;#}
+    {#}#}
 
-    div.convert-left {
-        background: url('jsoneditor/img/jsoneditor-icons.png') -24px -48px;
-    }
-</style>
+    {#div.convert-left {#}
+        {#background: url('jsoneditor/img/jsoneditor-icons.png') -24px -48px;#}
+    {#}#}
+{#</style>#}
 
 <section class="jeditor">
 
@@ -37,6 +63,16 @@
         <div class="row">
             <div class="col-md-12">
 
+                <div je-splitter>
+                    <div je-container>
+                        <div je-ace></div>
+                    </div>
+                    <div je-container>
+                        <div je-tree schema="spaceapi-schema.json"></div>
+                    </div>
+                </div>
+
+                <!--
                 <noscript>
 
                     <style>
@@ -101,6 +137,7 @@
 
                     </div>
                 </div>
+                -->
 
                 <a class="btn btn-default btn-lg" href="">Validate JSON</a> <a class="btn btn-default btn-lg" href="/endpoint/create">Create endpoint</a>
 

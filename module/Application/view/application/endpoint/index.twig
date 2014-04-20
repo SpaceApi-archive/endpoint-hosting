@@ -10,10 +10,9 @@
 {%
     do headScript()
         .appendFile('lib/angular-parallax/scripts/angular-parallax.js')
-        .appendFile('scripts/home/parallax.js')
 %}
 
-<div>
+<div ng-app="HomeApp">
     <div class="parallax-header table" parallax-background parallax-ratio="1.6">
 
         <h1>
@@ -35,8 +34,12 @@
         {% include('partials/header.twig') %}
         {% include('partials/project-links.twig') %}
         {% include('partials/jsoneditor.twig') %}
-
         {% include('partials/footer.twig') %}
 
     </div>
 </div>
+
+{%
+    do headScript()
+        .appendFile('scripts/home/app.js')
+%}
