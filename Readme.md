@@ -12,7 +12,7 @@ npm install
 grunt bower
 ```
 
-Now all the dependencies are installed. In the last stsep you need to compile the sass code.
+Now all the dependencies are installed. In the last step you need to compile the sass code.
 
 Run either
 
