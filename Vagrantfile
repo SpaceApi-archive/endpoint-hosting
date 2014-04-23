@@ -9,7 +9,7 @@ Vagrant.configure("2") do |config|
       end
       # config.ssh.max_tries = 50
       # config.ssh.timeout   = 300
-      config.vm.synced_folder ".", "/vagrant", :id => "vagrant-root", :owner => "www-data", :group => "www-data"
+      config.vm.synced_folder ".", "/vagrant", :id => "vagrant-root", :owner => "vagrant", :group => "vagrant"
       config.vm.provision :chef_solo do |chef|
          chef.cookbooks_path = "data/vm/cookbooks"
          chef.add_recipe("vagrant_main")
