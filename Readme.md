@@ -36,7 +36,7 @@ git clone https://github.com/SpaceApi/endpoint-hosting.git
 cd endpoint-hosting
 vagrant up
 vagrant ssh -c "cd /vagrant && npm install && bower install && grunt build"
-sudo echo "127.0.0.1 endpoint.spaceapi.net" >> /etc/hosts
+sudo sh -c "echo 127.0.0.1 endpoint.spaceapi.net >> /etc/hosts"
 firefox http://endpoint.spaceapi.net:8090
 ```
 
