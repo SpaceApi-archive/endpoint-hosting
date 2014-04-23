@@ -5,6 +5,7 @@ Vagrant.configure("2") do |config|
       #config.vm.network :forwarded_port, guest: 3306, host: 3306
       config.vm.provider "virtualbox" do |vb|
         vb.customize ["modifyvm", :id, "--memory", 256]
+        #vb.gui = true
       end
       # config.ssh.max_tries = 50
       # config.ssh.timeout   = 300
