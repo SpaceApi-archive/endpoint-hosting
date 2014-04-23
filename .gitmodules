@@ -1,3 +1,0 @@
-[submodule "data/vm/cookbooks"]
-	path = data/vm/cookbooks
-	url = http://github.com/slopjong/chef-recipes.git
