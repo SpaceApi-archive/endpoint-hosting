@@ -1,6 +1,12 @@
 {
     "name": "spaceapi/endpoint",
     "description": "Endpoint Hosting",
+    "repositories": [
+      {
+        "url": "https://github.com/slopjong/jol.git",
+        "type": "git"
+      }
+    ],
     "require": {
         "php": ">=5.3.3",
         "zendframework/zendframework": "2.2.1",
@@ -10,6 +16,7 @@
         "doctrine/common": "2.3.0",
         "jms/serializer": "0.15.0",
         "zendframework/zendservice-recaptcha": "2.0.1",
-        "phploc/phploc": "*"
+        "phploc/phploc": "*",
+        "slopjong/jol": "dev-master"
     }
 }
