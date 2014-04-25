@@ -1,5 +1,5 @@
 [program:grunt_watch]
-command=cd /vagrant && grunt watch
+command=bash -c "cd /vagrant && /usr/bin/grunt watch"
 autostart=true
 autorestart=true
 stderr_logfile=/var/log/grunt_watch.err.log
