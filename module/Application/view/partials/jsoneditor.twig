@@ -17,7 +17,7 @@
 {# TREE EDITOR, the following files should be compressed as soon as angular-jsoneditor is stable #}
 {%  do headLink()
         .appendStylesheet('lib/font-awesome/css/font-awesome.min.css')
-        .appendStylesheet('lib/angular-jsoneditor/app/styles/angular-jsoneditor.css')
+        .appendStylesheet('lib/angular-jsoneditor/build/angular-jsoneditor.css')
 %}
 
 {%
@@ -25,13 +25,7 @@
         .appendFile('lib/slopjong-ui-ace/src/ui-ace.js')
         .appendFile('lib/ace-builds/src-min-noconflict/ace.js')
         .appendFile('lib/angular-sj-input/sj-input.js')
-        .appendFile('lib/angular-jsoneditor/app/scripts/filters/je-filters.js')
-        .appendFile('lib/angular-jsoneditor/app/scripts/services/je-services.js')
-        .appendFile('lib/angular-jsoneditor/app/scripts/directives/je-ace.js')
-        .appendFile('lib/angular-jsoneditor/app/scripts/directives/je-text.js')
-        .appendFile('lib/angular-jsoneditor/app/scripts/directives/je-tree.js')
-        .appendFile('lib/angular-jsoneditor/app/scripts/directives/angular-jsoneditor.js')
-        .appendFile('scripts/home/jsoneditor.js')
+        .appendFile('lib/angular-jsoneditor/build/angular-jsoneditor.js')
 %}
 
 {#{%#}
@@ -63,21 +57,11 @@
         <div class="row">
             <div class="col-md-12">
 
-                <div je-splitter>
-                    <div je-container>
-                        <div je-ace></div>
-                    </div>
-                    <div je-container>
-                        <div je-tree schema="spaceapi-schema.json"></div>
-                    </div>
-                </div>
-
-                <!--
                 <noscript>
 
                     <style>
 
-                        #auto {
+                        .je-splitter {
                             display: none;
                         }
 
@@ -105,39 +89,19 @@
 
                     <div id="jsoneditor-noscript">
                         <div>Enable JavaScript in order to use the SpaceAPI JSON editor.</div>
-                        <img id="" style="" src="img/jsoneditor_noscript.png">
+                        <img src="img/jsoneditor_noscript.png">
                     </div>
 
                 </noscript>
 
-                <div id="auto">
-                    <div id="contents">
-
-                        <div id="codeEditor"></div>
-
-                        <div id="splitter">
-                            <div id="buttons">
-                                <div>
-                                    <button id="toTree" class="convert"
-                                            title="Copy code to tree editor">
-                                        <div class="convert-right"></div>
-                                    </button>
-                                </div>
-                                <div>
-                                    <button id="toCode" class="convert"
-                                            title="Copy tree to code editor">
-                                        <div class="convert-left"></div>
-                                    </button>
-                                </div>
-                            </div>
-                            <div id="drag"></div>
-                        </div>
-
-                        <div id="treeEditor"></div>
-
+                <div je-splitter>
+                    <div je-container>
+                        <div je-ace></div>
                     </div>
+                    {#<div je-container>#}
+                        {#<div je-tree schema="spaceapi-schema.json"></div>#}
+                    {#</div>#}
                 </div>
-                -->
 
                 <a class="btn btn-default btn-lg" href="">Validate JSON</a> <a class="btn btn-default btn-lg" href="/endpoint/create">Create endpoint</a>
 
