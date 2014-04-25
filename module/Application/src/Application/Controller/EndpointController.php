@@ -11,6 +11,7 @@ use Application\Map\SpaceMapList;
 use Application\SpaceApi\SpaceApiObject;
 use Application\Utils\Utils;
 use Doctrine\Common\Collections\Criteria;
+use Slopjong\JOL;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use ZendService\ReCaptcha\ReCaptcha;
@@ -24,7 +25,15 @@ class EndpointController extends AbstractActionController
 
     public function indexAction()
     {
+        $json = file_get_contents('data/endpoint-scripts/spaceapi.json');
+        $jsoneditor_default_input = json_decode($json);
+        $jol = new JOL();
+        $jsoneditor_default_input_jol = $jol->encode($jsoneditor_default_input);
+
         $this->layout('layout/landing');
+        return array(
+            'jsoneditor_default_input' => $jsoneditor_default_input_jol,
+        );
     }
 
     public function createAction()

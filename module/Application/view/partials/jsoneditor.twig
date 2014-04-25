@@ -94,7 +94,11 @@
 
                 </noscript>
 
+                {% if jsoneditor_default_input %}
+                <div je-splitter json="{{ jsoneditor_default_input }}">
+                {% else %}
                 <div je-splitter>
+                {% endif %}
                     <div je-container>
                         <div je-ace></div>
                     </div>
