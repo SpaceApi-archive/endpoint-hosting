@@ -1,20 +1,4 @@
 
-{#{%  do headLink()#}
-        {#.appendStylesheet('/lib/jsoneditor/jsoneditor-min.css')#}
-        {#.appendStylesheet('/jsoneditor/jsoneditor-app.css')#}
-        {#.appendStylesheet('/jsoneditor/jsoneditor-fixes.css')#}
-{#%}#}
-
-{#&#123;&#35; headScript is put to the bottom, they're not output in the header! &#35;&#125;#}
-{#{%#}
-    {#do headScript()#}
-        {#.appendFile('lib/jsoneditor/jsoneditor-min.js')#}
-        {#.appendFile('jsoneditor/jsoneditor-app.js')#}
-        {#.appendFile('jsoneditor/jsoneditor-deps.js')#}
-{#%}#}
-
-
-{# TREE EDITOR, the following files should be compressed as soon as angular-jsoneditor is stable #}
 {%  do headLink()
         .appendStylesheet('lib/font-awesome/css/font-awesome.min.css')
         .appendStylesheet('lib/angular-jsoneditor/build/angular-jsoneditor.css')
@@ -27,23 +11,6 @@
         .appendFile('lib/angular-sj-input/sj-input.js')
         .appendFile('lib/angular-jsoneditor/build/angular-jsoneditor.js')
 %}
-
-{#{%#}
-    {#do headScript()#}
-        {#.appendFile('lib/angular-sj-input/sj-input.js')#}
-{#%}#}
-
-{# TODO: We shouldn't use inline styles #}
-{#<style type="text/css">#}
-
-    {#div.convert-right {#}
-        {#background: url('jsoneditor/img/jsoneditor-icons.png') -0 -48px;#}
-    {#}#}
-
-    {#div.convert-left {#}
-        {#background: url('jsoneditor/img/jsoneditor-icons.png') -24px -48px;#}
-    {#}#}
-{#</style>#}
 
 <section class="jeditor">
 
@@ -94,11 +61,12 @@
 
                 </noscript>
 
-                {% if jsoneditor_default_input %}
-                <div je-splitter json="{{ jsoneditor_default_input }}">
-                {% else %}
-                <div je-splitter>
-                {% endif %}
+                <div je-splitter
+                    {% if jsoneditor_default_input %}
+                    json="{{ jsoneditor_default_input }}"
+                    {% endif %}
+                    >
+
                     <div je-container>
                         <div je-ace></div>
                     </div>
