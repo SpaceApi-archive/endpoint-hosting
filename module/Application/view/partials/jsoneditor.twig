@@ -1,3 +1,15 @@
+{#####################################################################
+    Use this partial as follows:
+
+    {%
+        set jeditor_config = {
+            'jsoneditor_default_input': jsoneditor_default_input | json_without_gist,
+            'use_noscript': true
+        }
+    %}
+    {% include 'partials/jsoneditor.twig' with jeditor_config only %}
+#####################################################################}
+
 
 {%  do headLink()
         .appendStylesheet('/lib/font-awesome/css/font-awesome.min.css')
@@ -12,6 +24,7 @@
         .appendFile('/lib/angular-jsoneditor/build/angular-jsoneditor.js')
 %}
 
+{% if use_noscript %}
 <noscript>
 
     <style>
@@ -49,6 +62,7 @@
     </div>
 
 </noscript>
+{% endif %}
 
 <div je-splitter
     {% if jsoneditor_default_input %}

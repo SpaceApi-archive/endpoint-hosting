@@ -16,14 +16,18 @@
                 <form action="{{ url('endpoint/action', {'action': 'edit'}) }}" method="post">
                     <input type="hidden" name="token" value="{{ token }}" >
 
-                    {#<noscript>#}
+                    <noscript>
                     {#<label for="json">Edit your JSON</label>#}
-                    {#<textarea name="json" style="width: 100%; height: 100px;">{{ spaceapi.json | json_without_gist }}</textarea>#}
-                    {#</noscript>#}
+                    <textarea name="json" style="width: 100%; height: 100px;">{{ spaceapi.json | json_without_gist }}</textarea>
+                    </noscript>
 
-                    {# pass the json editor a javascript object literal without the gist field #}
-                    {% set jeditor_input = {'jsoneditor_default_input': spaceapi.json | jol_without_gist} %}
-                    {% include 'partials/jsoneditor.twig' with jeditor_input only %}
+                    {%
+                        set jeditor_config = {
+                            'jsoneditor_default_input': spaceapi.json | jol_without_gist,
+                            'use_noscript': false
+                        }
+                    %}
+                    {% include 'partials/jsoneditor.twig' with jeditor_config only %}
 
                     <input type="submit" name="edit_action" value="Validate">
                     <input type="submit" name="edit_action" value="Save">
