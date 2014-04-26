@@ -17,9 +17,20 @@ packages.each do |pkg|
   end
 end
 
-template "#{node['php']['conf_dir']}/php.ini" do
+template "/etc/php5/apache2/php.ini" do
   source "php.ini.erb"
   owner "root"
   group "root"
   mode "0644"
+end
+
+template "/etc/php5/cli/php.ini" do
+  source "php.ini.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+end
+
+service "apache2" do
+  action :restart
 end
