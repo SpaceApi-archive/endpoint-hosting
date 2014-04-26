@@ -1,0 +1,1 @@
+The files starting with a underscore are layout partials that are included in some (or all) layout templates.
