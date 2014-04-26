@@ -3,11 +3,21 @@
 
     {%
         set jeditor_config = {
-            'jsoneditor_default_input': jsoneditor_default_input | json_without_gist,
-            'use_noscript': true
+            'default_input': jsoneditor_default_input | json_without_gist,
+            'use_noscript': true,
+            'ace_config':'{onChange:aceChanged}'
         }
     %}
     {% include 'partials/jsoneditor.twig' with jeditor_config only %}
+
+    Configuration options:
+
+     - default_input: (string) text to be displayed initially
+     - use_noscript:  (boolean) flag which specifies whether to render
+                      the noscript block
+     - ace_config:    (string) javascript object literal with ace configuration,
+                      See github.com/angular-ui/ui-ace
+
 #####################################################################}
 
 
@@ -65,12 +75,16 @@
 {% endif %}
 
 <div je-splitter
-    {% if jsoneditor_default_input %}
-    json="{{ jsoneditor_default_input }}"
+    {% if default_input %}
+    json="{{ default_input }}"
     {% endif %}
     >
     <div je-container>
-        <div je-ace></div>
+        {% if ace_config %}
+            <div je-ace="{{ ace_config }}"></div>
+        {% else %}
+            <div je-ace></div>
+        {% endif %}
     </div>
     {#<div je-container>#}
         {#<div je-tree schema="spaceapi-schema.json"></div>#}

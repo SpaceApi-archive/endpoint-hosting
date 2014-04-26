@@ -18,10 +18,18 @@
                 <a href="/space/{{ spaceapi.slug }}/status" target="_blank" rel="nofollow">Your endpoint</a>
                 <a href="/space/{{ spaceapi.slug }}/status/json" target="_blank" rel="nofollow">Your JSON</a>
 
-                <form action="{{ url('endpoint/action', {'action': 'edit'}) }}" method="post">
-                    <input type="hidden" name="token" value="{{ token }}" >
+                <form
+                    ng-controller="EndpointEditController"
+                    action="{{ url('endpoint/action', {'action': 'edit'}) }}"
+                    method="post"
+                    >
 
 
+                    {# IMPORTANT: we use jqLite which doesn't support
+                                  all kind of selectors, thus the controller
+                                  is taking the first textarea it finds
+                     #}
+                    <textarea name="json">{{ spaceapi.json | json_without_gist }}</textarea>
                     <noscript>
                         <style>
                             textarea {
@@ -29,13 +37,14 @@
                             }
                         </style>
                     </noscript>
-                    <textarea name="json">{{ spaceapi.json | json_without_gist }}</textarea>
 
+                    <input type="hidden" name="token" value="{{ token }}" >
 
                     {%
                         set jeditor_config = {
-                            'jsoneditor_default_input': spaceapi.json | jol_without_gist,
-                            'use_noscript': false
+                            'default_input': spaceapi.json | jol_without_gist,
+                            'use_noscript': false,
+                            'ace_config': '{onChange: aceChanged}'
                         }
                     %}
                     {% include 'partials/jsoneditor.twig' with jeditor_config only %}
