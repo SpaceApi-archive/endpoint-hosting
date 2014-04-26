@@ -123,6 +123,9 @@ $module_config = array(
         ),
     ),
     'view_manager' => array(
+        // @todo check if the environment variable 'development' exists
+        //       and set the display error options to true then, false
+        //       otherwise
         'display_not_found_reason' => true,
         'display_exceptions'       => true,
         'doctype'                  => 'HTML5',
