@@ -3,6 +3,7 @@
 namespace Application\Twig\Extension;
 
 use Application\Utils\Utils;
+use Slopjong\JOL;
 
 class SpaceApiExtension extends \Twig_Extension
 {
@@ -24,6 +25,7 @@ class SpaceApiExtension extends \Twig_Extension
     {
         return array(
             new \Twig_SimpleFilter('json_without_gist', array($this, "jsonWithoutGist")),
+            new \Twig_SimpleFilter('jol_without_gist', array($this, "jolWithoutGist")),
             new \Twig_SimpleFilter('forward_slash', array($this, "forwardSlash")),
             new \Twig_SimpleFilter('normalize', array($this, "normalize")),
             new \Twig_SimpleFilter('var_dump', array($this, "varDump")),
@@ -37,7 +39,7 @@ class SpaceApiExtension extends \Twig_Extension
      * @param mixed   $value   The value to encode.
      * @param integer $options Not used on PHP 5.2.x
      *
-     * @return mixed The JSON encoded value
+     * @return string|boolean The JSON encoded value or false on encoding failure
      */
     function jsonWithoutGist($value, $options = 0)
     {
@@ -55,6 +57,28 @@ class SpaceApiExtension extends \Twig_Extension
 
         return json_encode($value,
             JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE);
+    }
+
+    /**
+     * JOL encodes a variable by removing the field 'ext_gist' if it exists.
+     * JOL is the abbreviation for Javascript Object Literal which looks
+     * similar to JSON but both differ in their syntax.
+     *
+     * @param mixed   $value   The value to encode.
+     *
+     * @return string The JOL encoded value. The string '{}' is returned on encoding failure.
+     */
+    function jolWithoutGist($value) {
+        $json = $this->jsonWithoutGist($value);
+
+        //
+        if ($json === false) {
+            return '{}';
+        }
+
+        $jsoneditor_default_input = json_decode($json);
+        $jol = new JOL();
+        return $jol->encode($jsoneditor_default_input);
     }
 
     /**
