@@ -1,0 +1,34 @@
+
+.flex-parent-default {
+
+  display: flex;
+  flex-direction: row;
+
+  width: 100%;
+  height: 100%;
+
+  .content {
+    flex: 3;
+    overflow: auto;
+
+    .container {
+      width: 90%;
+    }
+  }
+
+  .sidebar {
+    flex: 1;
+    height: 100%;
+    overflow: hidden;
+
+    hr {
+      border: 0;
+      height: 1px;
+      background: -moz-linear-gradient(left center, transparent, black, transparent);
+      background: -webkit-gradient(linear, left center, right center,
+        color-stop(0, transparent),
+        color-stop(0.5, black),
+        color-stop(1, transparent));
+    }
+  }
+}

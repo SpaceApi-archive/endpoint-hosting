@@ -1,8 +1,8 @@
 
-@import "mixins";
-@import "fonts";
-@import "flex";
-@import "grid-classes";
+@import "partials/common/mixins";
+@import "partials/common/fonts";
+@import "partials/layout/default-flex";
+@import "partials/layout/default-grid-classes";
 
 html, body {
   height: 100%;
