@@ -1,54 +1,9 @@
 <?php
-/* @var Zend\View\Renderer\PhpRenderer $this */
-echo $this->doctype();
+    /* @var Zend\View\Renderer\PhpRenderer $this */
+    echo $this->render('layout/_header.phtml', array(
+        'pageStyleSheet' => 'styles/page-default.min.css'
+    ));
 ?>
-
-<!--[if lt IE 7]>
-<html lang="en" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>
-<html lang="en" class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>
-<html lang="en" class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html lang="en" class="no-js"> <!--<![endif]-->
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>SpaceAPI Hosting</title>
-    <meta name="description" content="Create a new endpoint in the SpaceAPI cloud.">
-    <meta name="viewport" content="width=device-width">
-
-    <link rel="author" href="<?php echo $this->basePath(); ?>/humans.txt" />
-
-    <link href="/img/favicon.ico" type="image/x-icon" rel="shortcut icon">
-    <link href="/img/favicon.gif" type="image/x-icon" rel="shortcut icon">
-
-    <?php
-        // add stylesheets to this array, this is a LIFO, the last element
-        // gets first rendered, all the stylesheets from the views are
-        // loaded after them
-        $styles = array(
-            "styles/page-default.min.css",
-            "lib/bootstrap/dist/css/bootstrap.min.css",
-        );
-
-        foreach ($styles as $style) {
-            $this->headLink()->prependStylesheet($this->basePath() . "/$style");
-        }
-    ?>
-
-    <?php echo $this->headLink() ?>
-
-</head>
-<body>
-
-    <!--[if lt IE 7]>
-    <section class="browsehappy">
-        You are using an <strong>outdated</strong> browser.
-        Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.
-    </section>
-    <![endif]-->
 
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 
@@ -224,14 +179,4 @@ echo $this->doctype();
         </div>
     </div>
 
-    <!--[if lt IE 9]>
-    <script src="/lib/es5-shim/es5-shim.js"></script>
-    <script src="/lib/json3/lib/json3.min.js"></script>
-    <![endif]-->
-
-    <script src="/lib/angular/angular.min.js"></script>
-    <script src="/lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
-
-    <?php echo $this->headScript(); ?>
-</body>
-</html>
+<?php echo $this->render('layout/_footer.phtml'); ?>
