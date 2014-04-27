@@ -205,7 +205,8 @@ class EndpointController extends AbstractActionController
 
     /**
      * This action saves/validates a submitted JSON. This action is also
-     * used by Endpoint::createAction().
+     * used by Endpoint::createAction(). The field 'api' is always set
+     * to 0.13 internally.
      *
      * @uses $_POST['token']
      * @uses $_POST['edit_action'] either the string 'Save' or 'Validate'
@@ -238,6 +239,7 @@ class EndpointController extends AbstractActionController
         /** @var SpaceApiObject $spaceapi */
         $spaceapi = SpaceApiObject::fromName($slug);
 
+
         try {
             $action = $this->params()->fromPost('edit_action');
 
@@ -252,6 +254,8 @@ class EndpointController extends AbstractActionController
             if (is_null($json)) {
                 $json = $this->params('json');
             }
+
+            $json = Utils::setApiToLatest($json);
 
             switch ($action) {
 

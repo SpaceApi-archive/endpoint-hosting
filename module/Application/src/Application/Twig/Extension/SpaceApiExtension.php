@@ -25,12 +25,38 @@ class SpaceApiExtension extends \Twig_Extension
     {
         return array(
             new \Twig_SimpleFilter('json_without_gist', array($this, "jsonWithoutGist")),
+            new \Twig_SimpleFilter('json_without_api', array($this, "jsonWithoutApi")),
             new \Twig_SimpleFilter('jol_without_gist', array($this, "jolWithoutGist")),
             new \Twig_SimpleFilter('forward_slash', array($this, "forwardSlash")),
             new \Twig_SimpleFilter('normalize', array($this, "normalize")),
             new \Twig_SimpleFilter('var_dump', array($this, "varDump")),
             new \Twig_SimpleFilter('server_port', array($this, "serverPort")),
         );
+    }
+
+    /**
+     * JSON encodes a variable by removing the field 'api' if it exists.
+     *
+     * @param mixed   $value   The value to encode.
+     *
+     * @return string|boolean The JSON encoded value or false on encoding failure
+     */
+    function jsonWithoutApi($value)
+    {
+        if (is_object($value)) {
+            unset($value->api);
+        } elseif (is_string($value)) {
+            $obj = json_decode($value);
+            if (is_null($obj)) {
+                return $value;
+            }
+
+            $value = $obj;
+            unset($value->api);
+        }
+
+        return json_encode($value,
+            JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE);
     }
 
     /**

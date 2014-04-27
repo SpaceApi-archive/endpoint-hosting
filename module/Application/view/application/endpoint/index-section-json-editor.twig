@@ -29,7 +29,7 @@
 
                     {%
                         set jeditor_config = {
-                            'default_input': jsoneditor_default_input | json_without_gist,
+                            'default_input': jsoneditor_default_input | json_without_gist | json_without_api,
                             'use_noscript': true,
                             'ace_config': '{onChange: aceChanged}'
                         }
