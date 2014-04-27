@@ -1,6 +1,12 @@
 [program:grunt_watch]
-command=bash -c "cd /vagrant && /usr/bin/grunt watch"
+user=vagrant
+directory=/vagrant
+command=/usr/bin/grunt watch
+numprocs=1
 autostart=true
 autorestart=true
 stderr_logfile=/var/log/grunt_watch.err.log
 stdout_logfile=/var/log/grunt_watch.out.log
+
+; If there are any problems have a look at
+;   * http://stackoverflow.com/q/9034709
