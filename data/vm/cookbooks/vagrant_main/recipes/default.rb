@@ -13,6 +13,7 @@ include_recipe "nodejs" # version 0.10.xx includes npm
 include_recipe "zsh"
 include_recipe "oh-my-zsh"
 include_recipe "users"
+include_recipe "postfix"
 include_recipe "vim"
 include_recipe "web_build_tools"
 include_recipe "project_initializer"
