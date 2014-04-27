@@ -1,4 +1,4 @@
-Partials should always included as follows
+Partials should always be included as follows
 
 ```
 include('subdir_1/subdir_2/.../subdir_n/template.twig')
