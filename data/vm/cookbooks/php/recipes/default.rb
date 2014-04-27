@@ -1,9 +1,8 @@
 require_recipe "python-software-properties"
 
-execute "sudo add-apt-repository ppa:ondrej/php5-oldstable" do
-end
-
-execute "sudo apt-get update" do
+execute "add_ppa_php5-oldstable" do
+    command "sudo add-apt-repository ppa:ondrej/php5-oldstable && sudo apt-get update"
+    not_if "grep -o ondrej/php5-oldstable /etc/apt/sources.list /etc/apt/sources.list.d/*"
 end
 
 packages = [
