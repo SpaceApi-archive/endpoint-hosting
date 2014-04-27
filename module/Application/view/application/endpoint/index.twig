@@ -13,30 +13,17 @@
 %}
 
 <div ng-app="EndpointIndexApp">
+
     <div class="parallax-header table" parallax-background parallax-ratio="1.6">
-
-        <h1>
-            <a href="http://endpoint.spaceapi.net">
-                SpaceAPI Hosting
-            </a>
-        </h1>
-
-        <div class="create-endpoint table-cell">
-            <a class="btn create-endpoint" href="#jsoneditor">
-                Create an endpoint
-            </a>
-        </div>
-
+        {% include('application/endpoint/index-section-create-endpoint.twig') %}
     </div>
 
     <div class="parallax-body" parallax-ratio="1">
-
-        {% include('application/endpoint/index-section-create-endpoint.twig') %}
         {% include('application/endpoint/index-section-project-links.twig') %}
         {% include('application/endpoint/index-section-json-editor.twig') %}
         {% include('application/endpoint/index-section-credits.twig') %}
-
     </div>
+
 </div>
 
 {%
