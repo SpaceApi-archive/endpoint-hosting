@@ -43,6 +43,7 @@ then
 	php composer.phar install
 	npm install
 	bower install
+	grunt build
 	
 	# TODO: switch back to the live page
 fi
