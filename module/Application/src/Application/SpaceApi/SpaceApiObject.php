@@ -127,18 +127,19 @@ class SpaceApiObject
      */
     public function validate()
     {
-        // TODO: make a request to the validator
-        // some fake data
-        $json = <<<JSON
-{
-    "valid": ["0.13"],
-    "invalid": [],
-    "errors": [],
-    "warnings": []
-}
-JSON;
+        $url = "http://spaceapi.net/validate?url=http://endpoint.spaceapi.net/space/${this->slug}/status/json";
+        $ch = curl_init($url);
 
-        $this->validation = new Validation($json);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $this->json);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $response = curl_exec($ch);
+        $http_status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        // @todo: $response might be no json because of a network issue
+        //        it could be wrong or a timeout could appear
+        $this->validation = new Validation($response);
 
         return $this->validation->getOk();
     }
