@@ -64,10 +64,29 @@
             font-weight: bold;
         }
 
+        #jsoneditor-noscript > div:first-child a {
+            text-decoration: none;
+            background: #888;
+            border: 1px solid #333333;
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+            color: #FFFFFF;
+            padding: 1px 5px;
+            -webkit-transition-duration: 0.3s;
+            -moz-transition-duration: 0.3s;
+            transition-duration: 0.3s;
+        }
+
+        #jsoneditor-noscript > div:first-child a:hover {
+            background: #fff;
+            color: #333;
+        }
+
     </style>
 
     <div id="jsoneditor-noscript">
-        <div>Enable JavaScript in order to use the SpaceAPI JSON editor.</div>
+        <div>Enable JavaScript in order to use the SpaceAPI JSON editor.<br> Click <a href="/endpoint/edit">here</a> to edit an existing one.</div>
         <img src="/img/jsoneditor_noscript.png">
     </div>
 
