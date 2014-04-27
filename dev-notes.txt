@@ -5,6 +5,28 @@ If you add a note, append them instead of putting them between others in order t
 
 # There's nothing wrong about having a header per section [0]. The hgroup tag, however, isn't used because of the removal [2] of the standard. For subtitles we follow a common idiom [1].
 
+# If an action dispatches another action from the same or another controller you should use both variants, $this->params('param') and $this->params()->fromPost('param'), to allow passing data via route arguments _and_ via POST.
+
+  Here's an example how to dispatch an action:
+
+    $this->forward()->dispatch(
+        'Application\Controller\Endpoint',
+        array(
+            'action' => 'edit', // controller action
+            'token'  => $token, // parameter
+            'edit_action'  => 'Save', // parameter
+            'json'   => $requested_endpoint_data->json, // parameter
+        )
+    );
+
+  Here's how to get the data:
+
+    $param = $this->params()->fromPost('param');
+    if (is_null($param)) {
+      $param = $this->params('param');
+    }
+
+
 
 References
 ----------

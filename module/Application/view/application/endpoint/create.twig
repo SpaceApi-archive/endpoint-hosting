@@ -22,21 +22,36 @@
 
             {% if error is defined %}
 
-                {% if error.type == "EndpointExists" %}
-                    {{ error.message }}
-                    <a href="{{ url('endpoint/action', {'action': 'edit'}) }}">Edit your endpoint.</a>
-                {% else %}
-                    {{ error.message }}
-                {% endif %}
+                <div class="alert alert-danger">
+
+                    {# didn't work, probably because of angular-bootstrap  #}
+                	{#<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>#}
+
+                    <strong><i class="glyphicon glyphicon-warning-sign"></i></strong>
+
+                    {% if error.type == "EndpointExists" %}
+                        {{ error.message }}
+                        <a href="{{ url('endpoint/action', {'action': 'edit'}) }}">Edit your endpoint.</a>
+                    {% else %}
+                        {{ error.message }}
+                    {% endif %}
+                </div>
 
             {% endif %}
 
             <form class="noscript" action="{{ url('endpoint/action', {'action': 'create'}) }}" method="post">
+
+                {# pay attention with newlines and indentation, they
+                   will be rendered #}
+                {% set json = requested_endpoint_data.json %}
+                <textarea name="json">{% if json %}{{ json }}{% endif %}</textarea>
+
                 <input
                     name="hackerspace"
                     type="text" name="name"
                     value="{{ space }}"
                     placeholder="Space name"
+                    {% if json %}readonly{% endif %}
                     >
                 {{ recaptcha.html | raw }}
 

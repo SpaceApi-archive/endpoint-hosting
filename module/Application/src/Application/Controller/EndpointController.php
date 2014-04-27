@@ -34,10 +34,44 @@ class EndpointController extends AbstractActionController
         );
     }
 
+    /**
+     * There are two cases how this action got triggered:
+     *
+     *  # the action didn't get a json from another page and the
+     *    page got directly 'entered' without form submission of
+     *    the other page
+     *
+     *  # a page sends this action a json from which the space name
+     *    should be extracted to be rendered in the name field. The
+     *    json itself is then used as a template
+     *
+     * If another page wants to submit a json the POST parameter must
+     * be called 'json'.
+     *
+     * @return array|ViewModel
+     */
     public function createAction()
     {
         $submit = $this->params()->fromPost('submit');
+
+        // 1. case => page directly entered
         $space = $this->params()->fromPost('hackerspace');
+
+        // 2. case => another page submitted form data, if an empty
+        //            string or non-json got submitted we handle the
+        //            page request as if it had been called directly
+        $requested_endpoint_data = null;
+        $json = $this->params()->fromPost('json');
+        if (! is_null($json) && $json !== '' ) {
+            try {
+                $requested_endpoint_data = SpaceApiObject::fromJson($json);
+
+                // this won't be executed if $json is invalid
+                $space = $requested_endpoint_data->name;
+            } catch (\Exception $e) {
+                // user submitted non-jso
+            }
+        }
 
         $config = $this->getServiceLocator()->get('config');
 
@@ -54,6 +88,7 @@ class EndpointController extends AbstractActionController
         ) {
             return array(
                 'space'     => $space,
+                'requested_endpoint_data' => $requested_endpoint_data,
                 'recaptcha' => $recaptcha,
             );
         }
@@ -81,6 +116,7 @@ class EndpointController extends AbstractActionController
 
             return array(
                 'space' => $space,
+                'requested_endpoint_data' => $requested_endpoint_data,
                 'recaptcha'        => $recaptcha,
                 'recaptcha_errors' => $recaptcha_errors,
             );
@@ -93,6 +129,7 @@ class EndpointController extends AbstractActionController
             return array(
                 'recaptcha' => $recaptcha,
                 'space' => $space,
+                'requested_endpoint_data' => $requested_endpoint_data,
                 'error' => array(
                     'type'    => static::SPACENAME_INVALID_TYPE,
                     'message' => static::SPACENAME_INVALID_MESSAGE,
@@ -116,6 +153,21 @@ class EndpointController extends AbstractActionController
             $gist_result = $this->createGist($slug);
             if ($gist_result->status === 201) {
                 $this->saveGistId($gist_result->id, $slug);
+            }
+
+            // now save the user's json after the endpoint json template
+            // has been 'gisted'
+            if (! is_null($requested_endpoint_data)) {
+
+                $this->forward()->dispatch(
+                    'Application\Controller\Endpoint',
+                    array(
+                        'action' => 'edit', // controller action
+                        'token'  => $token, // parameter
+                        'edit_action'  => 'Save', // parameter
+                        'json'   => $requested_endpoint_data->json, // parameter
+                    )
+                );
             }
 
             $email->send(
@@ -142,6 +194,7 @@ class EndpointController extends AbstractActionController
             return array(
                 'recaptcha' => $recaptcha,
                 'space' => $space,
+                'requested_endpoint_data' => $requested_endpoint_data,
                 'error' => array(
                     'type'    => static::ENDPOINT_EXISTS_TYPE,
                     "message" => static::ENDPOINT_EXISTS_MESSAGE,
@@ -150,9 +203,24 @@ class EndpointController extends AbstractActionController
         }
     }
 
+    /**
+     * This action saves/validates a submitted JSON. This action is also
+     * used by Endpoint::createAction().
+     *
+     * @uses $_POST['token']
+     * @uses $_POST['edit_action'] either the string 'Save' or 'Validate'
+     * @uses $_POST['json']
+     */
     public function editAction()
     {
+        // the Post
         $token = $this->params()->fromPost('token');
+
+        // dev-note:2
+        if (is_null($token)) {
+            // the RouteMatch
+            $token = $this->params('token');
+        }
 
         // no edit if no token is provided
         if (is_null($token)) {
@@ -171,12 +239,26 @@ class EndpointController extends AbstractActionController
         $spaceapi = SpaceApiObject::fromName($slug);
 
         try {
-            switch ($this->params()->fromPost('edit_action')) {
+            $action = $this->params()->fromPost('edit_action');
+
+            // dev-note:2
+            if (is_null($action)) {
+                $action = $this->params('edit_action');
+            }
+
+            $json = $this->params()->fromPost('json');
+
+            // dev-note:2
+            if (is_null($json)) {
+                $json = $this->params('json');
+            }
+
+            switch ($action) {
 
                 case 'Save':
 
                     $spaceapi
-                        ->update($this->params()->fromPost('json'))
+                        ->update($json)
                         ->save();
                     $this->updateGist($spaceapi);
 
@@ -185,7 +267,7 @@ class EndpointController extends AbstractActionController
                 case 'Validate':
 
                     $spaceapi
-                        ->update($this->params()->fromPost('json'))
+                        ->update($json)
                         ->save();
 
                     break;
