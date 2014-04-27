@@ -149,4 +149,38 @@ class Utils
 
         return new Result($http_status, $response);
     }
+
+    /**
+     * Adds an api field with the latest stable version number to the
+     * passed JSON if it's missing. If it's present it's overridden.
+     * @param $json
+     * @return string
+     */
+    public static function setApiToLatest($json) {
+
+        // @todo: don't hard-code the stable api version
+        //        define the latest api version in the global config
+        // @todo: instead of this utility function this should be in SpaceApiObject
+
+        // Set the api version to 0.13, the last stable version.
+        // We decode to an associative array to prepend the api
+        // field. This is to avoid an unnecessary change to be
+        // tracked by gist.
+        $unmarshalled_json_array = json_decode($json, true);
+        if (! is_null($unmarshalled_json_array)) {
+            $unmarshalled_json_array = array_merge(
+                array('api' => '0.13'),
+                $unmarshalled_json_array
+            );
+
+            // this is an extra step which we need, if the api field
+            // is present in $json. Then it could happen that the api
+            // field from $json is overriding ours again.
+            $unmarshalled_json_array['api'] = '0.13';
+
+            $json = json_encode($unmarshalled_json_array);
+        }
+
+        return $json;
+    }
 }
