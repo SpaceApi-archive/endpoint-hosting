@@ -7,10 +7,15 @@
     "bootstrap": "~3.0.3",
     "angular-bootstrap": "0.10.0",
     "angular-jsoneditor": "https://github.com/slopjong/angular-jsoneditor.git",
-    "angular-parallax": "https://github.com/slopjong/angular-parallax.git",
-    "jsoneditor": "~2.3.6",
-    "jsoneditor-app": "https://github.com/slopjong/angular-parallax.git"
+    "angular-parallax": "https://github.com/slopjong/angular-parallax.git"
   },
   "devDependencies": {
+  },
+  "obsoleteDependencies": {
+    "comment": "Libraries that were required but are no longer used",
+    "dependencies": {
+      "jsoneditor": "~2.3.6",
+      "jsoneditor-app": "https://github.com/slopjong/jsoneditor-app.git"
+    }
   }
 }
