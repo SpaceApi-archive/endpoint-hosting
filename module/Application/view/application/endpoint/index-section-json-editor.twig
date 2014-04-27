@@ -18,8 +18,17 @@
                 %}
                 {% include 'partials/jsoneditor.twig' with jeditor_config only %}
 
-                <a class="btn btn-default btn-lg" href="">Validate JSON</a> <a class="btn btn-default btn-lg" href="/endpoint/create">Create endpoint</a>
+                <noscript>
+                    <style>
+                        #jeditor_buttons {
+                            display: none;
+                        }
+                    </style>
+                </noscript>
 
+                <div id="jeditor_buttons">
+                    <a class="btn btn-default btn-lg" href="">Validate JSON</a> <a class="btn btn-default btn-lg" href="/endpoint/create">Create endpoint</a>
+                </div>
             </div>
         </div>
     </div>
