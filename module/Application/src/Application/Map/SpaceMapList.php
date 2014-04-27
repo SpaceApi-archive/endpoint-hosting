@@ -28,7 +28,7 @@ class SpaceMapList extends AbstractList //implements ServiceLocatorAwareInterfac
 
     public function __construct(ArrayCollection $elements)
     {
-        $wrong_type = array_filter($elements, function($element) {
+        $wrong_type = array_filter($elements->toArray(), function($element) {
             if (! $element instanceof SpaceMap)
                 return true;
             else
