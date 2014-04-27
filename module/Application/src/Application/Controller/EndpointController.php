@@ -27,12 +27,10 @@ class EndpointController extends AbstractActionController
     {
         $json = file_get_contents('data/endpoint-scripts/spaceapi.json');
         $jsoneditor_default_input = json_decode($json);
-        $jol = new JOL();
-        $jsoneditor_default_input_jol = $jol->encode($jsoneditor_default_input);
 
         $this->layout('layout/landing');
         return array(
-            'jsoneditor_default_input' => $jsoneditor_default_input_jol,
+            'jsoneditor_default_input' => $jsoneditor_default_input,
         );
     }
 

@@ -11,14 +11,6 @@
         <div class="row">
             <div class="col-md-12">
 
-                {%
-                    set jeditor_config = {
-                        'default_input': jsoneditor_default_input | json_without_gist,
-                        'use_noscript': true
-                    }
-                %}
-                {% include 'partials/jsoneditor.twig' with jeditor_config only %}
-
                 <noscript>
                     <style>
                         #jeditor_buttons {
@@ -27,9 +19,29 @@
                     </style>
                 </noscript>
 
-                <div id="jeditor_buttons">
-                    <a class="btn btn-default btn-lg" href="">Validate JSON</a> <a class="btn btn-default btn-lg" href="/endpoint/create">Create endpoint</a>
-                </div>
+                <form action="/endpoint/create" method="post" ng-controller="EndpointIndexController">
+
+                    {# IMPORTANT: we use jqLite which doesn't support
+                                  all kind of selectors, thus the controller
+                                  is taking the first textarea it finds
+                     #}
+                    <textarea name="json">{{ jsoneditor_default_input | json_without_gist }}</textarea>
+
+                    {%
+                        set jeditor_config = {
+                            'default_input': jsoneditor_default_input | json_without_gist,
+                            'use_noscript': true,
+                            'ace_config': '{onChange: aceChanged}'
+                        }
+                    %}
+                    {% include 'partials/jsoneditor.twig' with jeditor_config only %}
+
+                    <div id="jeditor_buttons">
+                        <a class="btn btn-default btn-lg" href="">Validate JSON</a> <input type="submit" class="btn btn-default btn-lg" href="/endpoint/create" value="Create endpoint">
+                    </div>
+
+                </form>
+
             </div>
         </div>
     </div>
