@@ -24,9 +24,10 @@ class Validation
             );
         }
 
-        $this->result = json_decode($json);
-        $this->ok = property_exists($this->result, 'valid')
-            && !empty($this->result->valid);
+        $this->result = json_decode($json, true);
+
+        // @todo: don't hard-code the api version number
+        $this->ok = @in_array('0.13', $this->result['valid']);
     }
 
     public function getOk()
