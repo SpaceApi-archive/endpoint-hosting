@@ -127,7 +127,8 @@ class SpaceApiObject
      */
     public function validate()
     {
-        $url = "http://spaceapi.net/validate?url=http://endpoint.spaceapi.net/space/${this->slug}/status/json";
+        $slug = $this->slug;
+        $url = "http://spaceapi.net/validate?url=http://endpoint.spaceapi.net/space/$slug/status/json";
         $ch = curl_init($url);
 
         curl_setopt($ch, CURLOPT_POSTFIELDS, $this->json);
