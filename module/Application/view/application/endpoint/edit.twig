@@ -42,7 +42,7 @@
 
                     {%
                         set jeditor_config = {
-                            'default_input': spaceapi.json | jol_without_gist | jol_without_api,
+                            'default_input': spaceapi.json | json_without_gist | json_without_api,
                             'use_noscript': false,
                             'ace_config': '{onChange: aceChanged}'
                         }
