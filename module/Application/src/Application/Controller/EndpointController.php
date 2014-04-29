@@ -159,13 +159,14 @@ class EndpointController extends AbstractActionController
             // has been 'gisted'
             if (! is_null($requested_endpoint_data)) {
 
+                // @framework zend2
                 $this->forward()->dispatch(
                     'Application\Controller\Endpoint',
                     array(
                         'action' => 'edit', // controller action
-                        'token'  => $token, // parameter
-                        'edit_action'  => 'Save', // parameter
-                        'json'   => $requested_endpoint_data->json, // parameter
+                        'token'  => $token, // action parameter
+                        'edit_action'  => 'Save', // action parameter
+                        'json'   => $requested_endpoint_data->json, // action parameter
                     )
                 );
             }
