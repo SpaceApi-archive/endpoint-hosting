@@ -1,23 +1,34 @@
 <?php
 
 namespace Application\SpaceApi;
+use Application\Exception\FilesystemException;
 use Application\Utils\Utils;
+use JsonSchema\Exception\JsonDecodingException;
+use SpaceApi\Validator\ResultInterface;
+use SpaceApi\Validator\ValidatorInterface;
+use Zend\Json\Exception\RuntimeException;
+use Zend\Json\Json;
 
 /**
  * Class SpaceApiObject
  * @package Application\SpaceApiObject
  *
- * @property-read string name
- * @property-read string version
- * @property-read int gist
+ * @property-read string name Hackerspace name
+ * @property-read int version Specification version number
+ * @property-read int gist Gist ID
  * @property-read string json
  * @property-read object object
- * @property-read string slug
- * @property-read Validation validation
- * @property-read boolean validJson
+ * @property-read string slug normalized hackerspace name
+ * @property-read string loaded_from value 'file', 'json' or 'name' which defines from what source the instace got created
+ * @property-read ResultInterface|null validation validation result re-initialized on each update request, null if the json is not parsable
+ * @property-read boolean validJson flag which says that that $json is parsable. This flag is not meant to be a validation result flag.
  */
 class SpaceApiObject
 {
+    const LOADED_FROM_FILE = 'file';
+    const LOADED_FROM_JSON = 'json';
+    const LOADED_FROM_NAME = 'name';
+
     protected $name = '';
     protected $version = 0;
     protected $gist = 0;
@@ -26,30 +37,60 @@ class SpaceApiObject
     protected $slug = '';
     protected $validation = null;
     protected $validJson = true;
+    protected $loaded_from = '';
 
-    // this should not be exposed to the code assistant, as it's not
+    // these should not be exposed to the code assistant, as it's not
     // accessible outside this class or a subclass.
     protected $file;
+    protected $validator = null;
 
-    // Don't make this public, this class has factory methods to
-    // instantiate itself. The passed json might be invalid, this will
-    // be handled in update()
+    // properties that should not be accessed by the magic getter
+    protected $private_properties = array(
+        'private_properties',
+        'file',
+        'validator'
+    );
+
     /**
+     * Creates a new SpaceApiObject instance. The constructor is not
+     * intended for public access. Instead there are three factory
+     * methods, {@see Application\SpaceApi\SpaceApiObject::fromName()},
+     * {@see Application\SpaceApi\SpaceApiObject::fromFile()} and
+     * {@see Application\SpaceApi\SpaceApiObject::fromJson()}.
+     *
+     * If an invalid JSON is passed as an argument it will be stored in
+     * {@see Application\SpaceApi\SpaceApiObject::json} and
+     * {@see Application\SpaceApi\SpaceApiObject::json} set to false.
+     *
      * @param string $json
      */
     protected function __construct($json)
     {
-        $this->update($json);
+        $this->json = $json;
+
+        try {
+            // update() sets validJson to false if it fails but we need
+            // to catch all the exceptions to not propagate them to
+            // higher application levels where 'validJson' and 'validation'
+            // are used to check whether there's something wrong with
+            // the endpoint data
+            $this->update($json);
+        } catch (\BadMethodCallException $badMethodCallException) {
+        } catch (RuntimeException $decodingException) {
+        }
     }
 
     /**
+     * Magic getter to access the protected properties. Private properties
+     * are skipped.
+     *
      * @param $property
      * @return mixed
      * @throws \Exception
      */
     public function __get($property)
     {
-        if (property_exists($this, $property) && $property !== 'file') {
+        if (in_array($property, $this->private_properties) && property_exists($this, $property)) {
             return $this->$property;
         } else {
             throw new \Exception('Bad method call or attribute access!');
@@ -70,49 +111,70 @@ class SpaceApiObject
     }
 
     /**
-     * Updates
+     * Updates {@see Application\SpaceApi\SpaceApiObject::json} and the
+     * its object representation {@see Application\SpaceApi\SpaceApiObject::object}.
+     * If the JSON could not be decoded {@see Application\SpaceApi\SpaceApiObject::object}
+     * will be set to null and {@see Application\SpaceApi\SpaceApiObject::json}
+     * remains unchanged to prevent it being written to the filesystem
+     * with a subsequent {@see Application\SpaceApi\SpaceApiObject::save()} call.
+     *
      * @param string $json
-     * @return $this
-     * @throws \Exception if invalid json provided
+     * @return SpaceApiObject
+     * @throws \BadMethodCallException if input is not a string
+     * @throws RuntimeException if the JSON could not be decoded
      */
     public function update($json)
     {
-        if (!is_string($json)) {
-            throw new \Exception('Input not a string');
+        //////////////////////////////////////////////////////////////
+        // never set $this->json before the try-catch block
+
+        if (! is_string($json)) {
+            throw new \BadMethodCallException('Input not a string');
         }
 
-        $object = json_decode($json);
+        $object = null;
 
-        if (is_null($object)) {
-            $this->json = $json;
+        try {
+            $this->object = Json::decode($json);
+        } catch(RuntimeException $e) {
+            $this->validation = null;
             $this->validJson = false;
-            throw new \Exception('Invalid JSON');
+            throw $e;
         }
+        //////////////////////////////////////////////////////////////
 
-        $this->setName($object);
-        $this->setVersion($object);
+        $this->json = $json;
+        $this->validJson = true;
+
+        $this->setName($this->object);
+        $this->setVersion($this->object);
 
         // set the gist ID if it's yet uninitialized or write ours back
         // to $object.
         if ($this->gist === 0) {
-            $this->setGist($object);
+            $this->setGist($this->object);
         } else {
             $object->ext_gist = $this->gist;
         }
 
-        $this->object = $object;
         $this->json = json_encode(
-            $object,
+            $this->object,
             JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
         );
 
         $this->validate();
-
         return $this;
     }
 
     /**
-     * Saves this object to the spaceapi file. This method does nothing
+     * @param ValidatorInterface $validator
+     */
+    public function setValidator(ValidatorInterface $validator) {
+        $this->validator = $validator;
+    }
+
+    /**
+     * Saves a SpaceApiObject instance to the file. This method does nothing
      * if the object was created from fromJson().
      */
     public function save()
@@ -123,26 +185,26 @@ class SpaceApiObject
     }
 
     /**
-     * Validates the spaceapi json.
+     * Validates the spaceapi json. This must never be called directly
+     * by a consumer and is intended to be used by SpaceApiObject::update()
+     * only. If the update method can't decode the JSON, validate() isn't
+     * called.
      */
-    public function validate()
+    private function validate()
     {
-        $slug = $this->slug;
-        $url = "http://spaceapi.net/validate?url=http://endpoint.spaceapi.net/space/$slug/status/json";
-        $ch = curl_init($url);
+        if (! is_null($this->validator)) {
+            $this->validation = $this->validator->validateStableVersion($this->json);
+        }
+    }
 
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $this->json);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-        $response = curl_exec($ch);
-        $http_status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
-
-        // @todo: $response might be no json because of a network issue
-        //        it could be wrong or a timeout could appear
-        $this->validation = new Validation($response);
-
-        return $this->validation->getOk();
+    /**
+     * Returns the validation results if a validator was set and a validation
+     * performed. Otherwise null is returned.
+     *
+     * @return null|ResultInterface
+     */
+    public function getValidation() {
+        return $this->validation;
     }
 
     /****************************************************************/
@@ -175,6 +237,11 @@ class SpaceApiObject
     /**
      * Creates a SpaceApiObject from a slug or the original space name.
      *
+     * @deprecated This method is specific to the 'endpoint hosting'
+     *             application which makes this class not reusable as
+     *             a library. On the application level a service should
+     *             be defined which retrieves the file path and uses fromFile()
+     *             instead
      * @param string $name slug or the original space name
      * @return SpaceApiObject
      * @throws \Exception
@@ -195,6 +262,10 @@ class SpaceApiObject
 
         $object = static::fromFile($file_path);
         $object->slug = $name;
+
+        // overrides fromFile's definition
+        $object->loaded_from = static::LOADED_FROM_NAME;
+
         return $object;
     }
 
@@ -203,18 +274,22 @@ class SpaceApiObject
      *
      * @param $file
      * @return SpaceApiObject
-     * @throws \Exception
+     * @throws \Application\Exception\FilesystemException
      */
     public static function fromFile($file)
     {
         if (!file_exists($file)) {
-            throw new \Exception("File not found: $file");
+            throw new FilesystemException("File not found: $file");
         }
 
         /** @var SpaceApiObject $object */
-        $object = static::fromJson(file_get_contents($file));
-        $object->file = $file;
-        return $object;
+        $instance = static::fromJson(file_get_contents($file));
+        $instance->file = $file;
+
+        // overrides fromJson's definition
+        $instance->loaded_from = static::LOADED_FROM_FILE;
+
+        return $instance;
     }
 
     /**
@@ -222,10 +297,11 @@ class SpaceApiObject
      *
      * @param $json
      * @return SpaceApiObject
-     * @throws \Exception
      */
     public static function fromJson($json)
     {
-        return new static($json);
+        $instance = new static($json);
+        $instance->loaded_from = static::LOADED_FROM_JSON;
+        return $instance;
     }
 }
