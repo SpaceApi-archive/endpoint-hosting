@@ -24,6 +24,7 @@
         "slopjong/jol": "dev-master"
     },
     "require-dev": {
-        "phploc/phploc": "*"
+        "phploc/phploc": "*",
+        "phpunit/phpunit": "3.7"
     }
 }
