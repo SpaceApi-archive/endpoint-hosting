@@ -21,6 +21,7 @@ use Zend\Json\Json;
  * @property-read string slug normalized hackerspace name
  * @property-read string loaded_from value 'file', 'json' or 'name' which defines from what source the instace got created
  * @property-read ResultInterface|null validation validation result re-initialized on each update request, null if the json is not parsable
+ * @property-read ValidatorInterface validator
  * @property-read boolean validJson flag which says that that $json is parsable. This flag is not meant to be a validation result flag.
  */
 class SpaceApiObject
@@ -38,17 +39,16 @@ class SpaceApiObject
     protected $validation = null;
     protected $validJson = true;
     protected $loaded_from = '';
+    protected $validator = null;
 
     // these should not be exposed to the code assistant, as it's not
     // accessible outside this class or a subclass.
     protected $file;
-    protected $validator = null;
 
     // properties that should not be accessed by the magic getter
     protected $private_properties = array(
         'private_properties',
-        'file',
-        'validator'
+        'file'
     );
 
     /**
@@ -90,7 +90,7 @@ class SpaceApiObject
      */
     public function __get($property)
     {
-        if (in_array($property, $this->private_properties) && property_exists($this, $property)) {
+        if (! in_array($property, $this->private_properties) && property_exists($this, $property)) {
             return $this->$property;
         } else {
             throw new \Exception('Bad method call or attribute access!');
