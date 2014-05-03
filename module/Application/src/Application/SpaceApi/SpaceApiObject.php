@@ -21,7 +21,7 @@ use Zend\Json\Json;
  * @property-read string slug normalized hackerspace name
  * @property-read string loaded_from value 'file', 'json' or 'name' which defines from what source the instace got created
  * @property-read ResultInterface|null validation validation result re-initialized on each update request, null if the json is not parsable
- * @property-read ValidatorInterface validator
+ * @property-read ValidatorInterface|null validator
  * @property-read boolean validJson flag which says that that $json is parsable. This flag is not meant to be a validation result flag.
  */
 class SpaceApiObject
@@ -135,6 +135,10 @@ class SpaceApiObject
         $object = null;
 
         try {
+            if (empty($json)) {
+                throw new RuntimeException('Empty input');
+            }
+
             $this->object = Json::decode($json);
         } catch(RuntimeException $e) {
             $this->validation = null;
