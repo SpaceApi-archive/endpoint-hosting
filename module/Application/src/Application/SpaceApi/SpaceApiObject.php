@@ -22,7 +22,7 @@ use Zend\Json\Json;
  * @property-read string loaded_from value 'file', 'json' or 'name' which defines from what source the instace got created
  * @property-read ResultInterface|null validation validation result re-initialized on each update request, null if the json is not parsable
  * @property-read ValidatorInterface|null validator
- * @property-read boolean validJson flag which says that that $json is parsable. This flag is not meant to be a validation result flag.
+ * @property-read boolean validJson flag which says that that $json is parsable. This flag is not meant to be a validation result flag nor if the JSON was an empty string. To check if the JSON was empty simply do a empty() check on the json property or a is_null() check on the object property.
  */
 class SpaceApiObject
 {
@@ -135,10 +135,6 @@ class SpaceApiObject
         $object = null;
 
         try {
-            if (empty($json)) {
-                throw new RuntimeException('Empty input');
-            }
-
             $this->object = Json::decode($json);
         } catch(RuntimeException $e) {
             $this->validation = null;
@@ -149,6 +145,12 @@ class SpaceApiObject
 
         $this->json = $json;
         $this->validJson = true;
+
+        // empty strings are valid JSON but since $object is null in
+        // this case we simply return here
+        if (is_null($object)) {
+            return $this;
+        }
 
         $this->setName($this->object);
         $this->setVersion($this->object);
