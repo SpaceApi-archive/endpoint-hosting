@@ -173,10 +173,12 @@ class SpaceApiObject
     }
 
     /**
+     * Sets a validator and validates the JSON.
      * @param ValidatorInterface $validator
      */
     public function setValidator(ValidatorInterface $validator) {
         $this->validator = $validator;
+        $this->validate();
     }
 
     /**
@@ -193,8 +195,8 @@ class SpaceApiObject
     /**
      * Validates the spaceapi json. This must never be called directly
      * by a consumer and is intended to be used by SpaceApiObject::update()
-     * only. If the update method can't decode the JSON, validate() isn't
-     * called.
+     * or SpaceApiObject::setValidator() only. If the update method can't
+     * decode the JSON, validate() isn't called.
      */
     private function validate()
     {
