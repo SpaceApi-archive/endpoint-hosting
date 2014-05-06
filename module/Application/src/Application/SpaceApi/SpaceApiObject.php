@@ -196,7 +196,9 @@ class SpaceApiObject
      * Validates the spaceapi json. This must never be called directly
      * by a consumer and is intended to be used by SpaceApiObject::update()
      * or SpaceApiObject::setValidator() only. If the update method can't
-     * decode the JSON, validate() isn't called.
+     * decode the JSON, validate() isn't called. If the validator is set
+     * and the 'json' property an empty string, the validator will be
+     * triggered.
      */
     private function validate()
     {
