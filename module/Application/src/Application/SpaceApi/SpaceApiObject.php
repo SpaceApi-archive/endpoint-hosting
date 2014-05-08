@@ -26,9 +26,9 @@ use Zend\Json\Json;
  */
 class SpaceApiObject
 {
-    const LOADED_FROM_FILE = 'file';
-    const LOADED_FROM_JSON = 'json';
-    const LOADED_FROM_NAME = 'name';
+    const FROM_FILE = 'file';
+    const FROM_JSON = 'json';
+    const FROM_NAME = 'name';
 
     protected $name = '';
     protected $version = 0;
@@ -274,7 +274,7 @@ class SpaceApiObject
         $object->slug = $name;
 
         // overrides fromFile's definition
-        $object->loaded_from = static::LOADED_FROM_NAME;
+        $object->loaded_from = static::FROM_NAME;
 
         return $object;
     }
@@ -297,7 +297,7 @@ class SpaceApiObject
         $instance->file = $file;
 
         // overrides fromJson's definition
-        $instance->loaded_from = static::LOADED_FROM_FILE;
+        $instance->loaded_from = static::FROM_FILE;
 
         return $instance;
     }
@@ -311,7 +311,7 @@ class SpaceApiObject
     public static function fromJson($json)
     {
         $instance = new static($json);
-        $instance->loaded_from = static::LOADED_FROM_JSON;
+        $instance->loaded_from = static::FROM_JSON;
         return $instance;
     }
 }
