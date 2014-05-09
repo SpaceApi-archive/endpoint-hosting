@@ -24,6 +24,8 @@ use Zend\Json\Json;
  * @property-read ValidatorInterface|null validator
  * @property-read boolean validJson flag which says that that $json is parsable. This flag is not meant to be a validation result flag nor if the JSON was an empty string. To check if the JSON was empty simply do a empty() check on the json property or a is_null() check on the object property.
  */
+// @todo move this class to a library repo which will be shared with other modules/projects
+//       make this class totally independent of the endpoint hosting project and remove FROM_NAME
 class SpaceApiObject
 {
     const FROM_FILE = 'file';
