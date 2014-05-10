@@ -53,26 +53,12 @@
                     <input type="submit" name="edit_action" value="Save">
                 </form>
 
-                {% if spaceapi.validJson %}
-                    {% if spaceapi.validation.ok %}
-                        <div class="validation ok">Your JSON is compliant to the specs.</div>
-                    {% else %}
-                        <div class="validation error">
-                            {% for version,messages in spaceapi.validation.result.errors %}
-                                {# @todo: don't hard-code the api version #}
-                                {% if version == '0.13' %}
-                                    <div class="alert alert-danger">
-                                    {% for message in messages %}
-                                        {{ message.msg }}<br>
-                                    {% endfor %}
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                {% else %}
-                    <div class="validation error">Invalid JSON!</div>
-                {% endif %}
+                {%
+                    set validation_partial_parameters = {
+                        'spaceapi': spaceapi
+                    }
+                %}
+                {% include 'partials/validation_results.twig' with validation_partial_parameters only %}
 
             {% else %}
 

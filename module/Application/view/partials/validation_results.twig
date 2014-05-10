@@ -1,0 +1,43 @@
+{#####################################################################
+    Use this partial as follows:
+
+    {%
+        set validation_partial_data = {
+            'spaceapi': spaceapi
+        }
+    %}
+    {% include 'partials/validation_results.twig' with validation_partial_data only %}
+
+    Configuration options:
+
+     - spaceapi: (SpaceApiObject) endpoint data from which the validation results are taken from
+
+#####################################################################}
+
+{% if spaceapi.validJson %}
+
+    {# the json is valid in this place but it's not
+       necessary a valid SpaceApi implementation #}
+
+    {% set validation = spaceapi.validation %}
+
+    {% if validation.valid %}
+        <div class="validation ok">Your JSON is compliant to the specs.</div>
+    {% else %}
+        <div class="validation error">
+
+            {% for version,messages in validation.errors %}
+                {# @todo: don't hard-code the api version #}
+                {% if version == '0.13' %}
+                    <div class="alert alert-danger">
+                        {% for message in messages %}
+                            {{ message.msg }}<br>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% else %}
+    <div class="validation error">Invalid JSON!</div>
+{% endif %}
