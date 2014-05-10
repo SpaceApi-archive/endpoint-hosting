@@ -1,11 +1,13 @@
 <?php
-namespace ApplicationTest;//Change this namespace for your test
+namespace ApplicationTest;
 
 use Zend\Loader\AutoloaderFactory;
 use Zend\Mvc\Service\ServiceManagerConfig;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Stdlib\ArrayUtils;
 use RuntimeException;
+
+define("APPLICATION_PATH", dirname(dirname(dirname(__DIR__))));
 
 error_reporting(E_ALL | E_STRICT);
 chdir(__DIR__);
