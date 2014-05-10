@@ -9,6 +9,7 @@ use Application\Mail\EndpointMailInterface;
 use Application\Map\SpaceMap;
 use Application\Map\SpaceMapList;
 use Application\SpaceApi\SpaceApiObject;
+use Application\SpaceApi\SpaceApiObjectFactory;
 use Application\Utils\Utils;
 use Doctrine\Common\Collections\Criteria;
 use Slopjong\JOL;
@@ -64,7 +65,8 @@ class EndpointController extends AbstractActionController
         $json = $this->params()->fromPost('json');
         if (! is_null($json) && $json !== '' ) {
             try {
-                $requested_endpoint_data = SpaceApiObject::fromJson($json);
+                $requested_endpoint_data = SpaceApiObjectFactory::create(
+                    $json, SpaceApiObject::FROM_JSON);
 
                 // this won't be executed if $json is invalid
                 $space = $requested_endpoint_data->name;
@@ -237,9 +239,7 @@ class EndpointController extends AbstractActionController
             );
         }
 
-        /** @var SpaceApiObject $spaceapi */
-        $spaceapi = SpaceApiObject::fromName($slug);
-
+        $spaceapi = SpaceApiObjectFactory::create($slug, SpaceApiObject::FROM_NAME);
 
         try {
             $action = $this->params()->fromPost('edit_action');
@@ -347,7 +347,7 @@ class EndpointController extends AbstractActionController
         return Utils::postGist(
             $config['gist_token'],
             $gist_file,
-            SpaceApiObject::fromName($slug)->json
+            SpaceApiObjectFactory::create($slug, SpaceApiObject::FROM_NAME)->json
         );
     }
 
@@ -383,8 +383,7 @@ class EndpointController extends AbstractActionController
             throw new EmptyGistIdException('Empty gist ID provided.');
         }
 
-        /** @var SpaceApiObject $spaceapi */
-        $spaceapi = SpaceApiObject::fromName($slug);
+        $spaceapi = SpaceApiObjectFactory::create($slug, SpaceApiObject::FROM_NAME);
         $object = $spaceapi->object;
         $object->ext_gist = $gist_id;
 
@@ -402,7 +401,7 @@ class EndpointController extends AbstractActionController
      */
     protected function getSpaceApiJsonWithoutGist($slug)
     {
-        $spaceapi = SpaceApiObject::fromName($slug)->object;
+        $spaceapi = SpaceApiObjectFactory::create($slug, SpaceApiObject::FROM_NAME)->object;
         unset($spaceapi->ext_gist);
 
         return json_encode($spaceapi,
