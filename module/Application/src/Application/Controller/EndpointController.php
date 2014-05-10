@@ -278,9 +278,8 @@ class EndpointController extends AbstractActionController
                     break;
 
                 default:
-
-                    // this should never happen
-                    // TODO: output a warning or send an email
+                    // this case happens on the 'Enter your token page'
+//                    trigger_error('Edit action requested!');
             }
         } catch (\Exception $e) {
             // no extra care needed here, the template knows how to
