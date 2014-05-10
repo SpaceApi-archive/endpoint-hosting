@@ -134,7 +134,7 @@ class SpaceApiObject
             throw new \BadMethodCallException('Input not a string');
         }
 
-        $object = null;
+        $this->object = null;
 
         try {
             $this->object = Json::decode($json);
@@ -150,7 +150,7 @@ class SpaceApiObject
 
         // empty strings are valid JSON but since $object is null in
         // this case we simply return here
-        if (is_null($object)) {
+        if (is_null($this->object)) {
             return $this;
         }
 
@@ -162,7 +162,7 @@ class SpaceApiObject
         if ($this->gist === 0) {
             $this->setGist($this->object);
         } else {
-            $object->ext_gist = $this->gist;
+            $this->object->ext_gist = $this->gist;
         }
 
         $this->json = json_encode(
