@@ -24,7 +24,20 @@ class SpaceApiObjectTest extends \PHPUnit_Framework_TestCase
     }
 
     public function testUpdate() {
+        $json = $this->providerJsonDataGood()[0][0];
+        $spaceApiObject = SpaceApiObject::fromJson($json);
 
+        $validator = $this->providerValidator()[0][0];
+        $spaceApiObject->setValidator($validator);
+        $this->assertEmpty($spaceApiObject->validation->getErrors());
+
+        // remove the space field to force a validation error
+        $object = json_decode($json);
+        unset($object->space);
+        $json = json_encode($object);
+
+        $spaceApiObject = $spaceApiObject->update($json);
+        $this->assertNotEmpty($spaceApiObject->validation->getErrors());
     }
 
     public function testFromName() {
@@ -84,7 +97,7 @@ class SpaceApiObjectTest extends \PHPUnit_Framework_TestCase
         /** @var SpaceApiObject $spaceApiObject */
         foreach ($spaceApiObjectList as $spaceApiObject) {
             // The validation property can only be null if no validator is set.
-            $this->assertNotNull($spaceApiObject->validation);;
+            $this->assertNotNull($spaceApiObject->validation);
         }
 
         return $spaceApiObjectList;
