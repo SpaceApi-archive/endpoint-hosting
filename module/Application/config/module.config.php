@@ -154,7 +154,9 @@ $module_config = array(
         /**
          * Options that are passed directly to the Twig_Environment.
          */
-        'environment_options' => array(),
+        'environment_options' => array(
+            'debug' => (getenv('DEVELOPMENT') === 'true') ? true : false,
+        ),
 
         /**
          * Service manager alias of any additional loaders to register with the chain. The default
@@ -171,6 +173,7 @@ $module_config = array(
          * is required for this module to function!
          */
         'extensions' => array(
+            'Twig_Extension_Debug',
             'zfctwig' => 'ZfcTwigExtension',
             'spaceapitwig' => 'Application\Twig\Extension\SpaceApiExtension',
         ),
