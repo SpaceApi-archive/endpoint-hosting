@@ -292,6 +292,16 @@ class EndpointController extends AbstractActionController
         );
     }
 
+    public function validateAjaxAction() {
+        header('Content-type: application/json');
+        $json = $this->params()->fromPost('json');
+        $spaceApiObject = SpaceApiObjectFactory::create($json, SpaceApiObject::FROM_JSON);
+
+        return $this->getResponse()->setContent(
+            $spaceApiObject->validation->searilize()
+        );
+    }
+
     //****************************************************************
     // HELPERS
 
