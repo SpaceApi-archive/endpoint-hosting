@@ -293,6 +293,7 @@ class EndpointController extends AbstractActionController
     }
 
     public function validateAjaxAction() {
+        // curl -v --data-urlencode json='{"space":"test", "url":""}'  http://localhost:8090/endpoint/validate-ajax
         header('Content-type: application/json');
         $json = $this->params()->fromPost('json');
         $spaceApiObject = SpaceApiObjectFactory::create($json, SpaceApiObject::FROM_JSON);
