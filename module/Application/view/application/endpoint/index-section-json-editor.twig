@@ -37,8 +37,19 @@
                     {% include 'partials/jsoneditor.twig' with jeditor_config only %}
 
                     <div id="jeditor_buttons">
-                        <a class="btn btn-default btn-lg" href="">Validate JSON</a> <input type="submit" class="btn btn-default btn-lg" href="/endpoint/create" value="Create endpoint">
+                        <a ng-click="validate()" class="btn btn-default btn-lg" href="">Validate JSON</a> <input type="submit" class="btn btn-default btn-lg" href="/endpoint/create" value="Create endpoint">
                     </div>
+
+                    {% verbatim %}
+                    {# verbatim block here is not rendered by twig as
+                       angular also uses the {{ template_variable }} syntax #}
+                    <div class="validation-results {{ results.class }}">
+                        {{results.message}}
+                        <ul>
+                            <li ng-repeat="error in results.errors">{{ error.msg }}</li>
+                        </ul>
+                    </div>
+                    {% endverbatim %}
 
                 </form>
 
