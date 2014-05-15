@@ -1,4 +1,6 @@
 // if we use section.jsoneditor this will conflict with the jsoneditor's stylesheet
+// @todo: check if the old json editor will ever be used again and remove the above comment
+
 .jeditor {
 
   .btn {
@@ -16,5 +18,39 @@
 
   textarea[name="json"] {
     display: none;
+  }
+
+  .validation-results {
+
+    padding: 5px;
+    min-width: 700px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+    text-align: left !important;
+
+    .message {
+      font-family: Gafata,sans-serif;
+      font-size: 1.2em;
+    }
+
+    &.ok {
+      color: #529214;
+      background: none repeat scroll 0 0 #E6EFC2 !important;
+      border: 2px solid #C6D880 !important;
+    }
+
+    &.error {
+      color: #D12F19;
+      background: none repeat scroll 0 0 #FBE3E4 !important;
+      border: 2px solid #FBC2C4 !important;
+
+      ul {
+        margin-top: 20px;
+        font-family: monospace, serif;
+        font-size: 0.7em;
+      }
+    }
   }
 }

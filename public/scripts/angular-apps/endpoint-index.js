@@ -60,10 +60,12 @@ angular
     $scope.results = {
       class: 'ok',
       message: 'Your JSON is compliant to the specs.',
-      errors: []
+      errors: [],
+      show: false
     };
 
     $scope.validate = function() {
+
       if ($scope.jsonValid) {
         $http({
           url: '/endpoint/validate-ajax',
@@ -85,6 +87,8 @@ angular
             $scope.results.message = 'Your JSON is not compliant to the specs 0.13';
             $scope.results.class = 'error';
           }
+
+          $scope.results.show = true;
         }).error(function (data, status, headers, config) {
           // @todo do something
         });
