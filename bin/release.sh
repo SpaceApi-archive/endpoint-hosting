@@ -40,7 +40,7 @@ then
 	# TODO: switch to the maintenance page
 	
 	php composer.phar self-update
-	php composer.phar install
+	php composer.phar update
 	npm install
 	bower install
 	grunt build
