@@ -153,7 +153,9 @@ class Utils
     /**
      * Adds an api field with the latest stable version number to the
      * passed JSON if it's missing. If it's present it's overridden.
-     * @param $json
+     * It returns the unmodified input if the json could not be decoded.
+     *
+     * @param string $json
      * @return string
      */
     public static function setApiToLatest($json) {
