@@ -1,6 +1,7 @@
 <?php
 
 namespace Application\SpaceApi;
+use Application\Utils\Utils;
 use SpaceApi\Validator\Validator;
 
 /**
@@ -8,6 +9,10 @@ use SpaceApi\Validator\Validator;
  */
 class SpaceApiObjectFactory
 {
+    const FROM_FILE = 'file';
+    const FROM_JSON = 'json';
+    const FROM_NAME = 'name';
+
     /**
      * Creates a SpaceApiObject instance with a default validator already set.
      * @param $data
@@ -16,30 +21,54 @@ class SpaceApiObjectFactory
      */
     public static function create($data, $loadFrom) {
 
-        // @todo get the filepath from the name and use fromFile
-        // @todo don't use SpaceApiObject's FROM_* constants as FROM_NAME will be dropped in the future
-        //       define own constants in this class
-
         $spaceApiObject = null;
 
         switch ($loadFrom) {
-            case SpaceApiObject::FROM_JSON:
+            case SpaceApiObjectFactory::FROM_JSON:
 
-                $spaceApiObject = SpaceApiObject::fromJson($data);
+                $spaceApiObject = static::fromJson($data);
                 break;
 
-            case SpaceApiObject::FROM_FILE:
+            case SpaceApiObjectFactory::FROM_FILE:
 
-                $spaceApiObject = SpaceApiObject::fromFile($data);
+                $spaceApiObject = static::fromFile($data);
                 break;
 
-            case SpaceApiObject::FROM_NAME:
+            case SpaceApiObjectFactory::FROM_NAME:
 
-                $spaceApiObject = SpaceApiObject::fromName($data);
+                $spaceApiObject = static::fromName($data);
                 break;
         }
 
         $spaceApiObject->setValidator(new Validator());
         return $spaceApiObject;
+    }
+
+    /**
+     * Creates a SpaceApiObject from a slug or the original space name.
+     *
+     * @param string $name slug or the original space name
+     * @return SpaceApiObject
+     * @throws \FilesystemException if file with the given name is not found
+     */
+    public static function fromName($name) {
+
+        $slug = '';
+
+        // normalize the name for all other endpoint than the test endpoint
+        if ($name !== '.test-endpoint') {
+            $slug = Utils::normalize($name);
+        }
+
+        $spaceApiObject = static::fromFile("public/space/$name/spaceapi.json", $slug);
+        return $spaceApiObject;
+    }
+
+    public static function fromFile($filepath, $slug = '') {
+        return SpaceApiObject::fromFile($filepath, $slug);
+    }
+
+    public static function fromJson($json) {
+        return SpaceApiObject::fromJson($json);
     }
 }

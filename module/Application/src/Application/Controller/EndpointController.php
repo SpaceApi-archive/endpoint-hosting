@@ -66,7 +66,7 @@ class EndpointController extends AbstractActionController
         if (! is_null($json) && $json !== '' ) {
             try {
                 $requested_endpoint_data = SpaceApiObjectFactory::create(
-                    $json, SpaceApiObject::FROM_JSON);
+                    $json, SpaceApiObjectFactory::FROM_JSON);
 
                 // this won't be executed if $json is invalid
                 $space = $requested_endpoint_data->name;
@@ -239,7 +239,7 @@ class EndpointController extends AbstractActionController
             );
         }
 
-        $spaceapi = SpaceApiObjectFactory::create($slug, SpaceApiObject::FROM_NAME);
+        $spaceapi = SpaceApiObjectFactory::create($slug, SpaceApiObjectFactory::FROM_NAME);
 
         try {
             $action = $this->params()->fromPost('edit_action');
@@ -296,7 +296,7 @@ class EndpointController extends AbstractActionController
         // curl -v --data-urlencode json='{"space":"test", "url":""}'  http://localhost:8090/endpoint/validate-ajax
         header('Content-type: application/json');
         $json = $this->params()->fromPost('json');
-        $spaceApiObject = SpaceApiObjectFactory::create($json, SpaceApiObject::FROM_JSON);
+        $spaceApiObject = SpaceApiObjectFactory::create($json, SpaceApiObjectFactory::FROM_JSON);
 
         return $this->getResponse()->setContent(
             $spaceApiObject->validation->searilize()
@@ -357,7 +357,7 @@ class EndpointController extends AbstractActionController
         return Utils::postGist(
             $config['gist_token'],
             $gist_file,
-            SpaceApiObjectFactory::create($slug, SpaceApiObject::FROM_NAME)->json
+            SpaceApiObjectFactory::create($slug, SpaceApiObjectFactory::FROM_NAME)->json
         );
     }
 
@@ -393,7 +393,7 @@ class EndpointController extends AbstractActionController
             throw new EmptyGistIdException('Empty gist ID provided.');
         }
 
-        $spaceapi = SpaceApiObjectFactory::create($slug, SpaceApiObject::FROM_NAME);
+        $spaceapi = SpaceApiObjectFactory::create($slug, SpaceApiObjectFactory::FROM_NAME);
         $object = $spaceapi->object;
         $object->ext_gist = $gist_id;
 
@@ -411,7 +411,7 @@ class EndpointController extends AbstractActionController
      */
     protected function getSpaceApiJsonWithoutGist($slug)
     {
-        $spaceapi = SpaceApiObjectFactory::create($slug, SpaceApiObject::FROM_NAME)->object;
+        $spaceapi = SpaceApiObjectFactory::create($slug, SpaceApiObjectFactory::FROM_NAME)->object;
         unset($spaceapi->ext_gist);
 
         return json_encode($spaceapi,

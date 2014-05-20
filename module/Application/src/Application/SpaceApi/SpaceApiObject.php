@@ -25,12 +25,10 @@ use Zend\Json\Json;
  * @property-read boolean validJson flag which says that that $json is parsable. This flag is not meant to be a validation result flag nor if the JSON was an empty string. To check if the JSON was empty simply do a empty() check on the json property or a is_null() check on the object property.
  */
 // @todo move this class to a library repo which will be shared with other modules/projects
-//       make this class totally independent of the endpoint hosting project and remove FROM_NAME
 class SpaceApiObject
 {
     const FROM_FILE = 'file';
     const FROM_JSON = 'json';
-    const FROM_NAME = 'name';
 
     protected $name = '';
     protected $version = 0;
@@ -127,6 +125,11 @@ class SpaceApiObject
      */
     public function update($json)
     {
+        // we need to set the json before the try-catch block here
+        // otherwise the user will loose data if the json has a typo
+        // while he added new fields
+        $this->json = $json;
+
         //////////////////////////////////////////////////////////////
         // never set $this->json before the try-catch block
 
@@ -145,7 +148,7 @@ class SpaceApiObject
         }
         //////////////////////////////////////////////////////////////
 
-        $this->json = $json;
+
         $this->validJson = true;
 
         // empty strings are valid JSON but since $object is null in
@@ -247,56 +250,26 @@ class SpaceApiObject
     // factory methods
 
     /**
-     * Creates a SpaceApiObject from a slug or the original space name.
+     * Creates a SpaceApiObject from a file. You can pass a slug if you want
+     * to pass a file identifier to other objects in your application
+     * to be able to identify/load the file which this SpaceApiObject
+     * instance is created from.
      *
-     * @deprecated This method is specific to the 'endpoint hosting'
-     *             application which makes this class not reusable as
-     *             a library. On the application level a service should
-     *             be defined which retrieves the file path and uses fromFile()
-     *             instead
-     * @param string $name slug or the original space name
-     * @return SpaceApiObject
-     * @throws \Exception
-     */
-    public static function fromName($name)
-    {
-        // normalize the name for all other endpoint than the test endpoint
-        if ($name !== '.test-endpoint') {
-            $name = Utils::normalize($name);
-        }
-
-        $file_path = "public/space/$name/spaceapi.json";
-
-        // we must guarantee that the
-        if (!file_exists($file_path)) {
-            throw new \Exception("File not found: $file_path");
-        }
-
-        $object = static::fromFile($file_path);
-        $object->slug = $name;
-
-        // overrides fromFile's definition
-        $object->loaded_from = static::FROM_NAME;
-
-        return $object;
-    }
-
-    /**
-     * Creates a SpaceApiObject from a file.
-     *
-     * @param $file
+     * @param string $file
+     * @param string $slug unique file identifier
      * @return SpaceApiObject
      * @throws \Application\Exception\FilesystemException
      */
-    public static function fromFile($file)
+    public static function fromFile($file, $slug = '')
     {
         if (!file_exists($file)) {
             throw new FilesystemException("File not found: $file");
         }
 
-        /** @var SpaceApiObject $object */
+        /** @var SpaceApiObject $instance */
         $instance = static::fromJson(file_get_contents($file));
         $instance->file = $file;
+        $instance->slug = $slug;
 
         // overrides fromJson's definition
         $instance->loaded_from = static::FROM_FILE;
