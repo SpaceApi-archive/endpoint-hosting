@@ -40,8 +40,13 @@ class SpaceApiObjectTest extends \PHPUnit_Framework_TestCase
         $this->assertNotEmpty($spaceApiObject->validation->getErrors());
     }
 
-    public function testFromName() {
-        // @todo implement
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testUpdateExpectedException() {
+        $json = $this->providerJsonDataGood()[0][0];
+        $spaceApiObject = SpaceApiObject::fromJson($json);
+        $spaceApiObject->update('LOREM IPSUM');
     }
 
     public function testFromFile() {

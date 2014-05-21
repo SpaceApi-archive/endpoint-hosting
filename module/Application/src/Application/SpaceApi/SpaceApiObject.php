@@ -125,11 +125,6 @@ class SpaceApiObject
      */
     public function update($json)
     {
-        // we need to set the json before the try-catch block here
-        // otherwise the user will loose data if the json has a typo
-        // while he added new fields
-        $this->json = $json;
-
         //////////////////////////////////////////////////////////////
         // never set $this->json before the try-catch block
 
@@ -140,6 +135,7 @@ class SpaceApiObject
         $this->object = null;
 
         try {
+            // @frameowork zend2
             $this->object = Json::decode($json);
         } catch(RuntimeException $e) {
             $this->validation = null;
@@ -148,7 +144,7 @@ class SpaceApiObject
         }
         //////////////////////////////////////////////////////////////
 
-
+        $this->json = $json;
         $this->validJson = true;
 
         // empty strings are valid JSON but since $object is null in
