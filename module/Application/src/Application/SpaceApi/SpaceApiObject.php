@@ -114,9 +114,10 @@ class SpaceApiObject
      * Updates {@see Application\SpaceApi\SpaceApiObject::json} and the
      * its object representation {@see Application\SpaceApi\SpaceApiObject::object}.
      * If the JSON could not be decoded {@see Application\SpaceApi\SpaceApiObject::object}
-     * will be set to null and {@see Application\SpaceApi\SpaceApiObject::json}
-     * remains unchanged to prevent it being written to the filesystem
-     * with a subsequent {@see Application\SpaceApi\SpaceApiObject::save()} call.
+     * will be set to null but {@see Application\SpaceApi\SpaceApiObject::json}
+     * will be updated. Though the {@see Application\SpaceApi\SpaceApiObject::validJson}
+     * flag will be set to false which prevents the json property being
+     * written to the filesystem with a subsequent {@see Application\SpaceApi\SpaceApiObject::save()} call.
      *
      * @param string $json
      * @return SpaceApiObject
@@ -125,8 +126,10 @@ class SpaceApiObject
      */
     public function update($json)
     {
+        $this->json = $json;
+
         //////////////////////////////////////////////////////////////
-        // never set $this->json before the try-catch block
+        // always set $this->json before the try-catch block
 
         if (! is_string($json)) {
             throw new \BadMethodCallException('Input not a string');
@@ -144,7 +147,6 @@ class SpaceApiObject
         }
         //////////////////////////////////////////////////////////////
 
-        $this->json = $json;
         $this->validJson = true;
 
         // empty strings are valid JSON but since $object is null in
@@ -184,11 +186,12 @@ class SpaceApiObject
 
     /**
      * Saves a SpaceApiObject instance to the file. This method does nothing
-     * if the object was created from fromJson().
+     * if the object was created from fromJson() or if the json property
+     * contains no valid JSON.
      */
     public function save()
     {
-        if ($this->file) {
+        if ($this->file && $this->validJson) {
             file_put_contents($this->file, $this->json);
         }
     }
@@ -196,14 +199,14 @@ class SpaceApiObject
     /**
      * Validates the spaceapi json. This must never be called directly
      * by a consumer and is intended to be used by SpaceApiObject::update()
-     * or SpaceApiObject::setValidator() only. If the update method can't
-     * decode the JSON, validate() isn't called. If the validator is set
-     * and the 'json' property an empty string, the validator will be
+     * or SpaceApiObject::setValidator() only. This method doesn nothing
+     * if the json property doesn't contain a valid JSON. If the validator
+     * is set and the 'json' property an empty string, the validator will be
      * triggered.
      */
     private function validate()
     {
-        if (! is_null($this->validator)) {
+        if (! is_null($this->validator) && $this->validJson) {
             $this->validation = $this->validator->validateStableVersion($this->json);
         }
     }

@@ -49,6 +49,25 @@ class SpaceApiObjectTest extends \PHPUnit_Framework_TestCase
         $spaceApiObject->update('LOREM IPSUM');
     }
 
+    public function testUpdateJsonChangedOnException() {
+        $json = $this->providerJsonDataGood()[0][0];
+        $spaceApiObject = SpaceApiObject::fromJson($json);
+
+        $this->assertEquals($spaceApiObject->validJson, true);
+
+        $test_string = 'LOREM IPSUM';
+
+        try {
+            $spaceApiObject->update($test_string);
+        } catch (\Exception $e) {
+            // we don't validate the exception type here,
+            // testUpdateExpectedException() already does it
+        }
+
+        $this->assertEquals($spaceApiObject->json, $test_string);
+        $this->assertEquals($spaceApiObject->validJson, false);
+    }
+
     public function testFromFile() {
         // @todo implement
     }
