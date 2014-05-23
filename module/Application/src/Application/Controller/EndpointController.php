@@ -241,27 +241,30 @@ class EndpointController extends AbstractActionController
 
         $spaceapi = SpaceApiObjectFactory::create($slug, SpaceApiObjectFactory::FROM_NAME);
 
+        $action = $this->params()->fromPost('edit_action');
+
+        // dev-note:2
+        if (is_null($action)) {
+            $action = $this->params('edit_action');
+        }
+
+        $json = $this->params()->fromPost('json');
+
+        // dev-note:2
+        if (is_null($json)) {
+            $json = $this->params('json');
+        }
+
+        // $json unmodified if invalid JSON
+        $json = Utils::setApiToLatest($json);
+
         try {
-            $action = $this->params()->fromPost('edit_action');
-
-            // dev-note:2
-            if (is_null($action)) {
-                $action = $this->params('edit_action');
-            }
-
-            $json = $this->params()->fromPost('json');
-
-            // dev-note:2
-            if (is_null($json)) {
-                $json = $this->params('json');
-            }
-
-            $json = Utils::setApiToLatest($json);
-
             switch ($action) {
 
                 case 'Save':
 
+                    // update() can throw exception, updates the json
+                    // in any case but doesn't save the object on filesystem
                     $spaceapi
                         ->update($json)
                         ->save();
@@ -271,6 +274,8 @@ class EndpointController extends AbstractActionController
 
                 case 'Validate':
 
+                    // update() can throw exception, updates the json
+                    // in any case but doesn't save the object on filesystem
                     $spaceapi
                         ->update($json)
                         ->save();
@@ -282,8 +287,10 @@ class EndpointController extends AbstractActionController
 //                    trigger_error('Edit action requested!');
             }
         } catch (\Exception $e) {
-            // no extra care needed here, the template knows how to
-            // deal with this
+            // Briefly, nothing special needs to be done here.
+            // This happens when the JSON could not be decoded, however,
+            // the the json property in the SpaceApiObject instance got
+            // updated but nothing got written back to the JSOn file
         }
 
         return array(
