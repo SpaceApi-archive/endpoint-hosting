@@ -37,6 +37,8 @@ class SpaceApiExtension extends \Twig_Extension
 
     /**
      * JSON encodes a variable by removing the field 'api' if it exists.
+     * If the input is a string the filter tries to decode it. If the
+     * decoding fails, the unmodified input is returned.
      *
      * @param mixed   $value   The value to encode.
      *
@@ -62,6 +64,8 @@ class SpaceApiExtension extends \Twig_Extension
 
     /**
      * JSON encodes a variable by removing the field 'ext_gist' if it exists.
+     * If the input is a string the filter tries to decode it. If the
+     * decoding fails, the unmodified input is returned.
      *
      * @param mixed   $value   The value to encode.
      * @param integer $options Not used on PHP 5.2.x
