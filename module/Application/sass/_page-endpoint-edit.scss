@@ -4,3 +4,10 @@ textarea[name="json"] {
   height: 300px;
   display: none;
 }
+
+@import "partials/common/validation-results-container";
+
+.validation-results {
+  width: 100%;
+  max-width: 100%;
+}

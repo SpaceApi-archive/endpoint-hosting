@@ -22,22 +22,42 @@
     {% set validation = spaceapi.validation %}
 
     {% if validation.valid %}
-        <div class="validation ok">Your JSON is compliant to the specs.</div>
+        <div class="validation-results ok">
+            <div class="message">Your JSON is compliant to the specs 0.13</div>
+            <a href="http://spaceapi.net/documentation" target="_blank"><i class="fa fa-external-link"></i> Documentation</a>
+            <a href="http://spaceapi.net/specs/0.13" target="_blank"><i class="fa fa-external-link"></i> Specification</a>
+        </div>
     {% else %}
-        <div class="validation error">
+        <div class="validation-results error">
+
+            <div class="message">Your JSON is not compliant to the specs 0.13</div>
 
             {% for version,messages in validation.errors %}
                 {# @todo: don't hard-code the api version #}
-                {% if version == '0.13' %}
-                    <div class="alert alert-danger">
+                {% if version == '0.13' %} {# add condition if errors is not empty #}
+                    <ul class="fa-ul">
                         {% for message in messages %}
-                            {{ message.msg }}<br>
+                            <li><i class="fa-li fa fa-flash"></i> {{ message.msg }}</li>
                         {% endfor %}
-                    </div>
+                    </ul>
                 {% endif %}
             {% endfor %}
+
+            <a href="http://spaceapi.net/documentation" target="_blank"><i class="fa fa-external-link"></i> Documentation</a>
+            <a href="http://spaceapi.net/specs/0.13" target="_blank"><i class="fa fa-external-link"></i> Specification</a>
         </div>
     {% endif %}
 {% else %}
-    <div class="validation error">Invalid JSON!</div>
+    <div class="validation-results error">
+        <div class="message">Invalid JSON!</div>
+
+        <a href="http://spaceapi.net/documentation" target="_blank"><i class="fa fa-external-link"></i> Documentation</a>
+        <a href="http://spaceapi.net/specs/0.13" target="_blank"><i class="fa fa-external-link"></i> Specification</a>
+    </div>
 {% endif %}
+
+
+
+
+
+
