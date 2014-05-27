@@ -11,3 +11,12 @@ textarea[name="json"] {
   width: 100%;
   max-width: 100%;
 }
+
+.buttons {
+  margin: 20px auto 20px auto;
+
+  .btn {
+    border-radius: 0;
+    margin-right: 5px;
+  }
+}

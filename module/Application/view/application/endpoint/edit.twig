@@ -11,12 +11,13 @@
 
             {% if token is defined %}
 
-                {% if spaceapi.gist != 0 %}
-                <a href="https://gist.github.com/{{ spaceapi.gist }}" target="_blank" rel="nofollow">Gist</a>
-                {% endif %}
-
-                <a href="/space/{{ spaceapi.slug }}/status" target="_blank" rel="nofollow">Your endpoint</a>
-                <a href="/space/{{ spaceapi.slug }}/status/json" target="_blank" rel="nofollow">Your JSON</a>
+                <div class="buttons">
+                    {% if spaceapi.gist != 0 %}
+                    <a class="btn btn-default" href="https://gist.github.com/{{ spaceapi.gist }}" target="_blank" rel="nofollow">Gist</a>
+                    {% endif %}
+                    <a class="btn btn-default" href="/space/{{ spaceapi.slug }}/status" target="_blank" rel="nofollow">Your endpoint</a>
+                    <a class="btn btn-default" href="/space/{{ spaceapi.slug }}/status/json" target="_blank" rel="nofollow">Your JSON</a>
+                </div>
 
                 <form
                     ng-controller="EndpointEditController"
@@ -49,8 +50,11 @@
                     %}
                     {% include 'partials/jsoneditor.twig' with jeditor_config only %}
 
-                    <input type="submit" name="edit_action" value="Validate">
-                    <input type="submit" name="edit_action" value="Save">
+                    <div class="buttons">
+                        <input class="btn btn-default" type="submit" name="edit_action" value="Validate">
+                        <input class="btn btn-default" type="submit" name="edit_action" value="Save">
+                    </div>
+
                 </form>
 
                 {%
