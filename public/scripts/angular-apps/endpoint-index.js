@@ -36,6 +36,7 @@ function toParam( object, prefix ) {
   return stack.join( '&' );
 }
 
+// @todo $scope.validate and $scope.create have code duplication, make the ajax call synchronous and share the ajax-related code
 angular
   .module('EndpointIndexApp', ['angular-parallax', 'jsoneditor'])
   .controller('EndpointIndexController', function($scope, $element, $http) {
@@ -84,6 +85,56 @@ angular
             $scope.results.message = 'Your JSON is compliant to the specs 0.13';
             $scope.results.errors = [];
             $scope.results.class = 'ok';
+          } else {
+            for (var version in validation.errors) {
+              if (version == '0.13') {
+                $scope.results.errors = validation.errors[version];
+              }
+            }
+
+            $scope.results.message = 'Your JSON is not compliant to the specs 0.13';
+            $scope.results.class = 'error';
+          }
+
+          $scope.results.show = true;
+        }).error(function (data, status, headers, config) {
+          // @todo do something
+        });
+      } else {
+        $scope.results.message = 'Your JSON is invalid!';
+        $scope.results.errors = [];
+        $scope.results.class = 'error';
+      }
+
+      return false;
+    }
+
+    $scope.create = function() {
+
+      var object = null;
+
+      try {
+        object = JSON.parse($scope.json);
+        $scope.jsonValid = true;
+      } catch (e) {
+        $scope.jsonValid = false;
+      }
+
+      if ($scope.jsonValid) {
+
+        // add the api version to calm the validator
+        object.api = '0.13';
+        var json = JSON.stringify(object);
+
+        $http({
+          url: '/endpoint/validate-ajax',
+          method: "POST",
+          data: angular.toParam({json: json}),
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function (validation, status, headers, config) {
+
+          if (validation.valid.indexOf(13) >= 0) {
+            angular.element($element)[0].submit();
           } else {
             for (var version in validation.errors) {
               if (version == '0.13') {
