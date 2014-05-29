@@ -4,7 +4,19 @@
 
             <h1>Getting Started</h1>
 
+            {% include 'partials/content-incomplete.twig' %}
 
+            <h2>Update the space status</h2>
+
+            <pre><code>curl --data-urlencode sensors='{"state":{"open":true}}' --data key=&lt;key> &lt;endpoint-url>/sensor/set</code></pre>
+
+            Allowed values are
+
+            <ul>
+                <li>true</li>
+                <li>false</li>
+                <li>null (status could not be determined)</li>
+            </ul>
         </div>
     </div>
 </div>
