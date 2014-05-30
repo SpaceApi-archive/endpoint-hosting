@@ -1,0 +1,60 @@
+
+.validation-results {
+
+  padding: 5px;
+  min-width: 700px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+  text-align: left !important;
+
+  .message {
+    font-family: Gafata,sans-serif;
+    font-size: 1.2em;
+  }
+
+  // if you change things here, check if &.error must be adapted too
+  &.ok {
+    color: #529214;
+    background: none repeat scroll 0 0 #E6EFC2 !important;
+    border: 2px solid #C6D880 !important;
+
+    a {
+      color: #529214!important;
+      font-family: Gafata,sans-serif;
+      font-size: 1em;
+      margin-left: 5px;
+      margin-right: 5px;
+
+      i {
+        font-size: 0.8em;
+      }
+    }
+  }
+
+  // if you change things here, check if &.ok must be adapted too
+  &.error {
+    color: #D12F19;
+    background: none repeat scroll 0 0 #FBE3E4 !important;
+    border: 2px solid #FBC2C4 !important;
+
+    ul {
+      margin-top: 20px;
+      font-family: monospace, serif;
+      font-size: 0.7em;
+    }
+
+    a {
+      color: #D12F19 !important;
+      font-family: Gafata,sans-serif;
+      font-size: 1em;
+      margin-left: 5px;
+      margin-right: 5px;
+
+      i {
+        font-size: 0.8em;
+      }
+    }
+  }
+}
