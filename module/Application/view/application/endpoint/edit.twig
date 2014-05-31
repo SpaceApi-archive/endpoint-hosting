@@ -19,6 +19,8 @@
                     <a class="btn btn-default" href="/space/{{ spaceapi.slug }}/status/json" target="_blank" rel="nofollow">Your JSON</a>
                 </div>
 
+                <pre class="command curl"><code>curl --data-urlencode sensors='{"state":{"open":true}}' --data key=&lt;key> https://endpoint.spaceapi.net/space/{{  spaceapi.slug }}/sensor/set</code></pre>
+
                 <form
                     ng-controller="EndpointEditController"
                     action="{{ url('endpoint/action', {'action': 'edit'}) }}"
