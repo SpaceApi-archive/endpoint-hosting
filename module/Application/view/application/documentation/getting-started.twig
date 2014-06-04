@@ -8,7 +8,11 @@
 
             <h2>Update the space status</h2>
 
-            <pre><code>curl --data-urlencode sensors='{"state":{"open":true}}' --data key=&lt;key> &lt;endpoint-url>/sensor/set</code></pre>
+            <p>
+                When creating your endpoint you'll get a private token. With this token you are authorized to edit your endpoint data and to push new sensor values. The following cURL command shows how you submit a state change. The endpoint URL will be shown on the edit page after you entered the token.
+            </p>
+
+            <pre><code>curl --data-urlencode sensors='{"state":{"open":true}}' --data key=&lt;token> &lt;endpoint-url>/sensor/set</code></pre>
 
             Allowed values are
 
