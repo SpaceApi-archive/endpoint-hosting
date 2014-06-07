@@ -1,8 +1,19 @@
 .parallax-header {
-  background-image: url(../img/parallax-image2.jpg);
+  background-image: url(../img/parallax-image-wide.jpg);
   background-attachment: fixed;
   background-repeat: no-repeat;
   height: 375px;
+
+  // we can't use this as we need two gradients
+//  background: #53c995; /* Old browsers */
+//  background-image: url(../img/parallax-image-wide.jpg);
+//  background-image: url(../img/parallax-image-small.jpg), -moz-linear-gradient(left, #53c995 50%, #93e9c6 50%); /* FF3.6+ */
+//  background-image: url(../img/parallax-image-small.jpg), -webkit-gradient(linear, left top, right top, color-stop(50%,#53c995), color-stop(50%,#93e9c6)); /* Chrome,Safari4+ */
+//  background-image: url(../img/parallax-image-small.jpg), -webkit-linear-gradient(left, #53c995 50%,#93e9c6 50%); /* Chrome10+,Safari5.1+ */
+//  background-image: url(../img/parallax-image-small.jpg), -o-linear-gradient(left, #53c995 50%,#93e9c6 50%); /* Opera 11.10+ */
+//  background-image: url(../img/parallax-image-small.jpg), -ms-linear-gradient(left, #53c995 50%,#93e9c6 50%); /* IE10+ */
+//  background-image: url(../img/parallax-image-small.jpg), linear-gradient(to right, #53c995 50%,#93e9c6 50%); /* W3C */
+//  filter: url(../img/parallax-image2.jpg) progid:DXImageTransform.Microsoft.gradient( startColorstr='#53c995', endColorstr='#93e9c6',GradientType=1 ); /* IE6-9 */
 
   font-family: 'Yanone Kaffeesatz';
   font-size: 2.2em;
