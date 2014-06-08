@@ -1,0 +1,29 @@
+<VirtualHost *:443>
+
+  SetEnv DEVELOPMENT true
+
+  ServerName endpoint.spaceapi.net
+  ServerAlias precise64 localhost
+  DocumentRoot /vagrant/public
+
+  <Directory /vagrant/public>
+    Options FollowSymLinks
+    AllowOverride All
+    Order allow,deny
+    Allow from all
+  </Directory>
+
+  LogLevel info
+  ErrorLog /var/log/apache2/default-error.log
+  CustomLog /var/log/apache2/default-access.log combined
+
+  RewriteEngine On
+  RewriteLog /var/log/apache2/default-rewrite.log
+  RewriteLogLevel 0
+
+  SSLEngine On
+  SSLCertificateFile /vagrant/data/vm/cookbooks/vagrant_main/cert/spaceapi.net.2014.crt
+  SSLCertificateKeyFile /vagrant/data/vm/cookbooks/vagrant_main/cert/spaceapi.net.2014.key
+  SSLProtocol All
+
+</VirtualHost>
