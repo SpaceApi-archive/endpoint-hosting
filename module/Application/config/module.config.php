@@ -109,6 +109,25 @@ $module_config = array(
                     ),
                 ),
             ),
+            'asset' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route' => '/asset',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Asset',
+                        'action'     => 'no-asset-found'
+                    ),
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'action' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/:action/:file',
+                        ),
+                    ),
+                ),
+            ),
         ),
     ),
     'controllers' => array(
@@ -117,9 +136,10 @@ $module_config = array(
 //            'Application\Controller\Console\Repo'       => 'Application\Controller\Console\RepoController',
 
             // Controllers invokable through the web server
-            'Application\Controller\Contribution'       => 'Application\Controller\ContributionController',
-            'Application\Controller\Documentation'       => 'Application\Controller\DocumentationController',
+            'Application\Controller\Contribution'   => 'Application\Controller\ContributionController',
+            'Application\Controller\Documentation'  => 'Application\Controller\DocumentationController',
             'Application\Controller\Endpoint'       => 'Application\Controller\EndpointController',
+            'Application\Controller\Asset'          => 'Application\Controller\AssetController',
         ),
     ),
     'view_manager' => array(
