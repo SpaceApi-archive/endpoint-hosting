@@ -54,7 +54,7 @@ class AssetController extends AbstractActionController
 
             case 'globals':
 
-                $global_js = "var base_url='". $this->getRequest()->getBaseUrl() ."';";
+                $global_js = "var base_path='". $this->getRequest()->getBaseUrl() ."';";
                 $response->setContent($global_js);
                 break;
 
