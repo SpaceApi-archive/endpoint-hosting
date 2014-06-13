@@ -2,7 +2,6 @@
 
 namespace Application\SpaceApi;
 use Application\Exception\FilesystemException;
-use Application\Utils\Utils;
 use JsonSchema\Exception\JsonDecodingException;
 use SpaceApi\Validator\ResultInterface;
 use SpaceApi\Validator\ValidatorInterface;
@@ -15,7 +14,7 @@ use Zend\Json\Json;
  *
  * @property-read string name Hackerspace name
  * @property-read int version Specification version number
- * @property-read int gist Gist ID
+ * @property-read int gist Gist ID, a value of 0 means that it's not set.
  * @property-read string json
  * @property-read object object
  * @property-read string slug normalized hackerspace name
@@ -224,24 +223,46 @@ class SpaceApiObject
     /****************************************************************/
     // setters, not public in favor of update() to go through validation chain
 
-    protected function setName($object)
+    /**
+     * Sets the name property taken from the argument's space property.
+     *
+     * @param \stdClass $object deserialized json of the SpaceApiObject wrapper
+     */
+    protected function setName(\stdClass $object)
     {
         if (property_exists($object, 'space')) {
             $this->name = $object->space;
         }
     }
 
-    protected function setVersion($object)
+    /**
+     * Sets the version property taken from the argument's version property.
+     *
+     * @param \stdClass $object deserialized json of the SpaceApiObject wrapper
+     */
+    protected function setVersion(\stdClass $object)
     {
         if (property_exists($object, 'version')) {
             $this->version = (int) $object->version;
         }
     }
 
-    protected function setGist($object)
+    /**
+     * Sets the gist property if the gist ID is alphanumeric. Gist IDs
+     * are hex numbers but the less strict test is future-safe if Github
+     * is changing their ID format.
+     *
+     * The Gist ID is taken from the the 'ext_gist' property of the passed
+     * object.
+     *
+     * @param \stdClass $object deserialized json of the SpaceApiObject wrapper
+     */
+    protected function setGist(\stdClass $object)
     {
-        if (property_exists($object, 'ext_gist')) {
-            $this->gist = (int) $object->ext_gist;
+        if (property_exists($object, 'ext_gist') &&
+            is_string($object->ext_gist) &&
+            preg_match("/^[a-zA-Z0-9]+$/", $object->ext_gist)) {
+            $this->gist = $object->ext_gist;
         }
     }
 

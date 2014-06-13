@@ -7,6 +7,7 @@ use ApplicationTest\Bootstrap;
 
 use Application\SpaceApi\SpaceApiObject;
 
+use ApplicationTest\PHPUnitUtil;
 use PHPUnit_Framework_TestCase;
 use SpaceApi\Validator\Validator;
 
@@ -41,7 +42,7 @@ class SpaceApiObjectTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException RuntimeException
+     * @expectedException \RuntimeException
      */
     public function testUpdateExpectedException() {
         $json = $this->providerJsonDataGood()[0][0];
@@ -103,6 +104,7 @@ class SpaceApiObjectTest extends \PHPUnit_Framework_TestCase
 
         $spaceApiObjectList = func_get_args()[0];
 
+        /** @var SpaceApiObject $spaceApiObject */
         foreach ($spaceApiObjectList as $spaceApiObject) {
             $this->assertNull($spaceApiObject->validator);
             $spaceApiObject->setValidator($this->validator);
@@ -125,6 +127,43 @@ class SpaceApiObjectTest extends \PHPUnit_Framework_TestCase
         }
 
         return $spaceApiObjectList;
+    }
+
+    public function testSetGist() {
+
+        $json = $this->providerJsonDataGood()[0][0];
+        $spaceApiObject = SpaceApiObject::fromJson($json);
+
+        // 1. test bad gist IDs, this must happen before testing the good
+        //    ones because we couldn't test against the value 0 otherwise
+        //    as $spaceApiObject->gist would be the last good gist ID tested
+        $testGistId = array(' ', 'gas,', '#/*_', new \stdClass(), 0, array());
+        foreach ($testGistId as $id) {
+            $spaceApiObject->object->ext_gist = $id;
+
+            PHPUnitUtil::callMethod(
+                $spaceApiObject,
+                'setGist',
+                array($spaceApiObject->object)
+            );
+
+            $this->assertEquals($spaceApiObject->gist, 0);
+        }
+
+        // 2. test good gist IDs, this must happen after testing the bad
+        //    ones, see the comment above
+        $testGistId = array('1234', 'gaf123fasd', '12jlh14', 'adsf');
+        foreach ($testGistId as $id) {
+            $spaceApiObject->object->ext_gist = $id;
+
+            PHPUnitUtil::callMethod(
+                $spaceApiObject,
+                'setGist',
+                array($spaceApiObject->object)
+            );
+
+            $this->assertEquals($spaceApiObject->gist, $id);
+        }
     }
 
     public function providerValidator() {
