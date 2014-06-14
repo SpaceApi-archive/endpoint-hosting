@@ -1,7 +1,7 @@
 
 {%
     do headLink()
-        .appendStylesheet('/styles/page-endpoint-index.min.css')
+        .appendStylesheet(basepath()~'/styles/page-endpoint-index.min.css')
 %}
 
 {# Include some scripts that are required for this page #}
@@ -9,7 +9,7 @@
 {# # set scripts = ['test.js', 'test2.js']; #}
 {%
     do headScript()
-        .appendFile('/lib/angular-parallax/scripts/angular-parallax.js')
+        .appendFile(basepath()~'/lib/angular-parallax/scripts/angular-parallax.js')
 %}
 
 <div ng-app="EndpointIndexApp">
@@ -28,5 +28,5 @@
 
 {%
     do headScript()
-        .appendFile('/scripts/angular-apps/endpoint-index.js')
+        .appendFile(basepath()~'/scripts/angular-apps/endpoint-index.js')
 %}

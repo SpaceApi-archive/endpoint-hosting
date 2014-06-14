@@ -19,7 +19,7 @@
                     </style>
                 </noscript>
 
-                <form action="/endpoint/create" method="post" ng-controller="EndpointIndexController">
+                <form action="{{ basePath() }}/endpoint/create" method="post" ng-controller="EndpointIndexController">
 
                     {# IMPORTANT: we use jqLite which doesn't support
                                   all kind of selectors, thus the controller

@@ -33,7 +33,7 @@ section, footer {
 
 footer {
 //  background: #5854B5;
-  background: url('/img/texture/zwartevilt/zwartevilt.png');
+  background: url('../img/texture/zwartevilt/zwartevilt.png');
   color: white;
 
   @include box-shadow;
@@ -62,12 +62,12 @@ footer {
       line-height: 1em !important;
 
       &.phpstorm {
-        background-image: url('/img/credits/phpstorm_logo.gif');
+        background-image: url('../img/credits/phpstorm_logo.gif');
         background-size: 200px 50px;
       }
 
       &.josdejong {
-        background-image: url('/img/credits/jsoneditor_online.png');
+        background-image: url('../img/credits/jsoneditor_online.png');
         background-size: 200px 30px;
       }
 

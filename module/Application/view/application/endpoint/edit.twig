@@ -1,6 +1,6 @@
 {%
     do headLink()
-        .appendStylesheet('/styles/page-endpoint-edit.min.css')
+        .appendStylesheet(basepath() ~ '/styles/page-endpoint-edit.min.css')
 %}
 
 <div class="container" ng-app="EndpointEditApp">
@@ -85,5 +85,5 @@
 
 {%
     do headScript()
-        .appendFile('/scripts/angular-apps/endpoint-edit.js')
+        .appendFile(basepath() ~ '/scripts/angular-apps/endpoint-edit.js')
 %}

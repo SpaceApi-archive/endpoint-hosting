@@ -22,16 +22,16 @@
 
 
 {%  do headLink()
-        .appendStylesheet('/lib/font-awesome/css/font-awesome.min.css')
-        .appendStylesheet('/lib/angular-jsoneditor/build/angular-jsoneditor.css')
+        .appendStylesheet(basepath() ~ '/lib/font-awesome/css/font-awesome.min.css')
+        .appendStylesheet(basepath() ~ '/lib/angular-jsoneditor/build/angular-jsoneditor.css')
 %}
 
 {%
     do headScript()
-        .appendFile('/lib/slopjong-ui-ace/src/ui-ace.js')
-        .appendFile('/lib/ace-builds/src-min-noconflict/ace.js')
-        .appendFile('/lib/angular-sj-input/sj-input.js')
-        .appendFile('/lib/angular-jsoneditor/build/angular-jsoneditor.js')
+        .appendFile(basepath() ~ '/lib/slopjong-ui-ace/src/ui-ace.js')
+        .appendFile(basepath() ~ '/lib/ace-builds/src-min-noconflict/ace.js')
+        .appendFile(basepath() ~ '/lib/angular-sj-input/sj-input.js')
+        .appendFile(basepath() ~ '/lib/angular-jsoneditor/build/angular-jsoneditor.js')
 %}
 
 {% if use_noscript %}
@@ -87,7 +87,7 @@
 
     <div id="jsoneditor-noscript">
         <div>Enable JavaScript in order to use the SpaceAPI JSON editor.<br> Click <a href="/endpoint/edit">here</a> to edit an existing endpoint.</div>
-        <img src="/img/jsoneditor_noscript.png">
+        <img src="{{ basepath() }}/img/jsoneditor_noscript.png">
     </div>
 
 </noscript>

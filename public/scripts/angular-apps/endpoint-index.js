@@ -75,7 +75,7 @@ angular
         var json = JSON.stringify(object);
 
         $http({
-          url: '/endpoint/validate-ajax',
+          url: base_path + '/endpoint/validate-ajax',
           method: "POST",
           data: angular.toParam({json: json}),
           headers: {'Content-Type': 'application/x-www-form-urlencoded'}
@@ -127,7 +127,7 @@ angular
         var json = JSON.stringify(object);
 
         $http({
-          url: '/endpoint/validate-ajax',
+          url: base_path + '/endpoint/validate-ajax',
           method: "POST",
           data: angular.toParam({json: json}),
           headers: {'Content-Type': 'application/x-www-form-urlencoded'}
@@ -147,7 +147,7 @@ angular
           }
 
           $scope.results.show = true;
-        }).error(function (data, status, headers, config) {
+        }).error(function (data, status, headers, cphpstormonfig) {
           // @todo do something
         });
       } else {

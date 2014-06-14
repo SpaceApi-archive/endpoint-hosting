@@ -8,40 +8,40 @@
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 
         <div class="navbar-header">
-            <a class="navbar-brand" href="/"><img src="/img/spaceapi-logo-white.png"></a>
+            <a class="navbar-brand" href="<?php echo $this->url('endpoint'); ?>"><img src="<?php echo $this->basepath(); ?>/img/spaceapi-logo-white.png"></a>
         </div>
 
         <ul class="nav navbar-nav vertical small visible-340">
-            <li class="mainmenu-getting-started"><a href="/docs/getting-started"><span class="glyphicon glyphicon-play"></span> Getting started</a></li>
+            <li class="mainmenu-getting-started"><a href="<?php echo $this->basepath(); ?>/docs/getting-started"><span class="glyphicon glyphicon-play"></span> Getting started</a></li>
             <li class="mainmenu-documentation"><a href="http://spaceapi.net/documentation"><span class="glyphicon glyphicon-info-sign"></span> Documentation</a></li>
-            <li class="mainmenu-contribute"><a href="/contribute"><span class="glyphicon glyphicon-road"></span> Contribute</a></li>
-            <li class="mainmenu-edit"><a href="/endpoint/edit"><span class="glyphicon glyphicon-pencil"></span> Edit</a></li>
-            <li class="mainmenu-create"><a href="/endpoint/create"><span class="glyphicon glyphicon-plus"></span> Create</a></li>
+            <li class="mainmenu-contribute"><a href="<?php echo $this->basepath(); ?>/contribute"><span class="glyphicon glyphicon-road"></span> Contribute</a></li>
+            <li class="mainmenu-edit"><a href="<?php echo $this->basepath(); ?>/endpoint/edit"><span class="glyphicon glyphicon-pencil"></span> Edit</a></li>
+            <li class="mainmenu-create"><a href="<?php echo $this->basepath(); ?>/endpoint/create"><span class="glyphicon glyphicon-plus"></span> Create</a></li>
         </ul>
 
         <ul class="nav navbar-nav navbar-left hidden-340">
 
-            <li class="hidden-340 mainmenu-getting-started"><a href="/docs/getting-started"><span class="glyphicon glyphicon-play visible-445"></span> <span class="hidden-445">Getting started</span></a></li>
+            <li class="hidden-340 mainmenu-getting-started"><a href="<?php echo $this->basepath(); ?>/docs/getting-started"><span class="glyphicon glyphicon-play visible-445"></span> <span class="hidden-445">Getting started</span></a></li>
             <li class="hidden-500 mainmenu-documentation"><a href="http://spaceapi.net/documentation"><span class="glyphicon glyphicon-info-sign visible-620"></span> <span class="hidden-620">Documentation</span></a></li>
-            <li class="hidden-500 mainmenu-contribute"><a href="/contribute"><span class="glyphicon glyphicon-road visible-700"></span> <span class="hidden-700">Contribute</span></a></li>
+            <li class="hidden-500 mainmenu-contribute"><a href="<?php echo $this->basepath(); ?>/contribute"><span class="glyphicon glyphicon-road visible-700"></span> <span class="hidden-700">Contribute</span></a></li>
             <li>
                 <ul class="nav navbar-nav vertical small visible-500">
-                    <li class="mainmenu-getting-started visible-340"><a href="/docs/getting-started"><span class="glyphicon glyphicon-play visible-445"></span></a></li>
+                    <li class="mainmenu-getting-started visible-340"><a href="<?php echo $this->basepath(); ?>/docs/getting-started"><span class="glyphicon glyphicon-play visible-445"></span></a></li>
                     <li class="mainmenu-documentation"><a href="http://spaceapi.net/documentation"><span class="glyphicon glyphicon-info-sign"></span></a></li>
-                    <li class="mainmenu-contribute"><a href="/contribute"><span class="glyphicon glyphicon-road"></span></a></li>
+                    <li class="mainmenu-contribute"><a href="<?php echo $this->basepath(); ?>/contribute"><span class="glyphicon glyphicon-road"></span></a></li>
                 </ul>
             </li>
             <li>
                 <ul class="nav navbar-nav endpoint-actions vertical small visible-840">
-                    <li class="mainmenu-edit"><a href="/endpoint/edit"><span class="glyphicon glyphicon-pencil"></span></a></li>
-                    <li class="mainmenu-create"><a href="/endpoint/create"><span class="glyphicon glyphicon-plus"></span></a></li>
+                    <li class="mainmenu-edit"><a href="<?php echo $this->basepath(); ?>/endpoint/edit"><span class="glyphicon glyphicon-pencil"></span></a></li>
+                    <li class="mainmenu-create"><a href="<?php echo $this->basepath(); ?>/endpoint/create"><span class="glyphicon glyphicon-plus"></span></a></li>
                 </ul>
             </li>
         </ul>
 
         <ul class="nav navbar-nav navbar-right endpoint-actions big hidden-840">
-            <li class="mainmenu-edit"><a href="/endpoint/edit"><span class="glyphicon glyphicon-pencil"></span> <span class="hidden-840">Edit</span></a></li>
-            <li class="mainmenu-create"><a href="/endpoint/create"><span class="glyphicon glyphicon-plus"></span> <span class="hidden-840">Create</span></a></li>
+            <li class="mainmenu-edit"><a href="<?php echo $this->basepath(); ?>/endpoint/edit"><span class="glyphicon glyphicon-pencil"></span> <span class="hidden-840">Edit</span></a></li>
+            <li class="mainmenu-create"><a href="<?php echo $this->basepath(); ?>/endpoint/create"><span class="glyphicon glyphicon-plus"></span> <span class="hidden-840">Create</span></a></li>
         </ul>
 
     </nav>
