@@ -283,7 +283,11 @@ class SpaceApiObject
     public static function fromFile($file, $slug = '')
     {
         if (!file_exists($file)) {
-            throw new FilesystemException("File not found: $file");
+            $error_message = array(
+                "File not found: $file",
+                "Current directory: ". getcwd()
+            );
+            throw new FilesystemException(join("\n", $error_message));
         }
 
         /** @var SpaceApiObject $instance */
