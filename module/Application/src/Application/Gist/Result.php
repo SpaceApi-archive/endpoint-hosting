@@ -40,7 +40,16 @@ class Result
     {
         $this->status = (int) $status;
         $this->content = json_decode($content, TRUE);
-        $this->id = (int) $this->content['id'];
+        // @todo: check the id against the alphanumeric regex and
+        //        trigger a warning if it doesn't match
+
+        if (preg_match("/^[a-zA-Z0-9]+$/", $this->content['id'])) {
+            $this->id =  $this->content['id'];
+        } else {
+            error_log("Invalid Gist ID, github response:\n $content");
+            $this->id = 0;
+        }
+
         $this->initGistFile();
         $this->initUrls(); // requires initGistFile() executed before
     }

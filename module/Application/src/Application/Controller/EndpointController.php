@@ -371,6 +371,12 @@ class EndpointController extends AbstractActionController
     /**
      * Updates a gist.
      *
+     * There seems to be some trouble with the <em>github connection</em>
+     * sometimes and no gist ID is available, This method is some sort
+     * of self-repairing, a new gist will be created before pushing the
+     * new content. If this happens a notification will be sent to the
+     * SpaceAPI developers.
+     *
      * @param SpaceApiObject $spaceapi
      * @return Result Empty array if posting to github failed
      */
@@ -378,6 +384,26 @@ class EndpointController extends AbstractActionController
     {
         $config = $this->getServiceLocator()->get('config');
         $gist_file = $spaceapi->slug . ".json";
+
+        if (empty($spaceapi->gist)) {
+            $gist_result = $this->createGist($spaceapi->slug);
+            $this->saveGistId($gist_result->id, $spaceapi->slug);
+
+            /** @var EndpointMailInterface $email */
+            $email = $this->getServiceLocator()->get('EndpointMail');
+
+            if (empty($gist_result->id)) {
+                $email->send(
+                    "Failed to post an endpoint JSON a second time",
+                    "Please check the gist " . $spaceapi->slug . ".json!"
+                );
+            } else {
+                $email->send(
+                    "Endpoint JSON posted twice",
+                    "Please check the gist " . $spaceapi->slug . ".json!"
+                );
+            }
+        }
 
         return Utils::postGist(
             $config['gist_token'],
@@ -397,7 +423,7 @@ class EndpointController extends AbstractActionController
     protected function saveGistId($gist_id, $slug)
     {
         if (empty($gist_id)) {
-            throw new EmptyGistIdException('Empty gist ID provided.');
+            return;
         }
 
         $spaceapi = SpaceApiObjectFactory::create($slug, SpaceApiObjectFactory::FROM_NAME);
