@@ -4,7 +4,7 @@
 return array(
 
     'enabled_logger' => array(
-        'error_log'  => false,
+        'error_log'  => (getenv('DEVELOPMENT') === 'true') ? true : false,
     ),
 
     'emails' => array(),
