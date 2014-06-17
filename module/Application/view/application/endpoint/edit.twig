@@ -15,8 +15,8 @@
                     {% if spaceapi.gist != 0 %}
                     <a class="btn btn-default" href="https://gist.github.com/{{ spaceapi.gist }}" target="_blank" rel="nofollow">Gist</a>
                     {% endif %}
-                    <a class="btn btn-default" href="/space/{{ spaceapi.slug }}/status" target="_blank" rel="nofollow">Your endpoint</a>
-                    <a class="btn btn-default" href="/space/{{ spaceapi.slug }}/status/json" target="_blank" rel="nofollow">Your JSON</a>
+                    <a class="btn btn-default" href="{{ basePath() }}/space/{{ spaceapi.slug }}/status" target="_blank" rel="nofollow">Your endpoint</a>
+                    <a class="btn btn-default" href="{{ basePath() }}/space/{{ spaceapi.slug }}/status/json" target="_blank" rel="nofollow">Your JSON</a>
                 </div>
 
                 <pre class="command curl"><code>curl --data-urlencode sensors='{"state":{"open":true}}' --data key=&lt;key> https://endpoint.spaceapi.net/space/{{  spaceapi.slug }}/sensor/set</code></pre>
@@ -27,13 +27,13 @@
                     method="post"
                     >
 
-
                     {# IMPORTANT: we use jqLite which doesn't support
                                   all kind of selectors, thus the controller
                                   is taking the first textarea it finds
                      #}
                     <textarea name="json">{{ spaceapi.json | json_without_gist | json_without_api }}</textarea>
                     <noscript>
+                        {# don't use the HTML5 attribute 'scoped', the textarea won't be visible if used #}
                         <style>
                             textarea {
                                 display: block !important;

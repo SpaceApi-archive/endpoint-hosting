@@ -13,6 +13,7 @@ use Application\SpaceApi\SpaceApiObjectFactory;
 use Application\Utils\Utils;
 use Doctrine\Common\Collections\Criteria;
 use Slopjong\JOL;
+use Zend\Http\Request;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use ZendService\ReCaptcha\ReCaptcha;
@@ -330,12 +331,14 @@ class EndpointController extends AbstractActionController
 
         Utils::rcopy('data/endpoint-scripts', $file_path);
 
+        $baseUrl = $this->getRequest()->getBaseUrl();
+
         // fix the base url for the new endpoint
         $htaccess_file = $file_path . '/.htaccess';
         $htaccess_file_content = file_get_contents($htaccess_file);
         $htaccess_file_content = str_replace(
             "RewriteBase /",
-            "RewriteBase /space/$space",
+            "RewriteBase $baseUrl/space/$space",
             $htaccess_file_content
         );
         file_put_contents($htaccess_file, $htaccess_file_content);
