@@ -9,6 +9,10 @@
         {
             "url": "https://github.com/SpaceApi/SchemaValidator.git",
             "type": "git"
+        },
+        {
+            "url": "https://github.com/SpaceApi/endpoint-scripts.git",
+            "type": "git"
         }
     ],
     "require": {
@@ -21,6 +25,7 @@
         "jms/serializer": "0.15.0",
         "zendframework/zendservice-recaptcha": "2.0.1",
         "spaceapi/validator": "dev-master",
+        "spaceapi/endpoint-scripts": "2.0.1",
         "slopjong/jol": "dev-master"
     },
     "require-dev": {

@@ -329,7 +329,7 @@ class EndpointController extends AbstractActionController
         if(file_exists($file_path))
             throw new EndpointExistsException();
 
-        Utils::rcopy('data/endpoint-scripts', $file_path);
+        Utils::rcopy('vendor/spaceapi/endpoint-scripts', $file_path);
 
         $baseUrl = $this->getRequest()->getBaseUrl();
 
