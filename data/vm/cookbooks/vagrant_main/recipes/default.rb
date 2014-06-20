@@ -21,8 +21,15 @@ include_recipe "project_initializer"
 include_recipe "supervisor"
 
 # Initialize web app
-web_app "spaceapi.net" do
+web_app "000-spaceapi.net" do
     template "000-spaceapi.net.conf.erb"
+    server_name "spaceapi.net"
+    server_aliases [node['fqdn'], "localhost"]
+    docroot "/vagrant/data/fake-docroot"
+end
+
+web_app "000-spaceapi.net-ssl" do
+    template "000-spaceapi.net-ssl.conf.erb"
     server_name "spaceapi.net"
     server_aliases [node['fqdn'], "localhost"]
     docroot "/vagrant/data/fake-docroot"

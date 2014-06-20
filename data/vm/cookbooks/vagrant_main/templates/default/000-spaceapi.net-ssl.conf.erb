@@ -1,0 +1,21 @@
+<VirtualHost *:443>
+
+  Alias /new /vagrant/public
+
+  ServerName <%= @params[:server_name] %>
+  ServerAlias <% @params[:server_aliases].each do |a| %><%= "#{a}" %> <% end %>
+  DocumentRoot <%= @params[:docroot] %>
+
+  <Directory <%= @params[:docroot] %>>
+    Options FollowSymLinks
+    AllowOverride All
+    Order allow,deny
+    Allow from all
+  </Directory>
+
+  SSLEngine On
+  SSLCertificateFile /vagrant/data/vm/cookbooks/vagrant_main/cert/spaceapi.net.2014.crt
+  SSLCertificateKeyFile /vagrant/data/vm/cookbooks/vagrant_main/cert/spaceapi.net.2014.key
+  SSLProtocol All
+
+</VirtualHost>
