@@ -24,10 +24,11 @@ class EndpointController extends AbstractActionController
     const SPACENAME_INVALID_MESSAGE = 'The hackerspace name you provided is invalid. It must contain one alpha-numeric character at least.';
     const ENDPOINT_EXISTS_TYPE      = 'EndpointExists';
     const ENDPOINT_EXISTS_MESSAGE   = 'The endpoint already exists.';
+    const ENDPOINT_SCRIPTS_DIR      = 'vendor/spaceapi/endpoint-scripts';
 
     public function indexAction()
     {
-        $json = file_get_contents('data/endpoint-scripts/spaceapi.json');
+        $json = file_get_contents(static::ENDPOINT_SCRIPTS_DIR . '/spaceapi.json');
         $jsoneditor_default_input = json_decode($json);
 
         $this->layout('layout/landing');
@@ -329,7 +330,7 @@ class EndpointController extends AbstractActionController
         if(file_exists($file_path))
             throw new EndpointExistsException();
 
-        Utils::rcopy('vendor/spaceapi/endpoint-scripts', $file_path);
+        Utils::rcopy(static::ENDPOINT_SCRIPTS_DIR, $file_path);
 
         $baseUrl = $this->getRequest()->getBaseUrl();
 
