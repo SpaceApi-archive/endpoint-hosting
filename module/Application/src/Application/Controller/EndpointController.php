@@ -81,7 +81,10 @@ class EndpointController extends AbstractActionController
 
         $recaptcha = new ReCaptcha(
             $config['recaptcha']['public'],
-            $config['recaptcha']['private']
+            $config['recaptcha']['private'],
+            array(
+                'ssl' => true
+            )
         );
 
         // we render the template immediately on the first visit or
