@@ -2,6 +2,8 @@
 
   Alias /new /vagrant/public
 
+  SetEnv DEVELOPMENT true
+
   ServerName <%= @params[:server_name] %>
   ServerAlias <% @params[:server_aliases].each do |a| %><%= "#{a}" %> <% end %>
   DocumentRoot <%= @params[:docroot] %>
