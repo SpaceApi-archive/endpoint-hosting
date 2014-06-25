@@ -43,7 +43,7 @@
 
             {% endif %}
 
-            <form class="noscript" action="{{ url('endpoint/action', {'action': 'create'}) }}" method="post">
+            <form class="noscript" action="{{ serverUrl('https') }}{{ url('endpoint/action', {'action': 'create'}) }}" method="post">
 
                 {# pay attention with newlines and indentation, they
                    will be rendered #}

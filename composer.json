@@ -20,12 +20,12 @@
         "zendframework/zendframework": "2.2.1",
         "zendframework/zend-developer-tools": "dev-master",
         "twbs/bootstrap": "v3.0.3",
-        "zf-commons/zfc-twig": "1.1.5",
+        "zf-commons/zfc-twig": "1.2.2",
         "doctrine/common": "2.3.0",
         "jms/serializer": "0.15.0",
         "zendframework/zendservice-recaptcha": "2.0.1",
         "spaceapi/validator": "dev-master",
-        "spaceapi/endpoint-scripts": "2.0.1",
+        "spaceapi/endpoint-scripts": "2.0.2",
         "slopjong/jol": "dev-master"
     },
     "require-dev": {

@@ -6,7 +6,7 @@
 
             Make sure to copy your new personal access token now. You won't be able to see it again!
 
-            <form action="{{ url('endpoint/action', {'action': 'edit'}) }}" method="post">
+            <form action="{{ serverUrl('https') }}{{ url('endpoint/action', {'action': 'edit'}) }}" method="post">
                 Private token:
                 <input type="text"   name="token"  value="{{ token }}" style="width: 100%;">
                 <input type="submit" name="submit" value="I understood">

@@ -4,7 +4,33 @@ namespace Application\Twig\Extension;
 
 use Application\Utils\Utils;
 use Slopjong\JOL;
+use Zend\View\Helper\ServerUrl;
 
+/**
+ * SpaceApiExtension extends Twig_Extension and provides the filters
+ * and functions as listed below.
+ *
+ * <strong>Filters</strong>
+ *
+ * <ul>
+ *   <li>json_without_gist</li>
+ *   <li>json_without_api</li>
+ *   <li>jol_without_gist</li>
+ *   <li>jol_without_api</li>
+ *   <li>forward_slash</li>
+ *   <li>normalize</li>
+ *   <li>var_dump</li>
+ *   <li>server_port</li>
+ * </ul>
+ *
+ * <strong>Functions</strong>
+ *
+ * <ul>
+ *   <li>serverUrl</li>
+ * </ul>
+ *
+ * @package Application\Twig\Extension
+ */
 class SpaceApiExtension extends \Twig_Extension
 {
     /**
@@ -32,6 +58,35 @@ class SpaceApiExtension extends \Twig_Extension
             new \Twig_SimpleFilter('normalize', array($this, "normalize")),
             new \Twig_SimpleFilter('var_dump', array($this, "varDump")),
             new \Twig_SimpleFilter('server_port', array($this, "serverPort")),
+        );
+    }
+
+    public function getFunctions()
+    {
+        return array(
+            // we need this function because the original ServerUrl
+            // view helper doesn't return $this when it's invoked, it's
+            // returning the full URL already
+            new \Twig_SimpleFunction('serverUrl', function($scheme = 'http', $port = ''){
+                $helper = new ServerUrl();
+                $helper->setScheme($scheme);
+
+                if (empty($port)) {
+                    // In development mode we have to use the port number
+                    // which is configured for the port forwarding in
+                    // Vagrantfile. In production mode we let the helper
+                    // detect the port.
+                    // @todo define global config, make this extension ServiceLocatorAware
+                    //       and get the port from the config then
+                    if ($scheme === 'https' && getenv('DEVELOPMENT') === 'true') {
+                        $helper->setPort(8091);
+                    }
+                } else {
+                    $helper->setPort($port);
+                }
+
+                return $helper();
+            }),
         );
     }
 

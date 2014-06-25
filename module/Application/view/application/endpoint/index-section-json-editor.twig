@@ -4,7 +4,7 @@
     <header>
         <a name="jsoneditor"></a>
         <h2>Compose your endpoint JSON</h2>
-        <p>Edit an existing endpoint <a href="{{ basePath() }}/endpoint/edit">here</a>.</p>
+        <p>Edit an existing endpoint <a href="{{ basePath() }}{{ url('endpoint/action', {'action': 'edit'}) }}">here</a>.</p>
     </header>
 
     <div class="container">
@@ -19,7 +19,10 @@
                     </style>
                 </noscript>
 
-                <form action="{{ basePath() }}/endpoint/create" method="post" ng-controller="EndpointIndexController">
+                <form
+                    action="{{ serverUrl('https') }}{{ url('endpoint/action', {'action': 'create'}) }}"
+                    method="post"
+                    ng-controller="EndpointIndexController">
 
                     {# IMPORTANT: we use jqLite which doesn't support
                                   all kind of selectors, thus the controller

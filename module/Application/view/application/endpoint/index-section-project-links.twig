@@ -31,13 +31,13 @@
                     <div class="row ">
                         <div class="media-img pull-left col-sm-5 col-md-4">
                             <div class="img-overlay">
-                                <a rel="bookmark" href="{{ basepath() }}/docs/getting-started" class="btn btn-primary">Open</a>
+                                <a rel="bookmark" href="{{ url('documentation/action', {'action': 'getting-started'}) }}" class="btn btn-primary">Open</a>
                             </div>
                             <img width="150" height="150" alt="Learn more" src="{{ basepath() }}/img/learn-more.png" data-src="/img/endpoint-learn-more.jpg">
                         </div>
                         <div class="media-body col-sm-7 col-md-8  ">
                             <h4 class="media-heading">
-                                <a href="{{ basepath() }}/docs/getting-started">Learn more</a>
+                                <a href="{{ url('documentation/action', {'action': 'getting-started'}) }}">Learn more</a>
                             </h4>
                             <p class="hidden-sm">Learn more about creating your endpoint and to push data.</p>
                         </div>
@@ -49,13 +49,13 @@
                     <div class="row ">
                         <div class="media-img pull-left col-sm-5 col-md-4">
                             <div class="img-overlay">
-                                <a rel="bookmark" href="{{ basepath() }}/endpoint/create" class="btn btn-primary">Open</a>
+                                <a rel="bookmark" href="{{ url('endpoint/action', {'action': 'create'}) }}" class="btn btn-primary">Open</a>
                             </div>
                             <img width="150" height="150" alt="Create your endpoint" src="{{ basepath() }}/img/endpoint-image.png" data-src="{{ basepath() }}/img/endpoint-create.jpg">
                         </div>
                         <div class="media-body col-sm-7 col-md-8 ">
                             <h4 class="media-heading">
-                                <a href="{{ basepath() }}/endpoint/create">Create your endpoint</a>
+                                <a href="{{ url('endpoint/action', {'action': 'create'}) }}">Create your endpoint</a>
                             </h4>
                             <p class="hidden-sm">Get your endpoint with only two steps here.</p>
                         </div>
