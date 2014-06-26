@@ -80,6 +80,8 @@ class SpaceApiExtension extends \Twig_Extension
                     //       and get the port from the config then
                     if ($scheme === 'https' && getenv('DEVELOPMENT') === 'true') {
                         $helper->setPort(8091);
+                    } elseif ($scheme === 'https') {
+                        $helper->setPort(443);
                     }
                 } else {
                     $helper->setPort($port);
