@@ -13,11 +13,28 @@ textarea[name="json"] {
 }
 
 .buttons {
+  display: flex;
+  flex-direction: row;
   margin: 20px auto 20px auto;
+  width: 100%;
 
-  .btn {
-    border-radius: 0;
-    margin-right: 5px;
+  .left {
+    flex: 1;
+    overflow: hidden;
+    .btn {
+      border-radius: 0;
+      margin-right: 5px;
+    }
+  }
+
+  .right {
+    flex: 1;
+    overflow: hidden;
+    text-align: right;
+    .btn {
+      border-radius: 0;
+      margin-left: 5px;
+    }
   }
 }
 

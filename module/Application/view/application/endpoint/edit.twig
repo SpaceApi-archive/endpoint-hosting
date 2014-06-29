@@ -12,14 +12,22 @@
             {% if token is defined %}
 
                 <div class="buttons">
-                    {# show the button if the gist ID is 0 don't,
-                       we had to use a regex as twig seems not work well
-                       with 'if spaceapi.gist != 0' #}
-                    {% if spaceapi.gist matches '{^..+$}' %}
-                    <a class="btn btn-default" href="https://gist.github.com/{{ spaceapi.gist }}" target="_blank" rel="nofollow">Gist</a>
-                    {% endif %}
-                    <a class="btn btn-default" href="{{ basePath() }}/space/{{ spaceapi.slug }}/status" target="_blank" rel="nofollow">Your endpoint</a>
-                    <a class="btn btn-default" href="{{ basePath() }}/space/{{ spaceapi.slug }}/status/json" target="_blank" rel="nofollow">Your JSON</a>
+                    <div class="left">
+                        {# show the button if the gist ID is 0 don't,
+                           we had to use a regex as twig seems not work well
+                           with 'if spaceapi.gist != 0' #}
+                        {% if spaceapi.gist matches '{^..+$}' %}
+                        <a class="btn btn-default" href="https://gist.github.com/{{ spaceapi.gist }}" target="_blank" rel="nofollow">Gist</a>
+                        {% endif %}
+                        <a class="btn btn-default" href="{{ basePath() }}/space/{{ spaceapi.slug }}/status" target="_blank" rel="nofollow">Your endpoint</a>
+                        <a class="btn btn-default" href="{{ basePath() }}/space/{{ spaceapi.slug }}/status/json" target="_blank" rel="nofollow">Your JSON</a>
+                    </div>
+                    <div class="right">
+                        <form action="{{ serverUrl('https') }}{{ url('endpoint/action', {'action': 'download'}) }}" method="post">
+                            <input type="hidden" name="token" value="{{ token }}" >
+                            {#<input class="btn btn-default" type="submit" value="Download">#}
+                        </form>
+                    </div>
                 </div>
 
                 <pre class="command curl"><code>curl --data-urlencode sensors='{"state":{"open":true}}' --data key=&lt;key> {{ serverUrl('https') }}{{ basePath() }}/space/{{  spaceapi.slug }}/sensor/set</code></pre>
@@ -56,8 +64,12 @@
                     {% include 'partials/jsoneditor.twig' with jeditor_config only %}
 
                     <div class="buttons">
-                        <input class="btn btn-default" type="submit" name="edit_action" value="Validate">
-                        <input class="btn btn-default" type="submit" name="edit_action" value="Save">
+                        <div class="left">
+                            <input class="btn btn-default" type="submit" name="edit_action" value="Validate">
+                            <input class="btn btn-default" type="submit" name="edit_action" value="Save">
+                        </div>
+                        <div class="right">
+                        </div>
                     </div>
 
                 </form>
