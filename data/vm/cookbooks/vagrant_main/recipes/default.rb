@@ -1,6 +1,7 @@
 include_recipe "apt"
 include_recipe "google-dns"
 include_recipe "htop"
+include_recipe "zip"
 include_recipe "networking_basic"
 include_recipe "apache2"
 include_recipe "apache2::mod_php5"
