@@ -1,0 +1,43 @@
+
+html, body, .content {
+  background: #888 !important;
+  overflow: hidden;
+}
+
+.well-done {
+
+  text-align: center;
+  position: fixed;
+  bottom:0.5em;
+  left:0.5em;
+  z-index: 1;
+  color: white !important;
+
+  a {
+    text-decoration: none;
+    color: white !important;
+  }
+
+  h1 {
+    text-shadow: -2px 2px 1px #000;
+  }
+}
+
+.sidebar {
+  display: none !important;
+}
+
+.navbar {
+  transform: rotate(32deg) scale(0.938) skew(-26deg) translate(242px);
+  -webkit-transform: rotate(32deg) scale(0.938) skew(-26deg) translate(242px);
+  -moz-transform: rotate(32deg) scale(0.938) skew(-26deg) translate(242px);
+  -o-transform: rotate(32deg) scale(0.938) skew(-26deg) translate(242px);
+  -ms-transform: rotate(32deg) scale(0.938) skew(-26deg) translate(242px);
+
+  margin-left: -300px;
+  z-index: 0;
+
+  .navbar-header {
+    padding-left: 120px;
+  }
+}

@@ -40,7 +40,8 @@ module.exports = function (grunt) {
           'public/styles/layout-default.css' : 'module/Application/sass/_layout-default.scss',
           'public/styles/page-endpoint-index.css' : 'module/Application/sass/_page-endpoint-index.scss',
           'public/styles/page-endpoint-edit.css' : 'module/Application/sass/_page-endpoint-edit.scss',
-          'public/styles/page-endpoint-create.css' : 'module/Application/sass/_page-endpoint-create.scss'
+          'public/styles/page-endpoint-create.css' : 'module/Application/sass/_page-endpoint-create.scss',
+          'public/styles/page-error.css' : 'module/Application/sass/_page-error-404.scss'
         }
       }
     },
