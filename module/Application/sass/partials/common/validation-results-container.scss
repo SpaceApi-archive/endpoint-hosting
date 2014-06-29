@@ -2,7 +2,6 @@
 .validation-results {
 
   padding: 5px;
-  min-width: 700px;
   max-width: 700px;
   margin-left: auto;
   margin-right: auto;
@@ -14,14 +13,14 @@
     font-size: 1.2em;
   }
 
-  // if you change things here, check if &.error must be adapted too
-  &.ok {
-    color: #529214;
-    background: none repeat scroll 0 0 #E6EFC2 !important;
-    border: 2px solid #C6D880 !important;
+  // common styles (but configurable)
+  @mixin message_block($text_color, $background_color, $border_color) {
+    color: $text_color;
+    background: none repeat scroll 0 0 $background_color !important;
+    border: 2px solid $border_color !important;
 
     a {
-      color: #529214!important;
+      color: $text_color !important;
       font-family: Gafata,sans-serif;
       font-size: 1em;
       margin-left: 5px;
@@ -33,27 +32,44 @@
     }
   }
 
-  // if you change things here, check if &.ok must be adapted too
+  &.ok {
+    @include message_block(#529214, #E6EFC2, #C6D880);
+  }
+
   &.error {
-    color: #D12F19;
-    background: none repeat scroll 0 0 #FBE3E4 !important;
-    border: 2px solid #FBC2C4 !important;
+    @include message_block(#D12F19, #FBE3E4, #FBC2C4);
 
     ul {
       margin-top: 20px;
       font-family: monospace, serif;
       font-size: 0.7em;
-    }
 
-    a {
-      color: #D12F19 !important;
-      font-family: Gafata,sans-serif;
-      font-size: 1em;
-      margin-left: 5px;
-      margin-right: 5px;
+      li {
+        hr {
+          border: 0;
+          height: 1px;
+          opacity: 0.4;
 
-      i {
-        font-size: 0.8em;
+          // override bootstrap's margins
+          margin-top: 4px;
+          margin-bottom: 4px;
+
+          // if something should be changed here, import the css code
+          // below in the css gradient generator here:
+          // http://www.colorzilla.com/gradient-editor/
+          background: -moz-linear-gradient(left, rgba(209,47,25,0.73) 0%, rgba(209,47,25,0) 82%, rgba(209,47,25,0) 99%); /* FF3.6+ */
+          background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(209,47,25,0.73)), color-stop(82%,rgba(209,47,25,0)), color-stop(99%,rgba(209,47,25,0))); /* Chrome,Safari4+ */
+          background: -webkit-linear-gradient(left, rgba(209,47,25,0.73) 0%,rgba(209,47,25,0) 82%,rgba(209,47,25,0) 99%); /* Chrome10+,Safari5.1+ */
+          background: -o-linear-gradient(left, rgba(209,47,25,0.73) 0%,rgba(209,47,25,0) 82%,rgba(209,47,25,0) 99%); /* Opera 11.10+ */
+          background: -ms-linear-gradient(left, rgba(209,47,25,0.73) 0%,rgba(209,47,25,0) 82%,rgba(209,47,25,0) 99%); /* IE10+ */
+          background: linear-gradient(to right, rgba(209,47,25,0.73) 0%,rgba(209,47,25,0) 82%,rgba(209,47,25,0) 99%); /* W3C */
+          filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bad12f19', endColorstr='#00d12f19',GradientType=1 ); /* IE6-9 */
+        }
+
+        // hide the last separator because there's no error message after
+        &:last-of-type hr {
+          display: none;
+        }
       }
     }
   }

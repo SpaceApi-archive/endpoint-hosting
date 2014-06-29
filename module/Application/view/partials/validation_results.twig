@@ -37,7 +37,7 @@
                 {% if version == '0.13' %} {# add condition if errors is not empty #}
                     <ul class="fa-ul">
                         {% for message in messages %}
-                            <li><i class="fa-li fa fa-flash"></i> {{ message.msg }}</li>
+                            <li><i class="fa-li fa fa-flash"></i> {{ message.msg }} <hr></li>
                         {% endfor %}
                     </ul>
                 {% endif %}
