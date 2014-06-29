@@ -20,6 +20,7 @@
     border: 2px solid $border_color !important;
 
     a {
+      display: inline-block;
       color: $text_color !important;
       font-family: Gafata,sans-serif;
       font-size: 1em;
