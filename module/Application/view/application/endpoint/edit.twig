@@ -23,9 +23,9 @@
                         <a class="btn btn-default" href="{{ basePath() }}/space/{{ spaceapi.slug }}/status/json" target="_blank" rel="nofollow">Your JSON</a>
                     </div>
                     <div class="right">
-                        <form action="{{ serverUrl('https') }}{{ url('endpoint/action', {'action': 'download'}) }}" method="post">
+                        <form action="{{ serverUrl('https') }}{{ url('endpoint/action', {'action': 'download-scripts'}) }}" method="post">
                             <input type="hidden" name="token" value="{{ token }}" >
-                            {#<input class="btn btn-default" type="submit" value="Download">#}
+                            <input class="btn btn-default" type="submit" value="Download">
                         </form>
                     </div>
                 </div>

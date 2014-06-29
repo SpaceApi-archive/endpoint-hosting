@@ -2,6 +2,7 @@
 
 namespace Application\Controller;
 
+use Application\Endpoint\ConfigFile;
 use Application\Exception\EmptyGistIdException;
 use Application\Exception\EndpointExistsException;
 use Application\Gist\Result;
@@ -14,6 +15,7 @@ use Application\Utils\Utils;
 use Doctrine\Common\Collections\Criteria;
 use Slopjong\JOL;
 use Zend\Http\Request;
+use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use ZendService\ReCaptcha\ReCaptcha;
@@ -212,6 +214,65 @@ class EndpointController extends AbstractActionController
     }
 
     /**
+     * Action basically zips the endpoint scripts including the data
+     * and offers the user a download. Internally it copies the scripts
+     * from the deployment location because the vendor version might be
+     * newer and no longer match the directory structure. Thus changes
+     * done in the configuration file and .htaccess file during the
+     * deployment must be reverted.
+     *
+     * @platform linux a couple of things are easier in bash such as "rm -rf"
+     */
+    public function downloadScriptsAction() {
+        $token = $this->params()->fromPost('token');
+
+        // dev-note:2
+        if (is_null($token)) {
+            // the RouteMatch
+            $token = $this->params('token');
+        }
+
+        // no download if no token is provided
+        if (is_null($token)) {
+            $response = new Response();
+            $response->setStatusCode(403);
+        }
+
+        $slug = $this->getSlugFromToken($token);
+
+        exec("cp -r public/space/$slug data/tmp/endpoint-download");
+
+        // undo the RewriteBase change
+        $htaccess_file = "data/tmp/endpoint-download/$slug/.htaccess";
+        $htaccess_content = file_get_contents($htaccess_file);
+        $htaccess_content = preg_replace("/RewriteBase.*/", "RewriteBase /", $htaccess_content);
+        file_put_contents($htaccess_file, $htaccess_content);
+
+        $config = new ConfigFile("data/tmp/endpoint-download/$slug/config.json");
+        $config->setToken('');
+        $config->save();
+
+        // change to the directory so that the filepath in the zip file
+        // doesn't match the endpoint hosting tmp directory
+        $old_cwd = getcwd();
+        chdir('data/tmp/endpoint-download');
+        exec("/usr/bin/zip -r $slug.zip $slug");
+        chdir($old_cwd);
+
+        $zip_file = "data/tmp/endpoint-download/$slug.zip";
+        if(file_exists($zip_file))
+        {
+            header("Content-Disposition: attachment; filename=$zip_file");
+            header('Content-Type: application/zip');
+            header("Content-Length: " . filesize($zip_file));
+            readfile($zip_file);
+        }
+
+        exec("rm -rf data/tmp/endpoint-download/$slug*");
+        exit();
+    }
+
+    /**
      * This action saves/validates a submitted JSON. This action is also
      * used by Endpoint::createAction(). The field 'api' is always set
      * to 0.13 internally.
@@ -324,6 +385,7 @@ class EndpointController extends AbstractActionController
      * @param string $space The normalized space name
      * @param string $token A secret key
      * @throws \Application\Exception\EndpointExistsException
+     * @platform linux Bash is used for 'rm -rf'
      */
     protected function createEndpoint($space, $token)
     {
@@ -334,6 +396,7 @@ class EndpointController extends AbstractActionController
             throw new EndpointExistsException();
 
         Utils::rcopy(static::ENDPOINT_SCRIPTS_DIR, $file_path);
+        exec("rm -rf $file_path/.git");
 
         $baseUrl = $this->getRequest()->getBaseUrl();
 
@@ -348,6 +411,7 @@ class EndpointController extends AbstractActionController
         file_put_contents($htaccess_file, $htaccess_file_content);
 
         // fix the secret key
+        // @todo use the ConfigFile class
         $config_file = "$file_path/config.json";
         $config_file_content = file_get_contents($config_file);
         $config = json_decode($config_file_content);
