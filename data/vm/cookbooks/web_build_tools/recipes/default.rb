@@ -11,6 +11,16 @@ execute "install_web_build_tool" do
     not_if "which grunt"
 end
 
-package "ruby-sass" do
+# we need a newer sass
+#package "ruby-sass" do
+#  action :install
+#end
+
+package "rubygems" do
   action :install
+end
+
+execute "rubygems-sass" do
+    command "sudo gem install sass"
+    not_if "which sass"
 end
