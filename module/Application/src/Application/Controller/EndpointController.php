@@ -262,7 +262,7 @@ class EndpointController extends AbstractActionController
         $zip_file = "data/tmp/endpoint-download/$slug.zip";
         if(file_exists($zip_file))
         {
-            header("Content-Disposition: attachment; filename=$zip_file");
+            header("Content-Disposition: attachment; filename=endpoint-scripts.zip");
             header('Content-Type: application/zip');
             header("Content-Length: " . filesize($zip_file));
             readfile($zip_file);
