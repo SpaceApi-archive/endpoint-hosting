@@ -96,7 +96,7 @@
                 <div class="error">{{ error }}</div>
 
                 <form action="{{ serverUrl('https') }}{{ url('endpoint/action', {'action': 'edit'}) }}" method="post">
-                    <input type="text" name="token" value="" >
+                    <input type="password" autocomplete="off" name="token" value="" >
                     <input type="submit" name="submit" value="Go">
                 </form>
 
