@@ -1,15 +1,97 @@
 
+@import "partials/common/mixins";
+@import "partials/common/validation-results-container";
+
+// we need to disable the horizontal scrollbar on this page because of
+// the 3:1 resize ratio which shows it when the container becomes
+// smaller
+.content {
+  overflow-x: hidden !important;
+}
+
 textarea[name="json"] {
   width: 100%;
   height: 300px;
   display: none;
 }
 
-@import "partials/common/validation-results-container";
-
 .validation-results {
   width: 100%;
   max-width: 100%;
+}
+
+.buttons-outer {
+
+  @mixin download_handwriting_text($top, $right, $font_size, $rotation) {
+    background: none repeat scroll 0 0 #FFFFFF;
+    font-family: Handwriting,sans-serif;
+    font-size: $font_size;
+    text-align: center;
+    position: absolute;
+
+    top: $top;
+    right: $right;
+
+    z-index: 100;
+
+    @include transform_rotate($rotation);
+  }
+
+  position: relative;
+
+  .download-arrow-to-button {
+    opacity: 0.5;
+    font-family: Arrows,sans-serif;
+    font-size: 2em;
+    position: absolute;
+    right: 80px;
+    top: -60px;
+    @include transform_rotate(-30deg)
+  }
+
+  @media (max-width: 499px) {
+
+    .download-handwriting-text {
+      display: none;
+    }
+
+    .right {
+      button {
+        @include transform_rotate(0deg);
+      }
+    }
+  }
+
+  @media (min-width: 500px) and (max-width: 680px) {
+    .download-handwriting-text {
+      @include download_handwriting_text(-40px, -20px, 0.8em, 10deg);
+    }
+  }
+
+  @media (max-width: 680px) {
+    .download-arrow-to-button {
+      display: none;
+    }
+  }
+
+  @media (min-width: 681px) {
+    .download-handwriting-text {
+      @include download_handwriting_text(-40px, -60px, 1em, 30deg);
+    }
+  }
+
+  @media (min-width: 500px) {
+    .right {
+      button {
+        @include transform_rotate(10deg);
+        background: white !important;
+
+        &:hover {
+          @include transform_rotate(0deg);
+        }
+      }
+    }
+  }
 }
 
 .buttons {

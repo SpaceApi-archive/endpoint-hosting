@@ -11,22 +11,30 @@
 
             {% if token is defined %}
 
-                <div class="buttons">
-                    <div class="left">
-                        {# show the button if the gist ID is 0 don't,
-                           we had to use a regex as twig seems not work well
-                           with 'if spaceapi.gist != 0' #}
-                        {% if spaceapi.gist matches '{^..+$}' %}
-                        <a class="btn btn-default" href="https://gist.github.com/{{ spaceapi.gist }}" target="_blank" rel="nofollow">Gist</a>
-                        {% endif %}
-                        <a class="btn btn-default" href="{{ basePath() }}/space/{{ spaceapi.slug }}/status" target="_blank" rel="nofollow">Your endpoint</a>
-                        <a class="btn btn-default" href="{{ basePath() }}/space/{{ spaceapi.slug }}/status/json" target="_blank" rel="nofollow">Your JSON</a>
-                    </div>
-                    <div class="right">
-                        <form action="{{ serverUrl('https') }}{{ url('endpoint/action', {'action': 'download-scripts'}) }}" method="post">
-                            <input type="hidden" name="token" value="{{ token }}" >
-                            <input class="btn btn-default" type="submit" value="Download">
-                        </form>
+                <div class="buttons-outer">
+                    {# lnqtv #}
+                    <div class="download-arrow-to-button">q</div>
+                    <div class="download-handwriting-text">Download your endpoint<br> including sensor data</div>
+                    <div class="buttons">
+                        <div class="left">
+                            {# show the button if the gist ID is 0 don't,
+                               we had to use a regex as twig seems not work well
+                               with 'if spaceapi.gist != 0' #}
+                            {% if spaceapi.gist matches '{^..+$}' %}
+                            <a class="btn btn-default" href="https://gist.github.com/{{ spaceapi.gist }}" target="_blank" rel="nofollow">Gist</a>
+                            {% endif %}
+                            <a class="btn btn-default" href="{{ basePath() }}/space/{{ spaceapi.slug }}/status" target="_blank" rel="nofollow">Your endpoint</a>
+                            <a class="btn btn-default" href="{{ basePath() }}/space/{{ spaceapi.slug }}/status/json" target="_blank" rel="nofollow">Your JSON</a>
+                        </div>
+                        <div class="right">
+                            <form action="{{ serverUrl('https') }}{{ url('endpoint/action', {'action': 'download-scripts'}) }}" method="post">
+                                <input type="hidden" name="token" value="{{ token }}" >
+                                <button type="submit" class="btn btn-default">
+
+                                    <i class="fa fa-download"></i>&nbsp;&nbsp; Download
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
 
