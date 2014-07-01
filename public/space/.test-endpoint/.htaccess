@@ -2,7 +2,7 @@
 
 Options +FollowSymlinks
 RewriteEngine on
-RewriteBase /
+RewriteBase /new
 
 #RewriteRule ^status.json$  status.php?format=json [L]
 
@@ -14,7 +14,7 @@ RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^.*$ - [NC,L]
 
 #RewriteCond %{REQUEST_URI}::$1 ^(/.+)(.+)::\2$
-RewriteRule ^(.*)$ index.php [NC,L]
+RewriteRule ^(.*)$ space/.test-endpoint/index.php [NC,L]
 
 # Make the .git directory inaccessible
 RedirectMatch 404 /\.git.*$

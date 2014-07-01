@@ -53,7 +53,7 @@ class SpaceApiObjectFactory
      */
     public static function fromName($name) {
 
-        $slug = '';
+        $slug = '.test-endpoint';
 
         // normalize the name for all other endpoint than the test endpoint
         if ($name !== '.test-endpoint') {
