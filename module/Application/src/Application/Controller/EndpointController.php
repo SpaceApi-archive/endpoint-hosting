@@ -187,7 +187,8 @@ class EndpointController extends AbstractActionController
 
             $view = new ViewModel(array(
                 'token' => $token,
-                'gist'  => $gist_result
+                'gist'  => $gist_result,
+                'space' => $space,
             ));
 
             $view->setTemplate('application/endpoint/create-ok.twig');
