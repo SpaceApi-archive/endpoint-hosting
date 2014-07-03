@@ -3,6 +3,18 @@
         {
             "slug": ".test-endpoint",
             "token": "1234"
+        },
+        {
+            "slug": "the_space_name",
+            "token": "KWoFAmOjJ4zDUXKOgURuKeljaf0JoKBpiMuGR5Gf3LIGffRQCO5Ku"
+        },
+        {
+            "slug": "gasdfasdfasdf",
+            "token": "zMY7ixxDsA7EbKXw.tHNkeI5LLoeWUgY8/nEvuUFBYfDs2adej2nG"
+        },
+        {
+            "slug": "gasdfasdfasdf1324",
+            "token": "MSDpzbOL3WYIFjgBSLsWvO..ByRObTavBELjT6t7a8n27ODj54WqC"
         }
     ]
 }
