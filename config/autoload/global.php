@@ -14,5 +14,7 @@ return array(
     'recaptcha' => array(
         'public'  => '',
         'private' => '',
-    )
+    ),
+
+    'tokendir' => 'data/tokens',
 );

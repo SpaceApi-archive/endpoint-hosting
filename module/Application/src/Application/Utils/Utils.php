@@ -185,4 +185,15 @@ class Utils
 
         return $json;
     }
+
+    /**
+     * Wrapper of PHP's native json_encode by using pre-defined flags
+     * for pretty print, unescaped slashes and unicode.
+     * @param $mixed
+     * @return string prettyfied JSON
+     */
+    public static function json_encode($mixed) {
+        return json_encode($mixed, JSON_PRETTY_PRINT |
+            JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+    }
 }

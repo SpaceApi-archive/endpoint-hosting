@@ -18,6 +18,11 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 // has to be registered in the SerializerFactory. Zend classes of interest:
 // AnnotationManager, AnnotationBuilder and ModuleManager maybe we can
 // get all the annotations from one of these classes.
+/**
+ * Class SpaceMapList
+ * @deprecated
+ * @package Application\Map
+ */
 class SpaceMapList extends AbstractList //implements ServiceLocatorAwareInterface
 {
     /**

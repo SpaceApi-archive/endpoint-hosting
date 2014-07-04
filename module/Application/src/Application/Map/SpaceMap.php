@@ -8,6 +8,7 @@ use JMS\Serializer\Annotation as JMS;
  * @property string slug
  * @property string token
  *
+ * @deprecated
  * @package Application\Map
  */
 class SpaceMap

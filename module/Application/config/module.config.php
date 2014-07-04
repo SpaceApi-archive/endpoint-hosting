@@ -7,7 +7,8 @@ $module_config = array(
             'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
             'EndpointMail' => 'Application\Service\EndpointMailFactory',
             'Serializer' => 'Application\Service\SerializerFactory',
-            'SpaceMapList' => 'Application\Service\SpaceMapListFactory',
+            'Token' => 'Application\Service\TokenFactory',
+            'TokenList' => 'Application\Service\TokenListFactory',
         ),
     ),
     'translator' => array(

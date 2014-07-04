@@ -7,12 +7,11 @@ use Application\Exception\EmptyGistIdException;
 use Application\Exception\EndpointExistsException;
 use Application\Gist\Result;
 use Application\Mail\EndpointMailInterface;
-use Application\Map\SpaceMap;
-use Application\Map\SpaceMapList;
 use Application\SpaceApi\SpaceApiObject;
 use Application\SpaceApi\SpaceApiObjectFactory;
+use Application\Token\Token;
+use Application\Token\TokenList;
 use Application\Utils\Utils;
-use Doctrine\Common\Collections\Criteria;
 use Slopjong\JOL;
 use Zend\Http\Request;
 use Zend\Http\Response;
@@ -151,11 +150,10 @@ class EndpointController extends AbstractActionController
 
         try {
             // generate a new token
-            $token = Utils::generateSecret();
+            $token = Token::create($slug, $config['tokendir'])->getToken();
 
             // this throws an EndpointExistsException if the endoint exists
             $this->createEndpoint($slug, $token);
-            $this->addSpaceMap($slug, $token);
 
             // create a new gist and save its ID in the spaceapi json
             /** @var Result $gist_result */
@@ -239,7 +237,9 @@ class EndpointController extends AbstractActionController
             $response->setStatusCode(403);
         }
 
-        $slug = $this->getSlugFromToken($token);
+        /** @var TokenList $token_list */
+        $token_list = $this->getServiceLocator()->get('TokenList');
+        $slug = $token_list->getSlugFromToken($token);
 
         exec("cp -r public/space/$slug data/tmp/endpoint-download");
 
@@ -298,7 +298,9 @@ class EndpointController extends AbstractActionController
             return array();
         }
 
-        $slug = $this->getSlugFromToken($token);
+        /** @var TokenList $token_list */
+        $token_list = $this->getServiceLocator()->get('TokenList');
+        $slug = $token_list->getSlugFromToken($token);
 
         if (is_null($slug)) {
             return array(
@@ -417,8 +419,7 @@ class EndpointController extends AbstractActionController
         $config_file_content = file_get_contents($config_file);
         $config = json_decode($config_file_content);
         $config->api_key = $token;
-        $config_file_content = json_encode($config,
-            JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        $config_file_content = Utils::json_encode($config);
         file_put_contents($config_file, $config_file_content);
     }
 
@@ -504,7 +505,7 @@ class EndpointController extends AbstractActionController
 
         // we can only update from a full spaceapi json, there's some
         // internal logic doing more than just setting a property
-        $spaceapi->update(json_encode($object));
+        $spaceapi->update(Utils::json_encode($object));
         $spaceapi->save();
     }
 
@@ -519,68 +520,6 @@ class EndpointController extends AbstractActionController
         $spaceapi = SpaceApiObjectFactory::create($slug, SpaceApiObjectFactory::FROM_NAME)->object;
         unset($spaceapi->ext_gist);
 
-        return json_encode($spaceapi,
-            JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE);
-    }
-
-    /**
-     * Adds a new space/token pair to the space map. This map is used
-     * to reduce the amount of access of every space's config file.
-     *
-     * @param string $space_name
-     * @param string $token
-     */
-    protected function addSpaceMap($space_name, $token)
-    {
-        /** @var SpaceMapList $map */
-        $map = $this->getServiceLocator()->get('SpaceMapList');
-        $map->addMap($space_name, $token);
-        $this->saveSpaceMap($map);
-    }
-
-    /**
-     * Saves the space map. Actually this method method belongs to
-     * the SpaceMapList class but for some reason we must do this outside
-     * that class.
-     *
-     * @see Comment in Application\Map\SpaceMapList
-     * @param SpaceMapList $map
-     */
-    protected function saveSpaceMap(SpaceMapList $map)
-    {
-        // serialize the map
-        $serializer = $this->getServiceLocator()->get('Serializer');
-        $map = $serializer->serialize($map, 'json');
-
-        // pretty print
-        $map = json_encode(json_decode($map),
-            JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE);
-
-        // write back to the map file
-        file_put_contents('data/map.json', $map);
-    }
-
-    /**
-     * Returns the slug or null for a given token.
-     *
-     * @param string $token
-     * @return string|null Normalized space name or null if there's no match
-     */
-    protected function getSlugFromToken($token)
-    {
-        /** @var SpaceMapList $map */
-        $map = $this->serviceLocator->get('SpaceMapList');
-
-        $criteria = Criteria::create()->where(
-            Criteria::expr()->eq('token', $token)
-        );
-
-        $found = $map->matching($criteria);
-
-        if($found->count() > 0) {
-            return $found->first()->slug;
-        }
-
-        return null;
+        return Utils::json_encode($spaceapi);
     }
 }
