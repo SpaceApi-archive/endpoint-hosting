@@ -196,4 +196,29 @@ class Utils
         return json_encode($mixed, JSON_PRETTY_PRINT |
             JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
     }
+
+    /**
+     * @param string $dir directory without a trailing slash
+     * @return array list of files containing in $dir
+     */
+    public static function getFilesFromDir($dir) {
+        $file_paths = array();
+
+        $nonhidden = glob($dir . '/*');
+
+        // if there are no non-hidden token files $nonhidden is not an array
+        if (is_array($nonhidden)) {
+            $file_paths = $nonhidden;
+        }
+
+        $hidden = glob($dir . '/.*');
+
+        foreach ($hidden as $h) {
+            if (basename($h) !== '.' && basename($h) !== '..') {
+                $file_paths[] = $h;
+            }
+        }
+
+        return $file_paths;
+    }
 }
