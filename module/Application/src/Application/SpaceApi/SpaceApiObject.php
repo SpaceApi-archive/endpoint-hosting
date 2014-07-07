@@ -275,7 +275,7 @@ class SpaceApiObject
      * to be able to identify/load the file which this SpaceApiObject
      * instance is created from.
      *
-     * @param string $file
+     * @param string $file path to the spaceapi JSON file
      * @param string $slug unique file identifier
      * @return SpaceApiObject
      * @throws \Application\Exception\FilesystemException
