@@ -96,9 +96,23 @@
                 <div class="error">{{ error }}</div>
 
                 <form action="{{ serverUrl('https') }}{{ url('endpoint/action', {'action': 'edit'}) }}" method="post">
-                    <input type="password" autocomplete="off" name="token" value="" >
-                    <input type="submit" name="submit" value="Go">
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="input-group">
+                                <input class="form-control" type="password" autocomplete="off" name="token" value="">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="submit">Go!</button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
                 </form>
+
+                <p>
+                <a href="{{ serverUrl('https') }}{{ url('endpoint/action', {'action': 'reset-token'}) }}">You forgot it?</a>
+                </p>
 
             {% endif %}
 
