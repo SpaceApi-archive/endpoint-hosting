@@ -45,11 +45,16 @@ class EndpointList extends ArrayCollection
         $this->clear();
 
         foreach ($endpoint_paths as $endpoint_path) {
-            $spaceApiObject = SpaceApiObjectFactory::create(
-                $endpoint_path . '/spaceapi.json',
-                SpaceApiObjectFactory::FROM_FILE
-            );
-            $this->add($spaceApiObject);
+            $slug = basename($endpoint_path);
+
+            // don't consider the git ignore file
+            if ($slug !== '.gitignore') {
+                $spaceApiObject = SpaceApiObjectFactory::fromFile(
+                    $endpoint_path . '/spaceapi.json',
+                    $slug
+                );
+                $this->add($spaceApiObject);
+            }
         }
     }
 } 
