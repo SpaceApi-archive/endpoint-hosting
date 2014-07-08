@@ -18,6 +18,7 @@ use Zend\Json\Json;
  * @property-read string json
  * @property-read object object
  * @property-read string slug normalized hackerspace name
+ * @property-read string url website of the hackerspace
  * @property-read string loaded_from value 'file', 'json' or 'name' which defines from what source the instace got created
  * @property-read ResultInterface|null validation validation result re-initialized on each update request, null if the json is not parsable
  * @property-read ValidatorInterface|null validator
@@ -35,6 +36,7 @@ class SpaceApiObject
     protected $json = '';
     protected $object = null;
     protected $slug = '';
+    protected $url = '';
     protected $validation = null;
     protected $validJson = true;
     protected $loaded_from = '';
@@ -156,6 +158,7 @@ class SpaceApiObject
 
         $this->setName($this->object);
         $this->setVersion($this->object);
+        $this->setUrl($this->object);
 
         // set the gist ID if it's yet uninitialized or write ours back
         // to $object.
@@ -263,6 +266,18 @@ class SpaceApiObject
             is_string($object->ext_gist) &&
             preg_match("/^[a-zA-Z0-9]+$/", $object->ext_gist)) {
             $this->gist = $object->ext_gist;
+        }
+    }
+
+    /**
+     * Sets the url property taken from the argument's url property.
+     *
+     * @param \stdClass $object deserialized json of the SpaceApiObject wrapper
+     */
+    protected function setUrl(\stdClass $object)
+    {
+        if (property_exists($object, 'url')) {
+            $this->url = $object->url;
         }
     }
 
