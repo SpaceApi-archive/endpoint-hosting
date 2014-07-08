@@ -26,7 +26,8 @@
         "zendframework/zendservice-recaptcha": "2.0.1",
         "spaceapi/validator": "dev-master",
         "spaceapi/endpoint-scripts": "2.0.2",
-        "slopjong/jol": "dev-master"
+        "slopjong/jol": "dev-master",
+        "rhumsaa/uuid": "2.7.1"
     },
     "require-dev": {
         "phploc/phploc": "*",
