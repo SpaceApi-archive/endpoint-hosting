@@ -3,6 +3,7 @@
 namespace Application\Token;
 
 
+use Application\Utils\Utils;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 
@@ -43,22 +44,7 @@ class TokenList extends ArrayCollection
      */
     public function reload() {
 
-        $token_files = array();
-
-        $nonhidden = glob($this->tokenDir . '/*');
-
-        // if there are no non-hidden token files $nonhidden is not an array
-        if (is_array($nonhidden)) {
-            $token_files = $nonhidden;
-        }
-
-        $hidden = glob($this->tokenDir . '/.*');
-
-        foreach ($hidden as $h) {
-            if (basename($h) !== '.' && basename($h) !== '..') {
-                $token_files[] = $h;
-            }
-        }
+        $token_files = Utils::getFilesFromDir($this->tokenDir);
 
         $this->clear();
         foreach ($token_files as $file) {
