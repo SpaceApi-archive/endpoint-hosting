@@ -17,4 +17,5 @@ return array(
     ),
 
     'tokendir' => 'data/tokens',
+    'endpointdir' => 'public/space',
 );
