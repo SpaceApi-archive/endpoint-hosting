@@ -4,11 +4,12 @@ $module_config = array(
     'service_manager' => array(
         // alternatively we could implement getServiceConfig() in Module.php
         'factories' => array(
-            'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
+            'translator'   => 'Zend\I18n\Translator\TranslatorServiceFactory',
             'EndpointMail' => 'Application\Service\EndpointMailFactory',
-            'Serializer' => 'Application\Service\SerializerFactory',
-            'Token' => 'Application\Service\TokenFactory',
-            'TokenList' => 'Application\Service\TokenListFactory',
+            'Serializer'   => 'Application\Service\SerializerFactory',
+            'Token'        => 'Application\Service\TokenFactory',
+            'TokenList'    => 'Application\Service\TokenListFactory',
+            'EndpointList' => 'Application\Service\EndpointListFactory',
         ),
     ),
     'translator' => array(
