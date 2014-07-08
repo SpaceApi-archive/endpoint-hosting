@@ -76,4 +76,29 @@ class TokenList extends ArrayCollection
 
         return null;
     }
+
+    /**
+     * Returns the slug or null for a given token.
+     *
+     * @param string $slug
+     * @return Token|null token instance or null if there none
+     */
+    public function getTokenFromSlug($slug)
+    {
+        if ($this->count() === 0) {
+            return null;
+        }
+
+        $criteria = Criteria::create()->where(
+            Criteria::expr()->eq('slug', $slug)
+        );
+
+        $found = $this->matching($criteria);
+
+        if($found->count() > 0) {
+            return $found->first();
+        }
+
+        return null;
+    }
 } 
