@@ -3,6 +3,7 @@
 namespace Application\Controller;
 
 use Application\Endpoint\ConfigFile;
+use Application\Endpoint\EndpointList;
 use Application\Exception\EmptyGistIdException;
 use Application\Exception\EndpointExistsException;
 use Application\Gist\Result;
@@ -12,6 +13,9 @@ use Application\SpaceApi\SpaceApiObjectFactory;
 use Application\Token\Token;
 use Application\Token\TokenList;
 use Application\Utils\Utils;
+use Doctrine\Common\Collections\Criteria;
+use Rhumsaa\Uuid\Exception\UnsatisfiedDependencyException;
+use Rhumsaa\Uuid\Uuid;
 use Slopjong\JOL;
 use Zend\Http\Request;
 use Zend\Http\Response;
@@ -377,6 +381,158 @@ class EndpointController extends AbstractActionController
         return $this->getResponse()->setContent(
             $spaceApiObject->validation->searilize()
         );
+    }
+
+    /**
+     *
+     */
+    public function resetTokenAction() {
+
+        // initialize the state machine
+        $step = 1;
+
+        /** @var EndpointList $endpoints */
+        $endpoints = $this->getServiceLocator()->get('EndpointList');
+
+        // if the space parameter is set enter 2nd state
+        $slug = $this->params()->fromPost('slug');
+        $check_file = $this->params()->fromPost('check_file');
+
+        if (!empty($slug)) {
+            $step = 2;
+        }
+
+        if (!empty($slug) && !empty($check_file)) {
+            $step = 3;
+        }
+
+//        dumpx($step);
+
+        try {
+
+            // to this file we'll write a unique ID in step 2 or read
+            // that ID in step 2 and 3
+            $token_reset_file = "data/tmp/reset-token/$slug";
+
+            switch ($step) {
+                case 1:
+
+                    return array(
+                        'step'      => 1,
+                        'endpoints' => $endpoints->toArray(),
+                    );
+
+                case 2:
+
+                    // check if the space name is valid, if the user
+                    // manipulated the input an exception is thrown
+                    // and in the front-end an error message shows up
+                    $criteria = Criteria::create()->where(
+                        Criteria::expr()->eq('slug', $slug)
+                    );
+
+                    $found = $endpoints->matching($criteria);
+
+                    if($found->count() !== 1) {
+                        throw new \Exception("You are evil. Yes you are. Don't manipulate the form data.");
+                    }
+
+                    // if the token reset file exists from a previous
+                    // step and is not older than 10 min, we'll reuse
+                    // the unique ID
+
+                    $age = 0; // in s
+                    $max_age = 600; // in s
+                    if (file_exists($token_reset_file)) {
+                        $age = time() - filectime($token_reset_file);
+                        if ($age < $max_age) {
+                            $uid = file_get_contents($token_reset_file);
+                            goto skip_new_uuid;
+                        }
+                    }
+
+                    try {
+                        $uid = Uuid::uuid4();
+                    } catch (UnsatisfiedDependencyException $e) {
+                        $uid = uniqid();
+                        error_log('Using uniqid() fallback');
+                    }
+
+                    file_put_contents($token_reset_file, $uid);
+                    $age = time() - filectime($token_reset_file);
+
+                    skip_new_uuid:
+
+                    return array(
+                        'step'     => 2,
+                        'spaceapi' => $found->first(),
+                        'uid'      => $uid,
+                        'time_to_live' => array(
+                            'seconds' => $max_age - $age,
+                            'minutes' => ($max_age - $age) / 60
+                        )
+                    );
+
+                case 3:
+
+                    // check if the space name is valid, if the user
+                    // manipulated the input an exception is thrown
+                    // and in the front-end an error message shows up
+                    $criteria = Criteria::create()->where(
+                        Criteria::expr()->eq('slug', $slug)
+                    );
+
+                    $found = $endpoints->matching($criteria);
+
+                    if($found->count() !== 1) {
+                        throw new \Exception("You are evil. Yes you are. Don't manipulate the form data.");
+                    }
+
+                    /** @var SpaceApiObject $spaceApiObject */
+                    $spaceApiObject = $found->first();
+
+                    $uid = file_get_contents($token_reset_file);
+                    $file = $spaceApiObject->url . "/$uid.txt";
+
+                    $ch = curl_init();
+                    curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
+                    curl_setopt ($ch, CURLOPT_URL, $file);
+                    curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, 20);
+                    curl_setopt ($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
+
+                    // Only calling the head
+                    curl_setopt($ch, CURLOPT_HEADER, true); // header will be at output
+                    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'HEAD'); // HTTP request is 'HEAD'
+
+                    $content = curl_exec ($ch);
+                    $info = curl_getinfo($ch);
+                    curl_close ($ch);
+
+                    if (is_array($info) && array_key_exists('http_code', $info)) {
+                        if ($info['http_code'] !== 200) {
+                            throw new \Exception('Resource not found.');
+                        }
+                    }
+
+                    /** @var TokenList $tokens */
+                    $tokens = $this->getServiceLocator()->get('TokenList');
+                    $token = $tokens->getTokenFromSlug($slug);
+
+                    if (!is_null($token)) {
+                        $token->reset();
+                        unlink($token_reset_file);
+                    }
+
+                    return array(
+                        'step'  => 3,
+                        'token' => $token->getToken()
+                    );
+            }
+        } catch (\Exception $e) {
+            return array(
+                'error' => $e->getMessage(),
+            );
+        }
     }
 
     //****************************************************************

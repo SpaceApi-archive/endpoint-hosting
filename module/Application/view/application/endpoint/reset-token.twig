@@ -1,0 +1,83 @@
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+
+            <h1>Forgot the token?</h1>
+
+            {% if error %}
+
+                <p>
+                    {{ error }}
+                    <a href="{{ url('endpoint/action', {'action': 'reset-token'}) }}">Try again!</a>
+                </p>
+
+            {% else %}
+
+                No problem!
+
+                <h2>Step {{ step }}</h2>
+
+                {% if step == 1 %}
+
+                <p>Select your hackerspace:</p>
+
+                <form action="{{ serverUrl('https') }}{{ url('endpoint/action', {'action': 'reset-token'}) }}" method="POST">
+
+                    <p>
+                    <select class="form-control" name="slug">
+                        {% for spaceapi in endpoints %}
+                            <option value="{{ spaceapi.slug }}">{{ spaceapi.name }}</option>
+                        {% endfor %}
+                    </select>
+                    </p>
+
+                    <button class="btn btn-default" type="submit">Next</button>
+                </form>
+                {% endif %}
+
+                {# ==================================================== #}
+
+                {% if step == 2 %}
+
+                    <p>The following URL will be crawled, please create
+                        a file accordingly.</p>
+
+                    <pre>{{ spaceapi.url }}/{{ uid }}.txt</pre>
+
+                    <p>Please process this step soon. The file will invalidate in about
+
+                        {% if time_to_live.seconds > 60 %}
+                            {{ time_to_live.minutes | round(0, 'ceil') }} minutes
+                        {% else %}
+                            {{ time_to_live.seconds }} seconds
+                        {% endif %}
+                        .
+                    </p>
+
+                    <p>If you use the <code>touch</code> command to create the above file on your server, make sure that you also add a proper file header to it. See here <a href="http://slopjong.de/2014/05/26/apache-cant-find-a-file-created-with-the-touch-command" target="_blank">why</a>.</p>
+
+                    <form action="{{ serverUrl('https') }}{{ url('endpoint/action', {'action': 'reset-token'}) }}" method="POST">
+                        <input type="hidden" name="slug" value="{{ spaceapi.slug }}">
+                        <input type="hidden" name="check_file" value="check_file">
+
+                        <button class="btn btn-default" type="submit">Next</button>
+                    </form>
+                {% endif %}
+
+                {# ==================================================== #}
+
+                {% if step == 3 %}
+
+                    <p>Your new token is</p>
+
+                    <pre><code>{{ token }}</code></pre>
+
+                    <p>Keep it private.</p>
+
+                {% endif %}
+
+            {% endif %}
+        </div>
+    </div>
+</div>
