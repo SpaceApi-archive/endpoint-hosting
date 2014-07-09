@@ -2,7 +2,7 @@
     "api": "0.13",
     "space": "The space name",
     "logo": "http://your-space.com/logo.png",
-    "url": "http://example.com",
+    "url": "http://localhost/new",
     "location": {
         "address": "see the documentation",
         "lon": 5.973817,
