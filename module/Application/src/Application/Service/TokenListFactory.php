@@ -18,6 +18,6 @@ class TokenListFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $config = $serviceLocator->get('config');
-        return new TokenList(array(), $config['tokendir']);
+        return new TokenList($config['tokendir']);
     }
 }

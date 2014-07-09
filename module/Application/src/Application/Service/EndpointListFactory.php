@@ -18,6 +18,6 @@ class EndpointListFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $config = $serviceLocator->get('config');
-        return new EndpointList(array(), $config['endpointdir']);
+        return new EndpointList($config['endpointdir']);
     }
 }

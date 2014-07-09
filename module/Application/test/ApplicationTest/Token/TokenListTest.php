@@ -22,7 +22,7 @@ class TokenListTest extends \PHPUnit_Framework_TestCase
      * Tests the reload with the test endpoint which is a hidden directory
      */
     public function testReload() {
-        $token_list = new TokenList(array(), $this->tokenDir);
+        $token_list = new TokenList($this->tokenDir);
         $this->assertEmpty($token_list->count());
         Token::create('Test', $this->tokenDir);
         $token_list->reload();
@@ -31,7 +31,7 @@ class TokenListTest extends \PHPUnit_Framework_TestCase
 
     public function testReloadWithHiddenTokenFile() {
 
-        $token_list = new TokenList(array(), $this->tokenDir);
+        $token_list = new TokenList($this->tokenDir);
         $this->assertEmpty($token_list->count());
 
         file_put_contents(
@@ -44,13 +44,17 @@ class TokenListTest extends \PHPUnit_Framework_TestCase
     }
 
     public function testGetSlugFromToken() {
-        $token_list = new TokenList(array(), $this->tokenDir);
+        $token_list = new TokenList($this->tokenDir);
         $this->assertNull($token_list->getSlugFromToken('someinventedtoken'));
 
         $name = 'Invented space name';
         $token = Token::create($name, $this->tokenDir);
         $token_list->reload();
 
+        // test bad token
+        $this->assertNull($token_list->getSlugFromToken('asdf'));
+
+        // test good token
         $this->assertEquals(
             $token_list->getSlugFromToken($token->getToken()),
             $token->getSlug()

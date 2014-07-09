@@ -24,7 +24,7 @@ class EndpointListTest extends \PHPUnit_Framework_TestCase
      * Tests the reload with the test endpoint which is a hidden directory
      */
     public function testReload() {
-        $endpoint_list = new EndpointList(array(), $this->endpointDir);
+        $endpoint_list = new EndpointList($this->endpointDir);
         $this->assertEmpty($endpoint_list->count());
 
         $this->createEndpoint('asdf', 'http://localhost:8090');
