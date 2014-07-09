@@ -213,9 +213,11 @@ class Utils
 
         $hidden = glob($dir . '/.*');
 
-        foreach ($hidden as $h) {
-            if (basename($h) !== '.' && basename($h) !== '..') {
-                $file_paths[] = $h;
+        if (is_array($hidden)) {
+            foreach ($hidden as $h) {
+                if (basename($h) !== '.' && basename($h) !== '..') {
+                    $file_paths[] = $h;
+                }
             }
         }
 
