@@ -3,6 +3,7 @@
 namespace Application\Controller;
 
 use Application\Endpoint\ConfigFile;
+use Application\Endpoint\Endpoint;
 use Application\Endpoint\EndpointList;
 use Application\Exception\EmptyGistIdException;
 use Application\Exception\EndpointExistsException;
@@ -406,8 +407,6 @@ class EndpointController extends AbstractActionController
             $step = 3;
         }
 
-//        dumpx($step);
-
         try {
 
             // to this file we'll write a unique ID in step 2 or read
@@ -465,7 +464,7 @@ class EndpointController extends AbstractActionController
 
                     return array(
                         'step'     => 2,
-                        'spaceapi' => $found->first(),
+                        'spaceapi' => $found->first()->getSpaceApiObject(),
                         'uid'      => $uid,
                         'time_to_live' => array(
                             'seconds' => $max_age - $age,
@@ -488,8 +487,9 @@ class EndpointController extends AbstractActionController
                         throw new \Exception("You are evil. Yes you are. Don't manipulate the form data.");
                     }
 
-                    /** @var SpaceApiObject $spaceApiObject */
-                    $spaceApiObject = $found->first();
+                    /** @var Endpoint $endpoint */
+                    $endpoint = $found->first();
+                    $spaceApiObject = $endpoint->getSpaceApiObject();
 
                     $uid = file_get_contents($token_reset_file);
                     $file = $spaceApiObject->url . "/$uid.txt";
@@ -519,7 +519,15 @@ class EndpointController extends AbstractActionController
                     $token = $tokens->getTokenFromSlug($slug);
 
                     if (!is_null($token)) {
+
+                        // change the token in the token directory
                         $token->reset();
+
+                        // now change the deployed endpoint's token too
+                        $config = $endpoint->getConfig();
+                        $config->setToken($token->getToken());
+                        $config->save();
+
                         unlink($token_reset_file);
                     }
 

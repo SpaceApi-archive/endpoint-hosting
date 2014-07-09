@@ -95,6 +95,7 @@
 
                 <div class="error">{{ error }}</div>
 
+                <p>
                 <form action="{{ serverUrl('https') }}{{ url('endpoint/action', {'action': 'edit'}) }}" method="post">
 
                     <div class="row">
@@ -109,9 +110,9 @@
                     </div>
 
                 </form>
-
-                <p>
-                <a href="{{ serverUrl('https') }}{{ url('endpoint/action', {'action': 'reset-token'}) }}">You forgot it?</a>
+                </p>
+                <p class="text-right">
+                    <a href="{{ serverUrl('https') }}{{ url('endpoint/action', {'action': 'reset-token'}) }}">Forgot it?</a>
                 </p>
 
             {% endif %}

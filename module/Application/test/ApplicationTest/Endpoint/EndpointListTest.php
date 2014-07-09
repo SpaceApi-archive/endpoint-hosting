@@ -4,11 +4,13 @@ namespace ApplicationTest\Endpoint;
 
 // @todo do we need this line?
 use Application\Controller\EndpointController;
+use Application\Endpoint\Endpoint;
 use Application\Endpoint\EndpointList;
 use Application\SpaceApi\SpaceApiObject;
 use Application\Utils\Utils;
 use ApplicationTest\Bootstrap;
 use ApplicationTest\PHPUnitUtil;
+use Doctrine\Common\Collections\Criteria;
 use PHPUnit_Framework_TestCase;
 
 class EndpointListTest extends \PHPUnit_Framework_TestCase
@@ -32,13 +34,13 @@ class EndpointListTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(2, $endpoint_list->count());
 
-        /** @var SpaceApiObject $spaceApiObject */
-        $spaceApiObject = $endpoint_list->current();
+        /** @var Endpoint $endpoint */
+        $endpoint = $endpoint_list->current();
 
-        $this->assertEquals('asdf', $spaceApiObject->name);
+        $this->assertEquals('asdf', $endpoint->getSpaceApiObject()->name);
 
-        $spaceApiObject = $endpoint_list->next();
-        $this->assertEquals('Test Endpoint', $spaceApiObject->name);
+        $endpoint = $endpoint_list->next();
+        $this->assertEquals('Test Endpoint', $endpoint->getSpaceApiObject()->name);
     }
 
     /**

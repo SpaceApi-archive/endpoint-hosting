@@ -26,8 +26,8 @@
 
                     <p>
                     <select class="form-control" name="slug">
-                        {% for spaceapi in endpoints %}
-                            <option value="{{ spaceapi.slug }}">{{ spaceapi.name }}</option>
+                        {% for endpoint in endpoints %}
+                            <option value="{{ endpoint.spaceapiobject.slug }}">{{ endpoint.spaceapiobject.name }}</option>
                         {% endfor %}
                     </select>
                     </p>
@@ -74,6 +74,11 @@
                     <pre><code>{{ token }}</code></pre>
 
                     <p>Keep it private.</p>
+
+                    <form action="{{ serverUrl('https') }}{{ url('endpoint/action', {'action': 'edit'}) }}" method="post">
+                        <input type="hidden" name="token" value="{{ token }}">
+                        <button class="btn btn-default" type="submit">Continue</button>
+                    </form>
 
                 {% endif %}
 
