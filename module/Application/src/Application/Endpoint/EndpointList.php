@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * List of all the created endpoints.
- * @package Application\SpaceApi
+ * @package Application\Endpoint
  */
 class EndpointList extends ArrayCollection
 {
@@ -49,11 +49,8 @@ class EndpointList extends ArrayCollection
 
             // don't consider the git ignore file
             if ($slug !== '.gitignore') {
-                $spaceApiObject = SpaceApiObjectFactory::fromFile(
-                    $endpoint_path . '/spaceapi.json',
-                    $slug
-                );
-                $this->add($spaceApiObject);
+                $endpoint = new Endpoint($endpoint_path, $slug);
+                $this->add($endpoint);
             }
         }
     }

@@ -18,7 +18,7 @@ class ConfigFile
     protected $token = '';
 
     /**
-     * @param $file_path full path including the file name
+     * @param string $file_path full path including the file name
      */
     public function __construct($file_path) {
         $this->filePath = $file_path;
