@@ -67,7 +67,10 @@ class SpaceApiExtension extends \Twig_Extension
             // we need this function because the original ServerUrl
             // view helper doesn't return $this when it's invoked, it's
             // returning the full URL already
-            new \Twig_SimpleFunction('serverUrl', function($scheme = 'http', $port = ''){
+
+            // @todo the anonymous function doesn't appear in the outline
+            //       define a named function so that code assistance is better supported
+            new \Twig_SimpleFunction('serverUrl', function ($scheme = 'http', $port = ''){
                 $helper = new ServerUrl();
                 $helper->setScheme($scheme);
 
@@ -82,6 +85,10 @@ class SpaceApiExtension extends \Twig_Extension
                         $helper->setPort(8091);
                     } elseif ($scheme === 'https') {
                         $helper->setPort(443);
+                    } elseif ($scheme === 'http' && getenv('DEVELOPMENT') === 'true') {
+                        $helper->setPort(8090);
+                    } elseif ($scheme === 'http') {
+                        $helper->setPort(80);
                     }
                 } else {
                     $helper->setPort($port);
