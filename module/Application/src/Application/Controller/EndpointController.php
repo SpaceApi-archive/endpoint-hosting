@@ -64,6 +64,10 @@ class EndpointController extends AbstractActionController
         $submit = $this->params()->fromPost('submit');
 
         // 1. case => page directly entered
+        // this is the non-normalized hackerspace name, don't forget
+        // to use the normalize filter in the template or whereever you
+        // need the slug.
+        // NEVER output the string directly, escape it in the templates!
         $space = $this->params()->fromPost('hackerspace');
 
         // 2. case => another page submitted form data, if an empty
@@ -191,15 +195,17 @@ class EndpointController extends AbstractActionController
                 'New space created.'
             );
 
-            $view = new ViewModel(array(
-                'token' => $token,
-                'gist'  => $gist_result,
-                'space' => $space,
-            ));
-
-            $view->setTemplate('application/endpoint/create-ok.twig');
-
-            return $view;
+            // @framework zend2
+            // createOkAction() will return a ViewModel
+            return $this->forward()->dispatch(
+                'Application\Controller\Endpoint',
+                array(
+                    'action' => 'create-ok',    // controller action
+                    'token' => $token,          // action param
+                    'gist'  => $gist_result,    // action param
+                    'space' => $space,          // action param
+                )
+            );
 
         } catch (EndpointExistsException $e) {
 
@@ -218,6 +224,62 @@ class EndpointController extends AbstractActionController
                 ),
             );
         }
+    }
+
+    /**
+     * Renders the page right after a new endpoint was created. On this
+     * page the user will see the auto-generated token, the gist link
+     * and the 'add your endpoint' note.
+     *
+     * This action is not supposed to be invoked by the front-end, however,
+     * for testing purposes it's the direct access is not denied.
+     *
+     * The EndpointController::createAction() will dispatch automatically.
+     *
+     * @uses Route parameter 'token'
+     * @uses Route parameter 'gist'
+     * @uses Route parameter 'space'
+     *
+     * @return ViewModel
+     */
+    public function createOkAction() {
+
+        $tpl_vars = array();
+
+        $route_params = array('token', 'gist', 'space');
+
+        // fill the template variables array with non-empty values
+        foreach ($route_params as $param) {
+
+            $p = $this->params()->fromRoute($param);
+
+            // we use a variable here because arbitrary expressions in
+            // empty() got introduced in PHP 5.5 but we might use 5.4
+            // for a while
+            if (!empty($p)) {
+                $tpl_vars[$param] = $this->params()->fromRoute($param);
+            }
+        }
+
+        // if $tpl_vars is totally empty right here we assume that the
+        // action got invoked via the front-end, we'll use some fake data
+        if (empty($tpl_vars)) {
+            $gist_url = 'https://gist.github.com/endpoint-hosting/e0e0e5bda14489f06422';
+            $tpl_vars = array(
+                'token' => 'ZQ07gBv0XUn.CgwtBEoVju8ANtLwvAUAOJWpVIwG2HJzOqtG0BH8G',
+                // mockup Application\Gist\Result
+                'gist'  => json_decode('{ "url": { "html": "'. $gist_url .'" } }'),
+                'space' => 'Estação H4ck3r',
+            );
+        }
+
+        $view = new ViewModel($tpl_vars);
+
+        // @todo this is hard-coded, there must be a way to compose the template
+        //       file somewhat dynamically
+        $view->setTemplate('application/endpoint/create-ok.twig');
+
+        return $view;
     }
 
     /**
@@ -544,6 +606,8 @@ class EndpointController extends AbstractActionController
                 'error' => $e->getMessage(),
             );
         }
+
+        return array();
     }
 
     //****************************************************************
