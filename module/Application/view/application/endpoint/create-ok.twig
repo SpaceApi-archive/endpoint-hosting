@@ -28,7 +28,7 @@
             {# do not specify a server port to make the URL work with
                the dev environment as well with the production site #}
             <pre><code><a
-                href="{{ serverUrl('http') }}{{ basePath() }}/space/{{ space }}/status/json"
+                href="{{ serverUrl('http') }}{{ basePath() }}/space/{{ space | normalize }}/status/json"
                 target="_blank"
             >{{ serverUrl('http') }}{{ basePath() }}/space/{{ space | normalize }}/status/json</a></code></pre>
 
