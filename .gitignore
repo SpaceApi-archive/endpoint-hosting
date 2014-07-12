@@ -14,3 +14,5 @@ public/lib
 node_modules
 .vagrant
 public/space/*
+data/tmp/reset-token/*
+data/tmp/endpoint-download/*
