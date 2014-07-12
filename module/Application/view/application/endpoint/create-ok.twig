@@ -2,6 +2,7 @@
 {%
     do headLink()
         .appendStylesheet(basePath() ~ '/styles/page-endpoint-create-ok.min.css')
+        .appendStylesheet(basepath() ~ '/lib/font-awesome/css/font-awesome.min.css')
 %}
 
 <div class="container">
@@ -29,7 +30,7 @@
             <pre><code><a
                 href="{{ serverUrl('http') }}{{ basePath() }}/space/{{ space }}/status/json"
                 target="_blank"
-            >{{ serverUrl('http') }}{{ basePath() }}/space/{{ space }}/status/json</a></code></pre>
+            >{{ serverUrl('http') }}{{ basePath() }}/space/{{ space | normalize }}/status/json</a></code></pre>
 
             <h2>Changelog</h2>
 
@@ -42,16 +43,16 @@
 
             <hr>
 
-            <div>
-                <div>\o/</div>
-                <div>
+            <div id="ready_to_continue">
+                <div class="yeah-man">\o/</div>
+                <div class="arrow">w</div>
+                <div class="continue-button-container">
                     <form action="{{ serverUrl('https') }}{{ url('endpoint/action', {'action': 'edit'}) }}" method="post">
                         <input type="hidden" name="token" value="{{ token }}">
-                        <button class="btn btn-default" type="submit" name="submit">Go!</button>.
+                        <button class="btn btn-default" type="submit" name="submit">Go!</button>
                     </form>
                 </div>
             </div>
-
         </div>
     </div>
 </div>

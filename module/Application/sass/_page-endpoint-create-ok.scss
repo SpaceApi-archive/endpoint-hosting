@@ -1,14 +1,77 @@
 
 @import "partials/common/fonts";
+@import "partials/common/mixins";
+
+@media (max-width: 370px) {
+  #ready_to_continue {
+
+    height: 100px;
+
+    .continue-button-container {
+      top: 35px;
+      left: 140px;
+      .btn {
+        font-size: 1.3em;
+      }
+    }
+
+    .yeah-man {
+      font-size: 2em;
+      top: 10px;
+      left: 0;
+    }
+
+    .arrow {
+      font-size: 3em;
+      top: 20px;
+      left: 70px;
+    }
+  }
+}
+
+@media (min-width: 371px) {
+  #ready_to_continue {
+
+    height: 150px;
+
+    .continue-button-container {
+      top: 60px;
+      left: 230px;
+
+      .btn {
+        font-size: 1.5em;
+      }
+    }
+
+    .yeah-man {
+      font-size: 3em;
+      top: 10px;
+      left: 0;
+    }
+
+    .arrow {
+      font-size: 7em;
+      top: 0px;
+      left: 100px;
+    }
+  }
+}
 
 #ready_to_continue {
-  display: inline;
-  padding-bottom: 20px;
 
-  .btn {
-    font-size: 16px;
-    padding: 0 6px 0 6px;
-    margin: 0 10px;
-    vertical-align: sub;
+  position: relative;
+
+  .continue-button-container {
+    position: absolute;
+  }
+
+  .yeah-man {
+    position: absolute;
+  }
+
+  .arrow {
+    position: absolute;
+    font-family: Arrows, sans-serif;
+    @include transform_rotate(60deg);
   }
 }
