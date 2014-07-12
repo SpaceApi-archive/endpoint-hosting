@@ -89,7 +89,10 @@ class EndpointController extends AbstractActionController
             $config['recaptcha']['public'],
             $config['recaptcha']['private'],
             array(
-                'ssl' => true
+                'ssl'   => true,
+            ),
+            array(
+                'theme' => 'clean',
             )
         );
 

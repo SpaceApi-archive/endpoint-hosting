@@ -1,6 +1,7 @@
 {%
     do headLink()
         .appendStylesheet(basePath() ~ '/styles/page-endpoint-create.min.css')
+        .appendStylesheet(basepath() ~ '/lib/font-awesome/css/font-awesome.min.css')
 %}
 
 <div class="container">
@@ -50,24 +51,38 @@
                 {% set json = requested_endpoint_data.json %}
                 <textarea name="json">{% if json %}{{ json }}{% endif %}</textarea>
 
-                <input
-                    name="hackerspace"
-                    type="text" name="name"
-                    value="{{ space }}"
-                    placeholder="Space name"
-                    {% if json %}readonly{% endif %}
-                    >
-                {{ recaptcha.html | raw }}
+                <p>
+                    <input
+                        class="form-control"
+                        name="hackerspace"
+                        type="text" name="name"
+                        value="{{ space }}"
+                        placeholder="Enter your hackerspace name here"
+                        {% if json %}readonly{% endif %}
+                        >
+                </p>
 
-                {% if recaptcha_errors is defined %}
-                    <div class="error">
-                        {% for message in recaptcha_errors %}
-                            <div>{{ message }}</div>
-                        {% endfor %}
+                <div class="row">
+                    <div class="col-lg-6">
+                        {{ recaptcha.html | raw }}
+
+                        {% if recaptcha_errors is defined %}
+                            <div class="alert alert-danger">
+                                <ul class="fa-ul">
+                                {% for message in recaptcha_errors %}
+                                    <li><i class="fa-li fa fa-flash"></i> {{ message }}</li>
+                                {% endfor %}
+                                </ul>
+                            </div>
+
+                        {% endif %}
                     </div>
-                {% endif %}
-
-                <input name="submit" type="submit" value="Create">
+                    <div class="col-lg-6">
+                        {# don't use the button tag here, we need the 'submit'
+                           post parameter in the controller #}
+                        <button class="btn create-button btn-default" name="submit" type="submit"><span class="glyphicon glyphicon-plus"></span></button>
+                    </div>
+                </div>
             </form>
 
         </div>

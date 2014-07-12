@@ -41,6 +41,7 @@ module.exports = function (grunt) {
           'public/styles/page-endpoint-index.css' : 'module/Application/sass/_page-endpoint-index.scss',
           'public/styles/page-endpoint-edit.css' : 'module/Application/sass/_page-endpoint-edit.scss',
           'public/styles/page-endpoint-create.css' : 'module/Application/sass/_page-endpoint-create.scss',
+          'public/styles/page-endpoint-create-ok.css' : 'module/Application/sass/_page-endpoint-create-ok.scss',
           'public/styles/page-error.css' : 'module/Application/sass/_page-error-404.scss'
         }
       }

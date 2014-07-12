@@ -1,0 +1,14 @@
+
+@import "partials/common/fonts";
+
+#ready_to_continue {
+  display: inline;
+  padding-bottom: 20px;
+
+  .btn {
+    font-size: 16px;
+    padding: 0 6px 0 6px;
+    margin: 0 10px;
+    vertical-align: sub;
+  }
+}

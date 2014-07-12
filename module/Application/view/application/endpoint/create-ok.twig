@@ -1,33 +1,56 @@
+
+{%
+    do headLink()
+        .appendStylesheet(basePath() ~ '/styles/page-endpoint-create-ok.min.css')
+%}
+
 <div class="container">
     <div class="row">
         <div class="col-md-12">
 
             <h1>Create a new endpoint</h1>
 
-            Make sure to copy your new personal access token now. You won't be able to see it again!
+            <h2>Your token</h2>
 
-            <form action="{{ serverUrl('https') }}{{ url('endpoint/action', {'action': 'edit'}) }}" method="post">
-                Private token:
-                <input type="text"   name="token"  value="{{ token }}" style="width: 100%;">
-                <input type="submit" name="submit" value="I understood">
-            </form>
+            Copy your personal access token now. You won't be able to see it again!
 
-            A gist has been created for you here:
+            <input class="form-control" type="text" name="token"  value="{{ token }}">
 
-            <a href="{{ gist.url.html }}"
-                target="_blank"
-                rel="nofollow"
-                >{{ gist.url.html }}</a>.
+            The token should be considered as a password, keep it private. We recommend to store it in a password manager such as <a href="http://www.keepassx.org/" target="_blank" rel="nofollow">KeePassX</a>.
 
             <h2>Add your endpoint</h2>
 
-            Don't forget to add your endpoint
+            Don't forget to add your endpoint URL to the directory
             <a href="http://spaceapi.net/add-your-space"
                target="_blank">here</a>.
-            Your URL is
+
             {# do not specify a server port to make the URL work with
                the dev environment as well with the production site #}
-            <pre><code>{{ serverUrl('http') }}{{ basePath() }}/space/{{ space }}/status/json</code></pre>
+            <pre><code><a
+                href="{{ serverUrl('http') }}{{ basePath() }}/space/{{ space }}/status/json"
+                target="_blank"
+            >{{ serverUrl('http') }}{{ basePath() }}/space/{{ space }}/status/json</a></code></pre>
+
+            <h2>Changelog</h2>
+
+            To easily track your changes a gist has been created for you. Check it out.
+
+            <pre><a href="{{ gist.url.html }}"
+               target="_blank"
+               rel="nofollow"
+                    >{{ gist.url.html }}</a></pre>
+
+            <hr>
+
+            <div>
+                <div>\o/</div>
+                <div>
+                    <form action="{{ serverUrl('https') }}{{ url('endpoint/action', {'action': 'edit'}) }}" method="post">
+                        <input type="hidden" name="token" value="{{ token }}">
+                        <button class="btn btn-default" type="submit" name="submit">Go!</button>.
+                    </form>
+                </div>
+            </div>
 
         </div>
     </div>
